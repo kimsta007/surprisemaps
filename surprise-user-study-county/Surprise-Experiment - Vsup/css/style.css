@@ -1,0 +1,183 @@
+.wrapper {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  @media screen and (min-width: 800px) {
+  
+    .wrapper {
+      max-width: 100%;
+    }
+    
+    header {
+      width: 100%;
+    }
+
+    nav, section {
+      float: left;
+    }
+  
+    footer {
+        clear: both;
+        width: 100%;
+    }
+
+    nav {
+      width: 18%;
+      overflow-y:scroll;
+    }
+  
+    section {
+      width: 75%;
+    }
+    
+  }
+
+  @media screen and (min-width: 1000px) {
+  
+    .wrapper {
+      max-width: 100%;
+    }
+    
+  }
+  
+  *, *:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  
+  body {
+    color: rgb(8, 8, 8);
+    font-family: Helvetica;
+    text-align: center;
+    margin: 0;
+    font-size: 14px;
+  }
+  
+  header {
+    background-color: #173D5C;
+    color: white;
+    padding: 5px 0;
+    font-size: 16px;
+  }
+
+  footer {
+    background-color: #173D5C;
+    color: white;
+    padding: 5px 0;
+    height: 2px;
+  }
+  
+  nav {
+    padding: 0;
+    height: 41em;
+  }
+
+  .tblText {
+    vertical-align: middle;
+    text-align: left;
+    white-space: nowrap;
+    padding-right: 20px;
+  }
+
+  .selected {
+      vertical-align: top;
+      margin-top: 0px;
+  }
+
+  table {
+    width: 30%;
+    height: 20px;
+    margin-left: auto;
+    margin-right: auto;
+   }
+
+   p {
+    padding: 10px 10px 10px; 
+    text-align:justify; 
+    background: #ECECEC;
+   }
+
+   .scroll-box {
+    overflow-y: scroll;
+    width: 100%;
+    max-height: 500px;
+    margin: 0 auto;
+  }
+
+
+  span:hover{
+    opacity: 0.8;
+  }
+
+  #label {
+    font-size: 14px;
+    min-width: 20em;
+    margin-bottom: 1em;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  #labelx {
+    min-width: 9em; 
+    font-size: 14px;
+    margin-bottom: 1em;
+    text-align: left;
+  }
+
+  #btnContinue {
+    font-size: 14px;
+    min-width: 9em;
+
+  }
+
+  #btnC {
+    font-size: 14px;
+    min-width: 9em;
+  }
+
+  .task {
+    text-align: left;
+  }
+
+  #zoomButtons {
+    float: right; margin-right: 5%;
+  }
+   
+  .progress-bar {
+    font-size: 1em;
+  }
+  
+.svg-container { 
+	position: relative;
+	vertical-align: middle; 
+	overflow: hidden; 
+	border: 0.8px solid black; 
+}
+		
+.svg-containerx { 
+	position: relative;
+	border: 0.8px solid black;
+	vertical-align: middle; 
+	overflow: hidden;   
+}
+
+.svg-content { 
+	display: inline-block;
+	top: 0;
+	left: 0;
+}
+
+.btn-group-horizontal {
+	margin-top: 1em;
+}
+
+.tooltip {
+	box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.3);
+	width: 14%;
+}
+
+html {
+overflow-y: scroll !important;
+}
