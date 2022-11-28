@@ -1,8 +1,32 @@
 let data, geoData, popn, geojson, rankingValues;
 let population = {}, expData = [];
 
-let colorsChoropleth = ['#c77560', '#d18f7e', '#daa99c','#edddd9','#cfdcda','#7fa79f','#578d81','#2f7264'] 
-let palette = ['#c77560', '#d18f7e','#e4c3bb','#edddd9','#f7f7f7','#cfdcda','#a7c2bc','#578d81','#2f7264']
+// let colorsChoropleth = ['#c77560', '#d18f7e', '#daa99c','#edddd9','#cfdcda','#7fa79f','#578d81','#2f7264'] 
+// let palette = ['#c77560', '#d18f7e','#e4c3bb','#edddd9','#f7f7f7','#cfdcda','#a7c2bc','#578d81','#2f7264']
+
+let colorsChoropleth = [
+  "#cc816c",
+  "#d89b87",
+  "#e3b6a1",
+  "#ebcebd",
+  "#d7cebd",
+  "#a8b3a2",
+  "#7a9988",
+  "#4a806f",
+];
+
+let palette = [
+  "#cc816c",
+  "#d89b87",
+  "#e3b6a1",
+  "#ebcebd",
+  "#f7f7f7",
+  "#d7cebd",
+  "#a8b3a2",
+  "#7a9988",
+  "#4a806f",
+];
+
 let count = 0, row = "", counties = [], surpriseData = [], validation = [];
 const checkSurprise = []
 let timeout = null, toggled = true, toggleValue = 1, lastSelected, lastLegendSelected = null
