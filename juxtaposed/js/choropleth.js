@@ -32,7 +32,7 @@ function getdata(){
     }
 }).done(function(dtx) {
 	data = dtx;
-	Promise.all([d3.json('../../data/counties.json')]).then(cleanupData);
+	Promise.all([d3.json('../data/counties.json')]).then(cleanupData);
 });
 }
 
