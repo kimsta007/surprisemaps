@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiment</title>
+    <link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.3.0/math.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://d3js.org/colorbrewer.v1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="../js/unsigned.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/shepherd.css">
+    <script src ="https://unpkg.com/simple-statistics@7.8.0/dist/simple-statistics.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/shepherd.js@latest/dist/js/shepherd.min.js"></script>
+    <script src="https://unpkg.com/textures@1.2.0/dist/textures.js"></script>
+    <script src="../js/guidedTour.js"></script>
+    <script src="https://kit.fontawesome.com/581d0822b8.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="../js/nobacknav.js"></script>
+    <script src="../js/vsup.js"></script>
+</head>
+<body>
+    <script>
+        let expType = 1;
+        let startTime = new Date().getTime()
+		    getdata();
+    </script>
+    <div class="wrapper">
+        <header>How would you interpret this map?
+          <div class="progress" style = "background-color: white; width: 20%; margin: 0 auto;">
+            <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">1 of 2</div>
+          </div></div>
+        </header>
+			<div class="row" style = "margin-bottom: 5px;">
+				<div class="btn-group-horizontal" id="zoomButtonsx">
+						  <button id="zoom_inx" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Zoom In" hidden="hidden">+</button>
+						  <button id="zoom_outx" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Zoom Out" hidden="hidden">-</button>
+				</div>  
+				<div class="btn-group-horizontal" style="float: right;" id="zoomButtons">
+						  <button id="zoom_in" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Zoom In">+</button>
+						  <button id="zoom_out" class="btn btn-success btn-sm" disabled  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Zoom Out">-</button>
+				</div> 
+			</div>
+			
+			<div id = "grpviz" style="margin: 0 auto;"><div class="svg-containerx" style="width: 49.2%; margin: 0 auto;" id="visualsx"></div></div>
+			
+			<div class="row" style="margin: 0 auto; clear: both; padding: 0px;" id="labels">
+				<div style="width: 50%; float: left; margin: 0 auto;"><p style="background-color: white;"><b><span id = "lblx"></span></b>&emsp;(Double click on map to zoom in / Click on the map to select a county)</p></div>  
+			</div>		
+		
+	 <div class="row" style="padding: 0% 10% 0% 10%; clear: both; width: 95%; margin: 0 auto;" id="narration"><p class="task" style="margin-bottom: 0px;">The map above summarizes counties with interesting vaccination rates based on the national average, as of 10/12/2022. A county can show either high surprise, low surprise or no surprise.
+		<br/><b>Task:</b> Select 5 counties that you believe have the highest vaccination performance to date.</p>
+          <p style="margin-top: 0px; margin-bottom: 0px; text-align: right;"><span style="color: #173D5C;"> If you require assistance, click the icon. <i id="icon" class="fa-solid fa-circle-question fa-xl" data-bs-toggle="modal" data-bs-placement="bottom"  title="Click to Open Help" data-bs-target="#helpModal"></i></span></p>    
+		  <p style="margin-top: 0px; text-align: center; background-color: #FFF;"><span id = "ccount"><b>Selected Counties [0/5]</b></span></p>		  
+            
+            <div style="height:45%; margin-bottom: 1%;"><table id="listOfStates"><tr id="rowCounties"></tr></table></div>
+            <div style="float: right; margin-bottom: 1em;"><button type="button" class="btn btn-success" id="btnContinue" onclick="javascript: selectPage()"  data-bs-toggle="tooltip" data-bs-placement="bottom" style= "width: 10%; font-size: 12px;" title="Click to Continue to Next Trial" disabled>Continue</button></div></div> 
+        <footer>&nbsp;</footer>
+    </div>
+
+      <!-- Help Modal -->
+      <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="helpModalLabel">Need a little help?</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="text-align: left;">
+              The map shows vaccination rates of counties in the US. <br/><br>The legend to the right of the maps shows the range each county falls within, given the color encoding. 
+			  <b>Clicking the legend color codings will show you a cluster of counties that belong to a particular range.</b><br/><br/>
+              If you hover over the map, a tooltip will pop-up. The tooltip also shows the vaccination rate and surprise value for each county. <br/><br/>The Surprise value
+              is a measure of how accurate the vaccination rate is given each counties population density. <br/><br/>
+              We will ask you to use this map to give feedback on the task, based on how high or low performing counties are in terms of vaccination rates.<br/><br/>
+              For a hands-on walk-through click the Start Training button. To go back to the experiment, click the Close button.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" style="background-color: #565656; border: none; min-width: 10em;" onClick="javascript: startTour()">Start Training</button>
+               <button type="button" id="btnX" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: #173D5C; border: none; min-width: 10em;">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<script>
+let tour;
+        function startTour(){
+                document.getElementById('btnX').click();
+                tour = new Shepherd.Tour({
+                    defaultStepOptions: {
+                        scrollTo: true
+                    },
+                    useModalOverlay: true,
+                    styleVariables: {
+                        overlayOpacity: 0.4
+                    }
+                });
+                //Construct the steps
+
+					      c_identify()
+                tour.addSteps(steps);
+                // Initiate the tour
+                tour.start();
+        }
+
+        function selectPage() {	
+              sessionStorage.setItem('identify', counties);
+			        sessionStorage.setItem('identifyLog', JSON.stringify(mouseLog));
+              sessionStorage.setItem('identifyClickLog', JSON.stringify(mouseClick))
+              sessionStorage.setItem('identifyDiagnostic', String(new Date(new Date().getTime() - startTime)).slice(19,24))
+              window.location = 'explore.html'
+            } 
+    </script>
+</body>
+</html>

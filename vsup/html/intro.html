@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../css/style.css">
+	
+	<link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.3.0/math.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://d3js.org/colorbrewer.v1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="../js/unsigned.js"></script>
+    <script src="../js/simple_statistics.js"></script>
+    <script src="https://unpkg.com/textures@1.2.0/dist/textures.js"></script>
+    <script src="../js/nobacknav.js"></script>
+    <script src="../js/vsup.js"></script>
+    <style>
+        p {
+            background-color: white;
+            padding: 5%;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        let expType = 0
+		function getVar(){
+		   let options = {
+					method : 'POST',
+					headers : {'Content-Type':'application/json'},
+					body : JSON.stringify({'key': 'value'})
+				};
+		    fetch('/', options)
+			.then(response => { return response.json() })
+			.then(json => { sessionStorage.setItem('lrValue', +json)});
+	    }
+		getVar();
+		getdata('2022-03-01');
+    </script>
+    <div class="wrapper">
+	<header>How would you interpret this map?</header>
+    <h4 style="margin-top: 1em;"><u>Introduction</u></h4>
+
+	<div id = "grpviz" style="margin: 0 auto;"><div class="svg-containerx" style="width: 49.2%; margin: 0 auto;" id="visualsx"></div></div>
+	
+	<div class="row" style="margin: auto; clear: both; padding: 0px;" id="labels"> 
+			<div style="width: 50%; padding: 0px; margin: auto;"><p style="background-color: white; padding: 0px; margin: 0px; padding-left: 5%;"><b><span id = "lblx"></span></b></p></div>
+	</div>	
+	
+    <div class="col-12" style="clear: both;" id="narration" style="margin-top: 0px;">
+        <div class="col-6" style="margin: 0 auto; text-align: left;">
+		<p>
+            In map visualizations, uncertainty can be encoded using Value Suppressing Uncertainty Palettes (VSUPs). VSUPs help reduce the complexity associated with quantifying uncertainty, by associating an observed rate with a probabilistic value.
+            <br/><br/>For this study we compute a surprise value to color counties based on whether their vaccination rates are far enough from expected values so as to be considered surprising. 
+            <br/><br/>
+            For example, a small county with 80 out of 100 people vaccinated might not be considered as "surprising" as a large county with 80,000 out of 100,000 people vaccinated. Similarly, a small county with 10 out of 100 people vaccinated might not be colored as "surprising" as a large county with 20,000 out of 100,000 people vaccinated. In other words, we expect smaller counties to vary more in their rates than larger counties, and factor this into the map coloring.
+            <br/><br/>We will ask you to use this map to answer questions about high or low performing counties in terms of vaccination rates.                    
+		</p></div>
+    
+	  <button type="button" class="btn btn-success" id="btnExperiment" onclick= "javascript: selectPage(0)" style="margin-bottom: 1%; min-width: 10%; font-size: 14px;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Begin Experiment">Begin Experiment</button>
+	</div>
+	</nav>
+    <footer>&nbsp;</footer>
+    </div>
+    <script>
+        function selectPage(src) {	
+			window.location = 'identify.html'
+        }
+    </script>
+</body>
+</html>
