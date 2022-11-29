@@ -1,43 +1,27 @@
 let data, geoData, popn, geojson, rankingValues;
 let population = {}, expData = [];
 
-// let colorsChoropleth = ['#c77560', '#d18f7e', '#daa99c','#edddd9','#cfdcda','#7fa79f','#578d81','#2f7264'] 
-// let palette = ['#c77560', '#d18f7e','#e4c3bb','#edddd9','#f7f7f7','#cfdcda','#a7c2bc','#578d81','#2f7264']
-
 let colorsChoropleth = [
-  "#cc816c",
-  "#d89b87",
-  "#e3b6a1",
-  "#ebcebd",
-  "#d7cebd",
-  "#a8b3a2",
-  "#7a9988",
-  "#4a806f",
+  "#C87661",
+  "#D5937E",
+  "#E0AF9C",
+  "#EACCBB",
+  "#D4CCBC",
+  "#9FAE9E",
+  "#6B9081",
+  "#327365",
 ];
 
 let palette = [
-  "#cc816c",
-  "#d89b87",
-  // "#e3b6a1",
-  "#ebcebd",
-  "#f7f7f7",
-  "#f7f7f7",
-  "#d7cebd",
-  // "#a8b3a2",
-  "#7a9988",
-  "#4a806f",
+  "#C87661",
+  "#DDA391",
+  "#EFCFC5",
+  "#FBF6F2",
+  "#FBF6F2",
+  "#C1CEC6",
+  "#7BA094",
+  "#327365",
 ];
-// let palette = [
-//   "#ff0000",
-//   "#d89b87",
-//   "#e3b6a1",
-//   "#ebcebd",
-//   "#f7f7f7",
-//   "#d7cebd",
-//   "#a8b3a2",
-//   "#7a9988",
-//   "#0000ff",
-// ];
 
 let count = 0, row = "", counties = [], surpriseData = [], validation = [];
 const checkSurprise = []
@@ -493,7 +477,7 @@ function getCountyByFips(fips) {
 function makeLegend(colorScale, svg, mapType) {
 	let width = 950
 	const legendWidth = 300;
-	const legendBarLength = (mapType == 0) ? (legendWidth / 8) : (legendWidth / 8)
+	const legendBarLength = (mapType == 0) ? (legendWidth / 8) : (legendWidth / 7)
 
 	let legend = svg
 		.append("g")
@@ -512,6 +496,7 @@ function makeLegend(colorScale, svg, mapType) {
 
     let colorRange = colorScale
 		.range()
+		.filter((a, idx) => mapType === 0 ? true : (idx === 3 ? false : true)) //TODO: find a better way to remove duplicate
 	  .map(d => {
 	    let inverted = colorScale.invertExtent(d);
 	    if (inverted[0] === undefined) {inverted[0] = legendScale.domain()[0];}
