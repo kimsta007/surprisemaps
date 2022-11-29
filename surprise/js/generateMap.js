@@ -149,7 +149,8 @@ function drawGraph(mapType) {
 							
 	if (mapType == 0) {  //map choropleth
 		colorScale = d3.scaleQuantize()
-						.domain(calculateIQRange(validation))
+						// .domain(calculateIQRange(validation))
+						.domain([0.1, 0.9])
 						.range(colorsChoropleth)
 
 		section = d3.select("#visualsx")
