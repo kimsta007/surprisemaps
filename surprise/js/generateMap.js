@@ -18,14 +18,26 @@ let colorsChoropleth = [
 let palette = [
   "#cc816c",
   "#d89b87",
-  "#e3b6a1",
+  // "#e3b6a1",
   "#ebcebd",
   "#f7f7f7",
+  "#f7f7f7",
   "#d7cebd",
-  "#a8b3a2",
+  // "#a8b3a2",
   "#7a9988",
   "#4a806f",
 ];
+// let palette = [
+//   "#ff0000",
+//   "#d89b87",
+//   "#e3b6a1",
+//   "#ebcebd",
+//   "#f7f7f7",
+//   "#d7cebd",
+//   "#a8b3a2",
+//   "#7a9988",
+//   "#0000ff",
+// ];
 
 let count = 0, row = "", counties = [], surpriseData = [], validation = [];
 const checkSurprise = []
@@ -159,24 +171,30 @@ function drawGraph(mapType) {
 		section = d3.select("#visualsx")
 		section.classed("svg-containerx", true) 
 	} else { //map surprise -------------
-				colorScale = d3.scaleQuantize() 
-							.domain(calculateIQRange(checkSurprise))
-							.range(palette);
+		const tempSurprise = checkSurprise.map(a => a < 0 ? -a : a)
+		const IQRSurprise = calculateIQRange(tempSurprise)
 
-             //--------------------------
+		const step = (IQRSurprise[1] - IQRSurprise[0]) / 4;
+		const ticks = d3.ticks(0, IQRSurprise[1] + step, 4);
+		const highTickValue = ticks[ticks.length - 1]
+
+		colorScale = d3.scaleQuantize() 
+							.domain([-highTickValue, highTickValue])
+							.range(palette);
 
 		section = d3.select("#visualsx")
 		colorScale
 			.range()
 				.map(d => {
 				let inverted = colorScale.invertExtent(d);
+				// console.log(inverted)
 				return inverted
 			})
 	}
 
-    let zoom = d3.zoom()
-        .scaleExtent([1, 8])
-        .on('zoom', zoomed);
+	let zoom = d3.zoom()
+			.scaleExtent([1, 8])
+			.on('zoom', zoomed);
 
 	let svg = section
 		.append("svg")
@@ -475,7 +493,7 @@ function getCountyByFips(fips) {
 function makeLegend(colorScale, svg, mapType) {
 	let width = 950
 	const legendWidth = 300;
-	const legendBarLength = (mapType == 0) ? (legendWidth / 8) : (legendWidth / 9)
+	const legendBarLength = (mapType == 0) ? (legendWidth / 8) : (legendWidth / 8)
 
 	let legend = svg
 		.append("g")
