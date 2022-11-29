@@ -5,9 +5,10 @@ let mouseStartTime, mouseIdleTime, mouseLog = [], mouseClick = []
 let toggleValue = 1
 let toggled = true
 let sd, avg, svg, lastSelected, lastHovered = null
-let red = "#2f7264";
-let purple = "rgb(239, 219, 203)";
-let blue = "#c77560";
+let colorLow = "#c77560";
+let colorMid = "rgb(239, 219, 203)";
+let colorHigh = "#2f7264";
+
 let legend
 
 var erfc = function(x) {
@@ -109,10 +110,13 @@ function drawGraph() {
 	let vDom = calculateIQRange(validation);
 	let uDom = [calculateIQRange(checkSurprise)[1], 0];
     
-	let interpolateIsoRdBu = d3.scaleLinear()
-			  .domain([vDom[0],0.5,vDom[1]])
-			  .range([blue,purple,red])
-			  .interpolate(d3.interpolateLab);
+
+	const vDomDiff = vDom[1] - vDom[0]
+	let interpolateIsoRdBu = d3
+    .scaleLinear()
+    .domain([vDom[0] - .18 * vDomDiff, .5, vDom[1] + .115 * vDomDiff])
+    .range([colorLow, colorMid, colorHigh])
+    .interpolate(d3.interpolateLab);
 
 	let quantization = vsup.quantization().branching(2).layers(4).valueDomain(vDom).uncertaintyDomain(uDom);
 	
@@ -206,7 +210,7 @@ function drawGraph() {
     	.attr('d', path)
 
 	// legend
-    legend = vsup.legend.arcmapLegend()
+    legend = vsup.legend.arcmapLegend(null, null, "0.2f")
 
           legend
             .scale(scale)
