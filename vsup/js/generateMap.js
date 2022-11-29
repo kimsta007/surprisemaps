@@ -109,7 +109,6 @@ function drawGraph() {
 	// -----------------------						
 	let vDom = calculateIQRange(validation);
 	let uDom = [calculateIQRange(checkSurprise)[1], 0];
-    
 
 	const vDomDiff = vDom[1] - vDom[0]
 	let interpolateIsoRdBu = d3
@@ -119,7 +118,7 @@ function drawGraph() {
     .interpolate(d3.interpolateLab);
 
 	let quantization = vsup.quantization().branching(2).layers(4).valueDomain(vDom).uncertaintyDomain(uDom);
-	
+
 	let scale = vsup.scale().quantize(quantization).range(interpolateIsoRdBu);
 	//-------------------------
 	let section = d3.select("#visualsx")
@@ -210,7 +209,7 @@ function drawGraph() {
     	.attr('d', path)
 
 	// legend
-    legend = vsup.legend.arcmapLegend(null, null, "0.2f")
+    legend = vsup.legend.arcmapLegend()
 
           legend
             .scale(scale)
@@ -303,8 +302,9 @@ function drawGraph() {
 
 	function getCountyRGB(countyData){
 		if ((countyData.series_complete_pop_pct != 0) && !isNaN(countyData.series_complete_pop_pct)){ 
-				let x = (Math.abs(+countyData.surprise) - psminmax[0])/( psminmax[1] - psminmax[0])
-				return scale(parseFloat(countyData.series_complete_pop_pct), parseFloat(x))								
+				// let x = (Math.abs(+countyData.surprise) - psminmax[0])/( psminmax[1] - psminmax[0])
+				// return scale(parseFloat(countyData.series_complete_pop_pct), parseFloat(x))								
+				return scale(parseFloat(countyData.series_complete_pop_pct), countyData.surprise < 0 ? -countyData.surprise: countyData.surprise)								
 		}	
 		else
 				return texture.url();
