@@ -1,36 +1,33 @@
 let data, geoData, popn, checkData, geojson, rankingValues;
 let population = {}, expData = [];
-// let colorsChoropleth = ['#c77560', '#d18f7e', '#daa99c','#edddd9','#cfdcda','#7fa79f','#578d81','#2f7264'] 
-// let palette = ['#c77560', '#d18f7e','#e4c3bb','#edddd9','#f7f7f7','#cfdcda','#a7c2bc','#578d81','#2f7264']
-
 
 let colorsChoropleth = [
-  "#cc816c",
-  "#d89b87",
-  "#e3b6a1",
-  "#ebcebd",
-  "#d7cebd",
-  "#a8b3a2",
-  "#7a9988",
-  "#4a806f",
-];
-
-let palette = [
-  "#cc816c",
-  "#d89b87",
-  "#e3b6a1",
-  "#ebcebd",
-  "#f7f7f7",
-  "#d7cebd",
-  "#a8b3a2",
-  "#7a9988",
-  "#4a806f",
-];
+	"#C87661",
+	"#D5937E",
+	"#E0AF9C",
+	"#EACCBB",
+	"#D4CCBC",
+	"#9FAE9E",
+	"#6B9081",
+	"#327365",
+  ];
+  
+  let palette = [
+	"#C87661",
+	"#DDA391",
+	"#EFCFC5",
+	"#FBF6F2",
+	"#FBF6F2",
+	"#C1CEC6",
+	"#7BA094",
+	"#327365",
+  ];
+  
 
 let count = 0, row = "", counties = [], surpriseData = [], checkSurprise = [], validation = [];
 let timeout = null, toggled = true, toggleValue = 1, lastSelected, lastLegendSelected = null
 let mouseStartTime, mouseIdleTime, mouseLog = [], mouseClick = []
-let min, max, avg, sd, crossMapCounties
+let min, max, avg, sd, crossMapCounties, highTickValue
 
 var erfc = function(x) {
     var z = Math.abs(x);
@@ -155,8 +152,15 @@ function drawGraph(mapType) {
 		section = d3.select("#visualsx")
 		section.classed("svg-container", true) 		
 	} else { //map surprise
+		const tempSurprise = checkSurprise.map(a => a < 0 ? -a : a)
+		const IQRSurprise = calculateIQRange(tempSurprise)
+
+		const step = (IQRSurprise[1] - IQRSurprise[0]) / 4;
+		const ticks = d3.ticks(0, IQRSurprise[1] + step, 4);
+		highTickValue = ticks[ticks.length - 1]
+
 		colorScale = d3.scaleQuantize() //manual scale 
-							.domain(calculateIQRange(checkSurprise))
+							.domain([-highTickValue, highTickValue])
 							.range(palette);
 		section = d3.select("#visuals")
 		colorScale
@@ -556,25 +560,30 @@ function calculateIQRange(array){
   function makeLegend(colorScale, svg, mapType) {
 	let width = 950
 	const legendWidth = 300;
-	const legendBarLength = (mapType == 0) ? (legendWidth / 8) : (legendWidth / 9)
+	const legendBarLength = (mapType == 0) ? (legendWidth / 8) : (legendWidth / 7)
 
 	let legend = svg
 		.append("g")
 			.attr("id", "legend")
 
 	let legendScale = d3.scaleLinear()
-		.domain((mapType == 0) ? [Math.floor(calculateIQRange(validation)[0] * 10) / 10, +(calculateIQRange(validation)[1]).toFixed(1)] : d3.extent(checkSurprise))
+	    .domain((mapType == 0) ? [0.1, 0.9] : [-highTickValue, highTickValue])
 		.rangeRound([0, legendWidth])
 
 
 	let legendAxis = d3.axisTop(legendScale)
 		  .tickSize(5)
 		  .tickSizeOuter(0)
-		  .tickFormat(x => `${x.toFixed(2)}`)
-		  .tickValues((mapType == 0) ? [Math.floor(calculateIQRange(validation)[0] * 10) / 10, +(calculateIQRange(validation)[1]).toFixed(1)] : d3.extent(checkSurprise))
 
-    let colorRange = colorScale
-		.range()
+		  if (mapType == 0)
+		  	legendAxis.tickFormat(d3.format('.0%'))
+		  else  {
+			legendAxis.tickValues([-highTickValue, highTickValue])
+		  	legendAxis.tickFormat((d) => `${d.toFixed(3)}`)
+		  }
+
+    let colorPalette = (mapType == 0) ? colorScale.range() : [... new Set(colorScale.range())]
+    let colorRange = colorPalette
 	  .map(d => {
 	    let inverted = colorScale.invertExtent(d);
 	    if (inverted[0] === undefined) {inverted[0] = legendScale.domain()[0];}

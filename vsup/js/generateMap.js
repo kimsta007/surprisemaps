@@ -209,7 +209,7 @@ function drawGraph() {
     	.attr('d', path)
 
 	// legend
-    legend = vsup.legend.arcmapLegend()
+    legend = vsup.legend.arcmapLegend(null,null,'.0%')
 
           legend
             .scale(scale)

@@ -5659,9 +5659,8 @@
 							"transform",
 							"translate(" + (x + 6 * c) + "," + 28 * c + ")rotate(30)"
 						)
-						.call(E(i).tickFormat(or(M || ""))), v
+						.call(E(i).tickFormat(d3.format('.5~f'))), v
 						.append("text")
-						//.style('fill', 'blue')
 						.style("text-anchor", "middle")
 						.style("font-size", 13)
 						.attr(
@@ -5677,7 +5676,7 @@
 						u = (o[1] - o[0]) / e[0].length,
 						s = C(o[0], o[1] + u, u),
 						d = Pr().range([0, x]).domain(o),
-						l = M ? or(M) : d.tickFormat(s.length),
+						l = M ? or(M) : d.tickFormat(s.length) 
 						h = Pr().domain(o).range([-30, 30]),
 						b = 3 * c,
 						p = qf()
@@ -5693,6 +5692,7 @@
 						.attr("fill", "black")
 						.attr("stroke", "transparent")
 						.attr("d", p);
+
 					var y = g
 						.selectAll(".arc-label")
 						.data(s)
@@ -5701,14 +5701,15 @@
 						.attr("class", "arc-label")
 						.attr("transform", function(t) {
 							return "rotate(" + h(t) + ")translate(0," + (-x - b) + ")";
-						});
-					y
-						.append("text")
-						.style("font-size", "11")
+						})
+
+					y.append("text")
+						.style("font-size", "10")
 						.style("text-anchor", "middle")
 						.attr("y", -10)
-						.text(l), y
-						.append("line")
+						.text(l)
+
+					y.append("line")
 						.attr("x1", 0.5)
 						.attr("x2", 0.5)
 						.attr("y1", -6)

@@ -27,7 +27,7 @@ let count = 0, row = "", counties = [], surpriseData = [], validation = [];
 const checkSurprise = []
 let timeout = null, toggled = true, toggleValue = 1, lastSelected, lastLegendSelected = null
 let mouseStartTime, mouseIdleTime, mouseLog = [], mouseClick = []
-let min, max, rnd_gen, sd, avg
+let min, max, rnd_gen, sd, avg, highTickValue
 
 var erfc = function(x) {
     var z = Math.abs(x);
@@ -161,7 +161,7 @@ function drawGraph(mapType) {
 
 		const step = (IQRSurprise[1] - IQRSurprise[0]) / 4;
 		const ticks = d3.ticks(0, IQRSurprise[1] + step, 4);
-		const highTickValue = ticks[ticks.length - 1]
+		highTickValue = ticks[ticks.length - 1]
 
 		colorScale = d3.scaleQuantize() 
 							.domain([-highTickValue, highTickValue])
@@ -485,23 +485,27 @@ function makeLegend(colorScale, svg, mapType) {
 			.attr("id", "legend")
 
 	let legendScale = d3.scaleLinear()
-		.domain((mapType == 0) ? [Math.floor(calculateIQRange(validation)[0] * 10) / 10, +(calculateIQRange(validation)[1]).toFixed(1)] : d3.extent(checkSurprise))
+		.domain((mapType == 0) ? [0.1, 0.9] : [-highTickValue, highTickValue])
 		.rangeRound([0, legendWidth])
 
-
+   
 	let legendAxis = d3.axisTop(legendScale)
 		  .tickSize(5)
 		  .tickSizeOuter(0)
-		  .tickFormat(x => `${x.toFixed(2)}`)
-		  .tickValues((mapType == 0) ? [Math.floor(calculateIQRange(validation)[0] * 10) / 10, +(calculateIQRange(validation)[1]).toFixed(1)] : d3.extent(checkSurprise))
 
-    let colorRange = colorScale
-		.range()
-		.filter((a, idx) => mapType === 0 ? true : (idx === 3 ? false : true)) //TODO: find a better way to remove duplicate
-	  .map(d => {
+	if (mapType == 0)
+		  legendAxis.tickFormat(d3.format('.0%'))
+	else  {
+		  legendAxis.tickValues([-highTickValue, highTickValue])
+		  legendAxis.tickFormat((d) => `${d.toFixed(3)}`)
+	}
+	 
+    let colorRange = [... new Set(colorScale.range())] //TODO: find a better way to remove duplicate
+		.map(d => {
 	    let inverted = colorScale.invertExtent(d);
 	    if (inverted[0] === undefined) {inverted[0] = legendScale.domain()[0];}
 	    if (inverted[1] === undefined) {inverted[1] = legendScale.domain()[1];}
+		//console.log(inverted)
 	    return inverted;
 			});
 
@@ -554,7 +558,7 @@ function makeLegend(colorScale, svg, mapType) {
 					d3.selectAll('.stateBorder').raise()																					
 					toggled = false
 					lastSelected = county
-					legendLastSelected - legend
+					legendLastSelected = legend
 				} else if (((toggleValue % 2) == 0) && (lastSelected == county)){
 						unHighlightCounties(county)
 						d3.selectAll('.stateBorder').raise()	
