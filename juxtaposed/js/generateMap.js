@@ -563,10 +563,6 @@ function calculateIQRange(array){
 	const legendWidth = 300;
 	const legendBarLength = (mapType == 0) ? (legendWidth / 8) : (legendWidth / 7)
 
-	let legend = svg
-		.append("g")
-			.attr("id", "legend")
-
 	let legendScale = d3.scaleLinear()
 	    .domain((mapType == 0) ? [0.1, 0.9] : [-highTickValue, highTickValue])
 		.rangeRound([0, legendWidth])
@@ -591,6 +587,18 @@ function calculateIQRange(array){
 	    if (inverted[1] === undefined) {inverted[1] = legendScale.domain()[1];}
 	    return inverted;
 			});
+
+	svg.append('rect')
+			.attr('x', 510)
+			.attr('y', 425)
+			.attr('height', '70px')
+			.attr('width', legendWidth + 25)
+			.style('fill', '#fff')
+			.style('opacity', 0.5)
+			
+	let legend = svg
+		.append("g")
+		.attr("id", "legend")
 
 	let legendColors = legend
 		.selectAll("rect")

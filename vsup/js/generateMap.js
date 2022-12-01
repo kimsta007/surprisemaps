@@ -208,6 +208,22 @@ function drawGraph() {
     .datum(topojson.mesh(geoData, geoData.objects.states), (a, b) => a !== b)
     	.attr('d', path)
 
+		var arcGenerator = d3.arc();
+
+		var pathData = arcGenerator({
+		  startAngle: -0.55,
+		  endAngle: 2.6,
+		  innerRadius: 0,
+		  outerRadius: 220
+		});
+
+		svg
+			.append('path')
+			.attr('d', pathData)
+			.style('fill', '#fff')
+			.style('opacity', 0.5)
+			.attr('transform', 'translate(950,500)');
+		  
 	// legend
     legend = vsup.legend.arcmapLegend(null,null,'.0%')
 
