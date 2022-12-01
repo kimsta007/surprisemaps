@@ -108,6 +108,7 @@ function makeMaps(){
 	}
 	document.getElementById('labels').hidden = ""
 	document.getElementById('narration').hidden = ""
+	document.getElementById('topLayer').hidden = ""
 }
 
 function removeRow(id){
