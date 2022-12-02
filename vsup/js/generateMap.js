@@ -76,14 +76,18 @@ function getCountyByFips(fips) {
 }
 
 function removeRow(id){
-    row = ""
+	row = ""
 	index = counties.indexOf(+id);
 	counties.splice(index, 1)
-	document.getElementById("rowCounties").innerHTML = ""
-	counties.forEach(function(county){
-		row += '<td class="tblText" id= "' + county + '">&emsp;' + getCountyByFips(county).recip_county + '&nbsp;<button class="selected" id="' + county + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px;">Remove</button></td>'
-	})
-	document.getElementById("rowCounties").innerHTML = row;
+	if (counties.length) {
+		counties.forEach(function(county){
+			// row += '<td class="tblText" id= "' + county + '">&emsp;' + getCountyByFips(county).recip_county + '&nbsp;<button class="selected" id="' + county + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px;">Remove</button></td>'
+			row += '<div class="row-county" id="' + county +'"><span class="badge bg-primary">' + getCountyByFips(county).recip_county + '</span><button class="btn-close" id="' + county + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px; vertical-align:middle;"></button></div>'
+		})
+		document.getElementById("rowCounties").innerHTML = row;
+	} else {
+		document.getElementById("rowCounties").innerHTML = '<span class="text-muted">You haven\'t selected any counties yet.</span>';
+	}
 	count -= 1
 	document.getElementById("ccount").innerText = "Selected Counties [" + counties.length + "/5]"
 	document.getElementById("ccount").style.fontWeight = "bold"
@@ -221,7 +225,7 @@ function drawGraph() {
 			.append('path')
 			.attr('d', pathData)
 			.style('fill', '#fff')
-			.style('opacity', 0.5)
+			.style('opacity', 0.8)
 			.attr('transform', 'translate(950,500)');
 		  
 	// legend
@@ -269,7 +273,7 @@ function drawGraph() {
 				let county = countyData.recip_county
 				mouseClick.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'vacc-rate': county.series_complete_pop_pct,'surprise': county.surprise, 'idle_duration': mouseIdleTime, 'mapType': 'vsup'})
 				if ((count < 5) && (counties.indexOf(el.id) == -1)){
-					row += '<td class="tblText" id="' + el.id +'">&emsp;' + county + '&nbsp;<button class="selected" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px;">Remove</button></td>'
+					row += '<div class="row-county" id="' + el.id +'"><span class="badge bg-primary">' + county + '</span><button class="btn-close" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px; vertical-align:middle;"></button></div>'
 					document.getElementById("rowCounties").innerHTML = row;
 					count += 1
 					counties.push(+el.id)	

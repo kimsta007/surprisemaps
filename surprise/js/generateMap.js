@@ -316,7 +316,7 @@ function drawGraph(mapType) {
 				let county = getCountyByFips(el.id)
 				mouseClick.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'vacc-rate': county.series_complete_pop_pct.toFixed(2),'surprise': county.surprise, 'idle_duration': mouseIdleTime, 'mapType': mType})
 				if ((count < 5) && (counties.indexOf(el.id) == -1)){
-					row += '<td class="tblText" id="' + el.id +'">&emsp;' + county.recip_county + '&nbsp;<button class="selected" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px;">Remove</button></td>'
+					row += '<td class="tblText" id="' + el.id +'"><span class="badge text-bg-primary">' + county.recip_county + '</span><button class="selected" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px;">Remove</button></td>'
 					document.getElementById("rowCounties").innerHTML = row;
 					count += 1
 					counties.push(+el.id)	
