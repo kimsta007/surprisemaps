@@ -191,3 +191,32 @@ overflow-y: scroll !important;
   }
 }
 
+
+.map-container {
+  position: relative;
+}
+
+.btn-zoom-in {
+  position: absolute;
+  left: 18px;
+  top: 10px;
+  width: 40px;
+  font-weight: bold;
+  background: white;
+}
+
+.btn-zoom-out {
+  position: absolute;
+  left: 18px;
+  top: 48px;
+  width: 40px;
+  font-weight: bold;
+  background: white;
+}
+
+.row-county {
+  display: inline-block;
+  font-size: 1.05rem;
+  margin: 5px 10px;
+  vertical-align: middle;
+}
