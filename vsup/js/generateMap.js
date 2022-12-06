@@ -1,5 +1,5 @@
 let data, geoData, geojson, positiveSurprise, negativeSurprise;
-let count = 0, row = "", counties = [], surpriseData = [], validation = [], checkSurprise = [], nsurprise = [], psurprise = [];
+let count = 0, row = "", counties = [], surpriseData = [], validation = [], checkSurprise = [];
 let timeout = null, nsminmax, psminmax
 let mouseStartTime, mouseIdleTime, mouseLog = [], mouseClick = []
 let toggleValue = 1
@@ -62,8 +62,7 @@ function cleanupData(dte){
 
 function makeMaps(geoData){
     calcSurprise()
-	//nsminmax = d3.extent(nsurprise)
-	psminmax = d3.extent(psurprise)
+	psminmax = d3.extent(checkSurprise)
 	drawGraph();
 }
 
@@ -80,8 +79,7 @@ function removeRow(id){
 	index = counties.indexOf(+id);
 	counties.splice(index, 1)
 	if (counties.length) {
-		counties.forEach(function(county){
-			// row += '<td class="tblText" id= "' + county + '">&emsp;' + getCountyByFips(county).recip_county + '&nbsp;<button class="selected" id="' + county + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px;">Remove</button></td>'
+		counties.forEach(function(county){	
 			row += '<div class="row-county" id="' + county +'"><span class="badge bg-primary">' + getCountyByFips(county).recip_county + '</span><button class="btn-close" id="' + county + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px; vertical-align:middle;"></button></div>'
 		})
 		document.getElementById("rowCounties").innerHTML = row;
@@ -405,12 +403,11 @@ function calcSurprise(){
 			surpriseData.push({fips : +data[iter].fips, surprise: 0})
 			data[iter]['surprise'] = 0			
 		  } else {
-			 voteSum += diffs[0] * pMs[0];
+			voteSum += diffs[0] * pMs[0];
 			let surprise = voteSum >= 0 ? +Math.abs(kl) : -1* +Math.abs(kl);
-			data[iter]['surprise'] = +surprise
-		    surpriseData.push({fips : +data[iter].fips, surprise: +surprise})
-			checkSurprise.push(+Math.abs(kl))
-			psurprise.push(+Math.abs(kl))
+			data[iter]['surprise'] = +surprise / 0.015  //to fix
+		    surpriseData.push({fips : +data[iter].fips, surprise: +surprise / 0.015}) //to fix
+			checkSurprise.push(+Math.abs(kl) / 0.015) //to fix
 	  }}
     }
 }
