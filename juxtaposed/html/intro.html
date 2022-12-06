@@ -47,7 +47,11 @@
 	<header>How do you interpret these maps?</header>
     <h4 style="margin-top: 1em;"><u>Introduction</u></h4>
 
-	<div id = "grpviz" style="margin: 0 auto;"> </div>
+	<div class="row map-container justify-content-center">
+        <div class="col-md-12 position-relative">
+          <div id="grpviz"></div>
+        </div>
+      </div>
 	
 	<div class="row" style="margin: 0px; clear: both; padding: 0px;" hidden="hidden" id="labels">
 			<div style="width: 50%; float: left; padding: 0px; margin: 0px;"><p style="background-color: white; padding: 0px; margin: 0px; padding-left: 5%;"><b><span id = "lblx"></span></b></p></div>  
@@ -68,9 +72,9 @@
     
 	  <button type="button" class="btn btn-success" id="btnExperiment" onclick= "javascript: selectPage(0)" style="margin-bottom: 1%; min-width: 10%; font-size: 14px;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Begin Experiment">Begin Experiment</button>
 	</div>
-	</nav>
-      <footer>&nbsp;</footer>
+	</nav>    
     </div>
+    <footer class="mt-4"></footer>
     <script>
         function selectPage(src) {	
 			window.location = 'identify.html'

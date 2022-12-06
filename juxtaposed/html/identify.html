@@ -32,29 +32,45 @@
 		    getdata();
     </script>
 
-    <div class="wrapper">
-      <header><div class="div-wrapper"><span style="text-align: center;">How would you interpret this map?</span></div>
-        <div class="progress" style = "background-color: white; width: 20%; margin: 0 auto;">
-          <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">1 of 2</div>
-        </div>
-      </header>
-      <br/>
+<header>
+  <div class="div-wrapper"><span style="text-align: center;">How would you interpret this map?</span></div>
+  <div class="progress" style="background-color: white; width: 20%; margin: 0 auto;">
+    <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0"
+      aria-valuemax="100">1 of 2</div>
+  </div>
+</header>
 
-      <div class="row" style="padding: 0% 10% 0% 10%; clear: both; width: 90%; margin: 0 auto;" hidden = "hidden" id="narration"><p class="task" style="margin-bottom: 0px;"><span id="txt-a"></span><br/><span id="txt-b"></span>
-        <br/><b>Task:</b> Select 5 counties that you believe have the highest vaccination performance to date.              
-        </p>
-       </div>  
-      
-
-    <div class="row div-wrapper" style="margin: 1% 0% 0% 0%;" hidden="hidden" id="topLayer">
-      <div id="zoomButtons">
-            <button id="zoom_in" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Zoom In">+</button>
-            <button id="zoom_out" class="btn btn-success btn-sm" disabled  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Zoom Out">-</button>
-            <span style="color: #000; margin-left: 40%;"> If you require assistance, click the icon. <i id="icon" class="fa-solid fa-circle-question fa-xl" data-bs-toggle="modal" data-bs-placement="bottom"  title="Click to Open Help" data-bs-target="#helpModal"></i></span>
-      </div> 
+<div class="container-fluid wrapper" id="topLayer" hidden>
+  <div class="row justify-content-center mt-3" id="narration">
+    <div class="col-md-6">
+      <p class="task rounded" style="margin-bottom: 0px;"><span id="txt-a"></span><span id="txt-b"></span>
+        <br /><br /><b>Task:</b> Select 5 counties that you believe have the highest vaccination performance to date.
+      </p>
     </div>
-    
-    <div id = "grpviz" style="clear: both;"></div>
+  </div>
+
+  <div class="row justify-content-center mt-2">
+    <div class="col-md-6 text-end">
+      <span> If you require assistance, click the icon. <i id="icon" class="fa-solid fa-circle-question fa-xl"
+          style="cursor: pointer;" data-bs-toggle="modal" data-bs-placement="bottom" title="Click to Open Help"
+          data-bs-target="#helpModal"></i></span>
+    </div>
+  </div>
+  
+    <div class="row map-container justify-content-center">
+      <div class="col-md-12 position-relative">
+        <div id="grpviz"></div>
+        <button id="zoom_in" class="btn btn-outline-secondary btn-sm btn-zoom-in" style="margin-left: 1%" data-bs-toggle="tooltip" hidden
+          data-bs-placement="bottom" title="Click to Zoom In">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+        <button id="zoom_out" class="btn btn-outline-secondary btn-sm btn-zoom-out" disabled data-bs-toggle="tooltip" style="margin-left: 1%" hidden
+          data-bs-placement="bottom" title="Click to Zoom Out">
+          <i class="fa-solid fa-minus"></i>
+        </button>
+      </div>
+    </div>
+
 			<div class="row" style="margin: 0px; clear: both; padding: 0px;" hidden="hidden" id="labels">
 				<div style="width: 50%; float: left;"><p style="background-color: white;"><b><span id = "lblx"></span></b>&emsp;(Double click on map to zoom in/ Click on the map to select a county)</p></div>  
 				<div style="width: 50%; float: right;"><p style="background-color: white;"><b><span id = "lbly"></span></b>&emsp;(Double click on map to zoom in/ Click on the map to select a county)</p></div>

@@ -113,14 +113,17 @@ function makeMaps(){
 }
 
 function removeRow(id){
-    row = ""
+	row = ""
 	index = counties.indexOf(+id);
 	counties.splice(index, 1)
-	document.getElementById("rowCounties").innerHTML = ""
-	counties.forEach(function(county){
-		row += '<td class="tblText" id= "' + county + '">&emsp;' + getCountyByFips(county).recip_county + '&nbsp;<button class="selected" id="' + county + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px;">Remove</button></td>'
-	})
-	document.getElementById("rowCounties").innerHTML = row;
+	if (counties.length) {
+		counties.forEach(function(county){			
+			row += '<div class="row-county" id="' + county +'"><span class="badge bg-primary">' + getCountyByFips(county).recip_county + '</span><button class="btn-close" id="' + county + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px; vertical-align:middle;"></button></div>'
+		})
+		document.getElementById("rowCounties").innerHTML = row;
+	} else {
+		document.getElementById("rowCounties").innerHTML = '<span class="text-muted">You haven\'t selected any counties yet.</span>';
+	}
 	count -= 1
 	document.getElementById("ccount").innerText = "Selected Counties [" + counties.length + "/5]"
 	document.getElementById("ccount").style.fontWeight = "bold"
@@ -131,7 +134,6 @@ function removeRow(id){
 	if (tour != null && tour.isActive())
 		Shepherd.activeTour.next()
 }
-
 
 function drawGraph(mapType) {
 	const width = 950; //size of svg
@@ -304,30 +306,31 @@ function drawGraph(mapType) {
 			.style("text-align", "left")
 			.style("font-size","9px")
 			.style("border-radius", "1%")
-	
-	function handleClick(el) {
-		clearTimeout(timeout);
-		timeout = setTimeout(function() {
-			let mType = (mapType == 0) ? 'Choropleth' : 'Surprise'
-			if (count == 5){
-				document.getElementById('icon').classList.add('fa-shake');
-			}
-			if (expType == 1 && getCountyByFips(el.id).series_complete_pop_pct != 0){
-				let county = getCountyByFips(el.id)
-				mouseClick.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'vacc-rate': county.series_complete_pop_pct.toFixed(2),'surprise': county.surprise, 'idle_duration': mouseIdleTime, 'mapType': mType})
-				if ((count < 5) && (counties.indexOf(el.id) == -1)){
-					row += '<td class="tblText" id="' + el.id +'"><span class="badge text-bg-primary">' + county.recip_county + '</span><button class="selected" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px;">Remove</button></td>'
-					document.getElementById("rowCounties").innerHTML = row;
-					count += 1
-					counties.push(+el.id)	
-					document.getElementById("ccount").innerText = "Selected Counties [" + counties.length + "/5]"
-					document.getElementById("ccount").style.fontWeight = "bold"
-					if (count == 5)
-						document.getElementById("btnContinue").disabled = false;
+			
+		function handleClick(el) {
+			let countyData = getCountyByFips(el.id)
+			clearTimeout(timeout);
+			timeout = setTimeout(function() {
+				let mType = (mapType == 0) ? 'Choropleth' : 'Surprise'
+				if (count == 5){
+					document.getElementById('icon').classList.add('fa-shake');
 				}
-			}
-		}, 300)		
-	}
+				if (expType == 1 && countyData.series_complete_pop_pct != 0){
+					let county = countyData.recip_county
+					mouseClick.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'vacc-rate': county.series_complete_pop_pct,'surprise': county.surprise, 'idle_duration': mouseIdleTime, 'mapType': mType})
+					if ((count < 5) && (counties.indexOf(el.id) == -1)){
+						row += '<div class="row-county" id="' + el.id +'"><span class="badge bg-primary">' + county + '</span><button class="btn-close" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px; vertical-align:middle;"></button></div>'
+						document.getElementById("rowCounties").innerHTML = row;
+						count += 1
+						counties.push(+el.id)	
+						document.getElementById("ccount").innerText = "Selected Counties [" + counties.length + "/5]"
+						document.getElementById("ccount").style.fontWeight = "bold"
+						if (count == 5)
+							document.getElementById("btnContinue").disabled = false;
+					}
+				}
+			}, 300)		
+		}
 
 
 	function handleMouseOver(el) {

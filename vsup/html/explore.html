@@ -32,46 +32,72 @@
 		    getdata('2022-03-01');
     </script>
  
- <div class="wrapper">
-  <header><div class="div-wrapper"><span style="text-align: center;">How would you interpret this map?</span></div>
-    <div class="progress" style = "background-color: white; width: 20%; margin: 0 auto;">
-      <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">1 of 2</div>
+<header>
+  <div class="div-wrapper"><span style="text-align: center;">How would you interpret this map?</span></div>
+  <div class="progress" style="background-color: white; width: 20%; margin: 0 auto;">
+    <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0"
+      aria-valuemax="100">1 of 2</div>
+  </div>
+</header>
+<div class="container-fluid wrapper">
+  <div class="row justify-content-center mt-3" id="narration">
+    <div class="col-md-6">
+
+      <p class="task rounded" style="margin-bottom: 0px;"><span id="txt-a">The map below summarizes counties with
+          interesting
+          vaccination rates based on the national average, as of 10/12/2022. A county can show either high surprise,
+          low
+          surprise or no surprise.</span></span>
+        <br /><br /><b>Task:</b> Explore the map, then write a short narrative on how well you think the vaccine rollout is going across the USA.
+      </p>
     </div>
-  </header>
-  <br/>
+  </div>
 
-  <div class="row" style="padding: 0% 10% 0% 10%; clear: both; width: 69%; margin: 0 auto;" id="narration"><p class="task" style="margin-bottom: 0px;"><span id="txt-a">The map above summarizes counties with interesting vaccination rates based on the national average, as of 10/12/2022. A county can show either high surprise, low surprise or no surprise.</span><br/>
-    <br/><b>Task:</b> Explore the map, then write a short narrative on how well you think the vaccine rollout is going across the USA.              
-    </p>
-   </div>  
-  
+  <div class="row justify-content-center mt-2">
+    <div class="col-md-6 text-end">
+      <span> If you require assistance, click the icon. <i id="icon" class="fa-solid fa-circle-question fa-xl"
+          style="cursor: pointer;" data-bs-toggle="modal" data-bs-placement="bottom" title="Click to Open Help"
+          data-bs-target="#helpModal"></i></span>
+    </div>
+  </div>
 
-<div class="row" style="margin: 1% 0% 0% 0%;">
-  <div id="zoomButtons">
-        <button id="zoom_in" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Zoom In">+</button>
-        <button id="zoom_out" class="btn btn-success btn-sm" disabled  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Zoom Out">-</button>
-        <span style="color: #000; margin-left: 30%;"> If you require assistance, click the icon. <i id="icon" class="fa-solid fa-circle-question fa-xl" data-bs-toggle="modal" data-bs-placement="bottom"  title="Click to Open Help" data-bs-target="#helpModal"></i></span>
-  </div> 
+  <div class="row map-container justify-content-center">
+    <div class="col-md-6 position-relative">
+      <div class="svg-containerx" style="width: 100%; min-height: 100px;" id="visualsx"></div>
+      <button id="zoom_in" class="btn btn-outline-secondary btn-sm btn-zoom-in" data-bs-toggle="tooltip"
+        data-bs-placement="bottom" title="Click to Zoom In">
+        <i class="fa-solid fa-plus"></i>
+      </button>
+      <button id="zoom_out" class="btn btn-outline-secondary btn-sm btn-zoom-out" disabled data-bs-toggle="tooltip"
+        data-bs-placement="bottom" title="Click to Zoom Out">
+        <i class="fa-solid fa-minus"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="row justify-content-center" id="labels">
+    <div class="col-md-6 text-center"><b>Name of map:</b> (Double click the map to zoom in / Click on the map
+      to select a county / Click on or hover over the legend)</div>
+  </div>
+
+  <div class="row justify-content-center mt-2">
+    <div class = "col-md-6">
+      <div class="form-group">
+        <form id="xForm">
+          <textarea id='summary' class="form-control col-auto" rows="3" oninput="textChange()" required style="font-size: 14px;"></textarea>
+        </form>
+      </div>
+      </div>
+  </div>
+
+ <div class="container col-md-6">
+ <div class="row justify-content-center mt-4"> 
+            <div class="col"><button type="button" class="btn btn-danger" id="btnClear" style="width: 120px; font-size: 12px;" onclick="javascript: resetForm();" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Clear Text" disabled>Clear</button></div>
+            <div class="col"><button type="button" class="btn btn-success" id="btnC" style="width: 120px; font-size: 12px;" onclick="javascript: selectPage();" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Continue to Next Trial" disabled>Continue</button></div>	
+  </div>
+  </div>
 </div>
-
-<div class="svg-containerx" style="width: 49.2%; margin: 0 auto;" id="visualsx"></div>
-
-<div class="row" style="margin: 0 auto; clear: both; padding: 0px;" id="labels">
-  <div class ="row" style="width: 50%; margin: 0 auto;"><p style="background-color: white; margin: 0 auto;"><b><span id = "lblx"></span></b>&emsp;(Double click on map to zoom in / Click on the map to select a county)</p></div>  
-
-  <div style="height:15%;"> 
-    <form id="xForm" style="width: 50%; margin: 0 auto;">
-        <textarea id='summary' class="form-control" cols="15" rows="3" oninput="textChange()" required style="font-size: 14px;"></textarea>
-        <table id="tblBtn" style="margin-top: 1%; margin-bottom: 1em;">
-            <tr><td><button type="button" class="btn btn-danger" id="btnClear" style="width: 120px; font-size: 12px;" onclick="javascript: resetForm();" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Clear Text" disabled>Clear</button></td>
-            <td><button type="button" class="btn btn-success" id="btnC" style="width: 120px; font-size: 12px;" onclick="javascript: selectPage();" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Continue to Next Trial" disabled>Continue</button></td></tr>				
-        </table>
-    </form>
-</div>
-
-</div>		
-  <footer style="margin-top: 1%">&nbsp;</footer>
-</div>
+<footer class="mt-4"></footer>
 
         <!-- Help Modal -->
       <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">

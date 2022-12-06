@@ -108,7 +108,11 @@ function makeMaps(){
 	}
 	document.getElementById('labels').hidden = ""
 	document.getElementById('narration').hidden = ""
-	document.getElementById('topLayer').hidden = ""
+	if (expType != 0) {
+		document.getElementById('topLayer').hidden = ""
+		document.getElementById('zoom_in').hidden = ""
+		document.getElementById('zoom_out').hidden = ""
+	}
 }
 
 function removeRow(id){

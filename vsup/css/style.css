@@ -65,8 +65,8 @@
   footer {
     background-color: #173D5C;
     color: white;
-    padding: 5px 0;
-    height: 2px;
+    height: 20px;
+    width: 100%;
   }
   
   nav {
