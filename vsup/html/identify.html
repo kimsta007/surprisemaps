@@ -72,26 +72,34 @@
       </div>
     </div>
 
-    <div class="row justify-content-center mt-3" id="labels">
+    <!-- <div class="row justify-content-center mt-3" id="labels">
         <div class="col-md-4"></div>
         <div id="ccount" class="justify-content-center col-md-5 align-text-bottom"><b>Selected Counties [0/5]</b></div> 
-    </div>
+    </div> -->
    
-    <div class="row justify-content-center" id="narration">
-      <div class="col-md-4">
-        <p class="task rounded" style="margin-bottom: 0px;"><span id="txt-a">The map above summarizes the distribution of a product
-          by county in the USA.  
-        </span>
-          <br /><br /><b>Task:</b> Select 5 counties that show the highest distribution of the product.
-        </p>
-      </div>
+    <div class="w-75 my-2 m-auto">
+      <div class="row justify-content-center" id="narration">
+        <div class="col-md-5">
+          <p class="task rounded" style="margin-bottom: 0px;"><span id="txt-a">The map above summarizes the distribution of a product
+            by county in the USA.  
+          </span>
+            <br /><br /><b>Task:</b> Select 5 counties that show the highest distribution of the product.
+          </p>
+        </div>
+        <div class="col-md-7">
+          <div id="ccount" class="justify-content-center"><b>Selected Counties [0/5]</b></div> 
 
-      <div class="col-md-5">
-          <div id="rowCounties"><span class="text-muted">You haven't selected any counties yet.</span></div>               
+            <div id="rowCounties"><span class="text-muted">You haven't selected any counties yet.</span></div>   
+            <button type="button" class="btn btn-success" id="btnContinue"
+          onclick="javascript: selectPage()" data-bs-toggle="tooltip" data-bs-placement="bottom"
+          style="margin: 0 auto;" title="Click to Continue to Next Trial"
+          disabled>Continue</button>
+        </div>            
+        </div>
       </div>
     </div>
 
-    <div class="row mt-4 mb-4 justify-content-center">
+    <!-- <div class="row mt-4 mb-4 justify-content-center">
       <div class="col-md-4"></div>
       <div class="col-md-5">
         <button type="button" class="btn btn-success" id="btnContinue"
@@ -100,7 +108,7 @@
           disabled>Continue</button>
         </div>
       </div>
-  </div>
+    </div> -->
   <footer></footer>
 
   <!-- Help Modal -->

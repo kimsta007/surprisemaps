@@ -242,26 +242,26 @@ function drawGraph() {
 
     svg.append("text")
 		  .style("fill", "#AAA")
-		  .style("font-size", "12px")
+		  .style("font-size", "10px")
 		  .attr("dy", ".35em")
 		  .attr("text-anchor", "middle")
-		  .attr("transform", "translate(875,400) rotate(59)")
+		  .attr("transform", "translate(875,380) rotate(59)")
 		  .text("Surprisingly Low");
 		
 	svg.append("text")
 		  .style("fill", "#AAA")
-		  .style("font-size", "12px")
+		  .style("font-size", "10px")
 		  .attr("dy", ".35em")
 		  .attr("text-anchor", "middle")
-		  .attr("transform", "translate(1050,400) rotate(-60)")
+		  .attr("transform", "translate(1060,380) rotate(-60)")
 		  .text("Surprisingly High");
 
 	svg.append("text")
 		  .style("fill", "#AAA")
-		  .style("font-size", "12px")
+		  .style("font-size", "10px")
 		  .attr("dy", ".35em")
 		  .attr("text-anchor", "middle")
-		  .attr("transform", "translate(948,510) rotate(0)")
+		  .attr("transform", "translate(955,510) rotate(0)")
 		  .text("Not Surprising");
 
   function zoomed(e) {
@@ -298,7 +298,7 @@ function drawGraph() {
 				let county = countyData.recip_county
 				mouseClick.push({'state':countyData.recip_state,'county': countyData.recip_county, 'fips': el.id, 'vacc-rate': countyData.series_complete_pop_pct,'surprise': countyData.surprise, 'idle_duration': mouseIdleTime, 'mapType': 'vsup'})
 				if ((count < 5) && (counties.indexOf(el.id) == -1)){
-					row += '<div class="row-county" id="' + el.id +'"><button class="btn btn-primary" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 14px; vertical-align:middle;"><i class="fa fa-times"></i> '+ county + ', ' + countyData.recip_state + '</button></div>'
+					row += '<div class="row-county" id="' + el.id +'"><button class="btn btn-primary btn-sm" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 14px; vertical-align:middle;"><i class="fa fa-times"></i> '+ county + ', ' + countyData.recip_state + '</button></div>'
 					document.getElementById("rowCounties").innerHTML = row;
 					count += 1
 					counties.push(+el.id)	
