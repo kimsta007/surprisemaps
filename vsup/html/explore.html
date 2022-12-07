@@ -32,33 +32,24 @@
 		    getdata('2022-03-01');
     </script>
  
-<header>
+ <header>
   <div class="div-wrapper"><span style="text-align: center;">How would you interpret this map?</span></div>
   <div class="progress" style="background-color: white; width: 20%; margin: 0 auto;">
-    <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0"
-      aria-valuemax="100">1 of 2</div>
+    <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0"
+      aria-valuemax="100">2 of 2</div>
   </div>
 </header>
-<div class="container-fluid wrapper">
-  <div class="row justify-content-center mt-3" id="narration">
-    <div class="col-md-6">
 
-      <p class="task rounded" style="margin-bottom: 0px;"><span id="txt-a">The map below summarizes counties with
-          interesting
-          vaccination rates based on the national average, as of 10/12/2022. A county can show either high surprise,
-          low
-          surprise or no surprise.</span></span>
-        <br /><br /><b>Task:</b> Explore the map, then write a short narrative on how well you think the vaccine rollout is going across the USA.
-      </p>
-    </div>
-  </div>
-
+<div class="container wrapper">
+  
   <div class="row justify-content-center mt-2">
-    <div class="col-md-6 text-end">
+    <div class="col-md-3 text-start">
       <span> If you require assistance, click the icon. <i id="icon" class="fa-solid fa-circle-question fa-xl"
           style="cursor: pointer;" data-bs-toggle="modal" data-bs-placement="bottom" title="Click to Open Help"
           data-bs-target="#helpModal"></i></span>
     </div>
+    <div class="col-md-6 text-end"><b>Name of map:</b> (Double click the map to zoom in / Click on the map
+      to select a county / Click on or hover over the legend)</div> 
   </div>
 
   <div class="row map-container justify-content-center">
@@ -75,9 +66,15 @@
     </div>
   </div>
 
-  <div class="row justify-content-center" id="labels">
-    <div class="col-md-6 text-center"><b>Name of map:</b> (Double click the map to zoom in / Click on the map
-      to select a county / Click on or hover over the legend)</div>
+  <div class="row justify-content-center mt-3" id="narration">
+    <div class="col-md-6">
+
+      <p class="task rounded" style="margin-bottom: 0px;"><span id="txt-a">
+        The map above summarizes the distribution of a product by county in the USA.  
+      </span>
+        <br /><br /><b>Task:</b> Explore the map, then write a short narrative on where you would focus your marketing efforts to increase the sales of the product.
+      </p>
+    </div>
   </div>
 
   <div class="row justify-content-center mt-2">
@@ -91,13 +88,13 @@
   </div>
 
  <div class="container col-md-6">
- <div class="row justify-content-center mt-4"> 
+ <div class="row justify-content-center mt-4 mb-4"> 
             <div class="col"><button type="button" class="btn btn-danger" id="btnClear" style="width: 120px; font-size: 12px;" onclick="javascript: resetForm();" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Clear Text" disabled>Clear</button></div>
             <div class="col"><button type="button" class="btn btn-success" id="btnC" style="width: 120px; font-size: 12px;" onclick="javascript: selectPage();" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Continue to Next Trial" disabled>Continue</button></div>	
   </div>
   </div>
 </div>
-<footer class="mt-4"></footer>
+<footer id="footer"></footer>
 
         <!-- Help Modal -->
       <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
@@ -108,11 +105,11 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="text-align: left;">
-              The map shows vaccination rates of counties in the US. <br/><br>The legend to the right of the maps shows the range each county falls within, given the color encoding. 
+              The map shows sales rates and Surprise values of counties in the US. <br/><br>The legend to the right of the maps shows the range each county falls within, given the color encoding. 
 			  <b>Clicking the legend color codings will show you a cluster of counties that belong to a particular range.</b><br/><br/>
               If you hover over the map, a tooltip will pop-up with the actual vaccination rate for each county. The tooltip also shows the vaccination rate and surprise value for each county. <br/><br/>The Surprise value
-              is a measure of how accurate the vaccination rate is given each counties population density. <br/><br/>
-              We will ask you to use this map to give feedback on the task based on how high or low performing counties are, in terms of vaccination rates.<br/><br/>
+              is a measure of our change in belief given what we what we already know about the data. <br/><br/>
+              We will ask you to use this map to give feedback on the task, based on where we can focus our marketing efforts in order to improve sales.<br/><br/>
               For a hands-on walk-through click the Start Training button. To go back to the experiment, click the Close button.
             </div>
             <div class="modal-footer">
@@ -139,12 +136,11 @@ let tour;
                 });
                 //Construct the steps
 
-					      c_explore()
+					      v_explore()
                 tour.addSteps(steps);
                 // Initiate the tour
                 tour.start();
         }
-
 
         function textChange(){
             if (d3.select('#summary').node().value == '') {

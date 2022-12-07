@@ -80,7 +80,8 @@ function removeRow(id){
 	counties.splice(index, 1)
 	if (counties.length) {
 		counties.forEach(function(county){	
-			row += '<div class="row-county" id="' + county +'"><span class="badge bg-primary">' + getCountyByFips(county).recip_county + '</span><button class="btn-close" id="' + county + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px; vertical-align:middle;"></button></div>'
+			let ct = getCountyByFips(county)
+			row += '<div class="row-county" id="' + county +'"><button class="btn btn-primary" id="' + id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 14px; vertical-align:middle;"><i class="fa fa-times"></i> '+ ct.recip_county + ', ' + ct.recip_state + '</button></div>'
 		})
 		document.getElementById("rowCounties").innerHTML = row;
 	} else {
@@ -234,10 +235,34 @@ function drawGraph() {
             .size(160)
             .x(width - 80)
             .y(height - 200)
-            .vtitle("Vaccination Rate")
+            .vtitle("Sales Rate")
             .utitle("Uncertainty / Surprise");
 
           svg.append("g").call(legend)
+
+    svg.append("text")
+		  .style("fill", "black")
+		  .style("font-size", "12px")
+		  .attr("dy", ".35em")
+		  .attr("text-anchor", "middle")
+		  .attr("transform", "translate(875,400) rotate(59)")
+		  .text("Surprisingly Low");
+		
+	svg.append("text")
+		  .style("fill", "black")
+		  .style("font-size", "12px")
+		  .attr("dy", ".35em")
+		  .attr("text-anchor", "middle")
+		  .attr("transform", "translate(1050,400) rotate(-60)")
+		  .text("Surprisingly High");
+
+	svg.append("text")
+		  .style("fill", "black")
+		  .style("font-size", "12px")
+		  .attr("dy", ".35em")
+		  .attr("text-anchor", "middle")
+		  .attr("transform", "translate(948,510) rotate(0)")
+		  .text("Not Surprising");
 
   function zoomed(e) {
 	  		d3
@@ -259,6 +284,8 @@ function drawGraph() {
 			.style("text-align", "left")
 			.style("font-size","9px")
 			.style("border-radius", "1%")
+			.style("left", "0")
+			.style("top", "0")
 
 	function handleClick(el) {
 		let countyData = getCountyByFips(el.id)
@@ -269,9 +296,9 @@ function drawGraph() {
 			}
 			if (expType == 1 && countyData.series_complete_pop_pct != 0){
 				let county = countyData.recip_county
-				mouseClick.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'vacc-rate': county.series_complete_pop_pct,'surprise': county.surprise, 'idle_duration': mouseIdleTime, 'mapType': 'vsup'})
+				mouseClick.push({'state':countyData.recip_state,'county': countyData.recip_county, 'fips': el.id, 'vacc-rate': countyData.series_complete_pop_pct,'surprise': countyData.surprise, 'idle_duration': mouseIdleTime, 'mapType': 'vsup'})
 				if ((count < 5) && (counties.indexOf(el.id) == -1)){
-					row += '<div class="row-county" id="' + el.id +'"><span class="badge bg-primary">' + county + '</span><button class="btn-close" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px; vertical-align:middle;"></button></div>'
+					row += '<div class="row-county" id="' + el.id +'"><button class="btn btn-primary" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 14px; vertical-align:middle;"><i class="fa fa-times"></i> '+ county + ', ' + countyData.recip_state + '</button></div>'
 					document.getElementById("rowCounties").innerHTML = row;
 					count += 1
 					counties.push(+el.id)	
@@ -333,7 +360,7 @@ function drawGraph() {
 		let county = getCountyByFips(el.id);
 		mouseIdleTime = new Date().getTime() - mouseStartTime
 		if (mouseIdleTime >= 120){
-			mouseLog.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'vacc-rate': county.series_complete_pop_pct.toFixed(2),'surprise': county.surprise.toFixed(3), 'idle_duration': mouseIdleTime})
+			mouseLog.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'vacc-rate': county.series_complete_pop_pct,'surprise': county.surprise, 'idle_duration': mouseIdleTime})
 		}
 		tooltip
 				.transition()

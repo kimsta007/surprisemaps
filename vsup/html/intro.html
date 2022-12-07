@@ -20,12 +20,6 @@
     <script src="https://unpkg.com/textures@1.2.0/dist/textures.js"></script>
     <script src="../js/nobacknav.js"></script>
     <script src="../js/vsup.js"></script>
-    <style>
-        p {
-            background-color: white;
-            padding: 5%;
-        }
-    </style>
 </head>
 
 <body>
@@ -44,36 +38,40 @@
 		getVar();
 		getdata('2022-03-01');
     </script>
-    <div class="wrapper">
+
 	<header>How would you interpret this map?</header>
-    <h4 style="margin-top: 1em;"><u>Introduction</u></h4>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h4 style="margin-top: 1em;"><u>Introduction</u></h4>
+            </div>
+        </div>
 
 	<div class="row map-container justify-content-center">
         <div class="col-md-6 position-relative w-75">
           <div class="svg-containerx" style="width: 100%; min-height: 100px;" id="visualsx"></div>         
         </div>
-      </div>
-
-
-	<div class="row" style="margin: auto; clear: both; padding: 0px;" id="labels"> 
-			<div style="width: 50%; padding: 0px; margin: auto;"><p style="background-color: white; padding: 0px; margin: 0px; padding-left: 5%;"><b><span id = "lblx"></span></b></p></div>
-	</div>	
-	
-    <div class="col-12" style="clear: both;" id="narration" style="margin-top: 0px;">
-        <div class="col-6" style="margin: 0 auto; text-align: left;">
-		<p>
-            In map visualizations, uncertainty can be encoded using Value Suppressing Uncertainty Palettes (VSUPs). VSUPs help reduce the complexity associated with quantifying uncertainty, by associating an observed rate with a probabilistic value.
-            <br/><br/>For this study we compute a surprise value to color counties based on whether their vaccination rates are far enough from expected values so as to be considered surprising. 
-            <br/><br/>
-            For example, a small county with 80 out of 100 people vaccinated might not be considered as "surprising" as a large county with 80,000 out of 100,000 people vaccinated. Similarly, a small county with 10 out of 100 people vaccinated might not be colored as "surprising" as a large county with 20,000 out of 100,000 people vaccinated. In other words, we expect smaller counties to vary more in their rates than larger counties, and factor this into the map coloring.
-            <br/><br/>We will ask you to use this map to answer questions about high or low performing counties in terms of vaccination rates.                    
-		</p></div>
-    
-	  <button type="button" class="btn btn-success" id="btnExperiment" onclick= "javascript: selectPage(0)" style="margin-bottom: 1%; min-width: 10%; font-size: 14px;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Begin Experiment">Begin Experiment</button>
-	</div>
-	</nav>
-    <footer class="mt-4"></footer>
     </div>
+
+    <div class="row  justify-content-center mt-3" id="narration">
+        <div class="col-md-9 scollbox">
+            <p>
+                In map visualizations, uncertainty can be encoded using Value Suppressing Uncertainty Palettes (VSUPs). VSUPs help reduce the complexity associated with quantifying uncertainty, by associating an observed rate with a probabilistic value.
+                <br/><br/>For this study we compute a surprise value to color counties based on whether their sales are far enough from expected values so as to be considered surprising. 
+                <br/><br/>
+                For example, a small county with 80 sales where there is a total population of 100 people  might not be considered as "surprising" as a large county with 80,000 sales with a total population of 100,000 people. Similarly, a small county with 10 sales with a population of 100 might not be colored as "surprising" as a large county with 20,000 sales from a population of 100,000. In other words, we expect smaller counties to vary more in their rates than larger counties, and factor this into the map coloring.
+                <br/><br/>We will ask you to use this map to answer questions in relation county performance in terms of sales rates.                    
+            </p></div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="d-grid mx-auto col-2">
+	        <button type="button" class="btn btn-success" id="btnExperiment" onclick= "javascript: selectPage(0)" style="font-size: 14px;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Begin Experiment">Begin Experiment</button>
+        </div>
+	</div>
+    </div>
+    <footer id="footer"></footer>
+
     <script>
         function selectPage(src) {	
 			window.location = 'identify.html'

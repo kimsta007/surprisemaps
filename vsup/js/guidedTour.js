@@ -43,7 +43,7 @@ function c_identify(){
         title: 'Zoom Effect',
         text: 'You can use the +/- buttons to zoom in an out of interesting regions on the map. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the map and drag to pan left or right.',
         attachTo: {
-            element: '#zoomButtons',
+            element: '#zoom_buttons',
             on: 'bottom'
         },
         buttons: [{
@@ -121,6 +121,210 @@ function c_identify(){
                 '<b>Click Remove!</b>',
         attachTo: {
             element: '.selected',
+            on: 'top'
+        },
+        buttons: [ {text: 'Exit',
+                action: () => {
+						document.getElementById("rowCounties").innerHTML = ""
+						document.getElementById("ccount").innerText = "Selected Counties [0/5]"
+						counties = []
+						count = 0
+						row = ""
+						Shepherd.activeTour.cancel()
+					}
+				},{
+                text: 'Back',
+                action: tour.back
+            },
+            {
+                text: 'Next',
+                classes: 'shepherd-button-close',
+                action: () => {
+                    if (count  < 5) {
+                        return Shepherd.activeTour.next()
+                    }
+                }
+            }
+        ]
+    },
+
+    {
+        title: 'County Removed',
+        text: 'Now that the county has been removed, <b>Select another county to complete the given task. </b>',
+        attachTo: {
+            element: '#visualsx',
+            on: 'bottom'
+        },
+        buttons: [ {text: 'Exit',
+                action: () => {
+						document.getElementById("rowCounties").innerHTML = ""
+						document.getElementById("ccount").innerText = "Selected Counties [0/5]"
+						counties = []
+						count = 0
+						row = ""
+						Shepherd.activeTour.cancel()
+					}
+				},{
+                text: 'Back',
+                action: tour.back
+            },
+            {
+                text: 'Next',
+                classes: 'shepherd-button-close',
+                action: () =>{
+                    if (count == 5)
+                        return Shepherd.activeTour.next()
+                }
+            }
+        ]
+    },
+
+    {
+        title: 'All Set!',
+        text: 'You are all set and ready to continue. <br/><b>Click Exit!</b>',
+        attachTo: {
+            on: 'center'
+        },
+        buttons: [{
+                text: 'Exit',
+                action: () => {
+						document.getElementById("rowCounties").innerHTML = ""
+						document.getElementById("ccount").innerText = "Selected Counties [0/5]"
+						counties = []
+						count = 0
+						row = ""
+						Shepherd.activeTour.cancel()
+					}
+				}, {
+                text: 'Back',
+                action: tour.back
+            }
+        ]
+    },
+]
+}
+
+function v_identify(){
+    steps = [{
+        title: 'Practice makes perfect! - Trial 1/2',
+        text: 'In this section, we explain how to navigate through the experiment as well as respond to the given tasks.',
+        attachTo: {
+            on: 'center'
+        },
+        buttons: [{
+                text: 'Exit',
+                action: tour.cancel
+            },
+			{
+            text: 'Next',
+            action: tour.next
+        }],
+    },
+
+	{
+        title: 'Map',
+        text: 'This Map shows vaccination rates and Surprise values by county for the USA. <br/> Note: You can pan the map by clicking on it then dragging the map left or right. ',
+        attachTo: {
+            element: '#visualsx',
+            on: 'left'
+        },
+        buttons: [{
+                text: 'Exit',
+                action: tour.cancel
+            },{
+                text: 'Back',
+                action: tour.back
+            },
+            {
+                text: 'Next',
+                classes: 'shepherd-button-close',
+                action: tour.next
+            }
+        ]
+    },
+
+    {
+        title: 'Zoom Effect',
+        text: 'You can use the +/- buttons to zoom in an out of interesting regions on the map. The - button is disabled by default and will only be enabled after you zoom into a region on the map.',
+        attachTo: {
+            element: '#zoom_in',
+            on: 'bottom'
+        },
+        buttons: [{
+                text: 'Exit',
+                action: tour.cancel
+            },{
+                text: 'Back',
+                action: tour.back
+            },
+            {
+                text: 'Next',
+                classes: 'shepherd-button-close',
+                action: tour.next
+            }
+        ]
+    },
+
+    {
+        title: 'Task',
+        text: 'You will be required to complete the task described in this section.',
+        attachTo: {
+            element: '.task',
+            on: 'top'
+        },
+        buttons: [{
+                text: 'Exit',
+                action: tour.cancel
+            },{
+                text: 'Back',
+                action: tour.back
+            },
+            {
+                text: 'Next',
+                classes: 'shepherd-button-close',
+                action: tour.next
+            }
+        ]
+    },
+
+    {
+        title: 'Select counties',
+        text: '<b>Select 5 counties by clicking on the map.</b>',
+        attachTo: {
+            element: '#visualsx',
+            on: 'bottom'
+        },
+        buttons: [ {text: 'Exit',
+                action: () => {
+						document.getElementById("rowCounties").innerHTML = ""
+						document.getElementById("ccount").innerText = "Selected Counties [0/5]"
+						counties = []
+						count = 0
+						row = ""
+						Shepherd.activeTour.cancel()
+					}
+			},{
+                text: 'Back',
+                action: tour.back
+            },
+            {
+                text: 'Next',
+                classes: 'shepherd-button-close',
+                action: () => {
+                    if (count == 5){
+                        return Shepherd.activeTour.next()
+                    }
+                }
+            }
+        ]
+    },
+
+    {
+        title: 'Remove County',
+        text: 'A selected county can be removed from the list by clicking the Remove button. However, you will be required to select a new county to proceed to the next task. <br/>' +
+                '<b>Click to Remove!</b>',
+        attachTo: {
+            element: '#rowCounties',
             on: 'top'
         },
         buttons: [ {text: 'Exit',
@@ -1318,6 +1522,138 @@ function c_explore(){
 ]
 
 }
+
+function v_explore(){
+    steps = [
+	
+	{
+        title: 'Practice makes perfect! - Trial 2/2',
+        text: 'In this section, we explain how to navigate through the experiment as well as respond to the given task.',
+        attachTo: {
+            on: 'center'
+        },
+        buttons: [{
+            text: 'Next',
+            action: tour.next
+        }],
+    },
+	
+	{
+        title: 'Map',
+        text: 'This Map shows the sales rates by county for the USA. <br/> Note: You can pan the map by clicking on it then dragging the map left or right.',
+        attachTo: {
+            element: '#visualsx',
+            on: 'left'
+        },
+        buttons: [{
+                text: 'Exit',
+                action: tour.cancel
+				},
+				{
+                text: 'Back',
+                action: tour.back
+				},
+				{
+					text: 'Next',
+					classes: 'shepherd-button-close',
+					action: tour.next
+				}
+        ]
+    },
+
+    {
+        title: 'Zoom Effect',
+        text: 'You can use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map.',
+        attachTo: {
+            element: '#zoom_in',
+            on: 'bottom'
+        },
+        buttons: [{
+                text: 'Exit',
+                action: tour.cancel
+				},{
+                text: 'Back',
+                action: tour.back
+            },
+            {
+                text: 'Next',
+                classes: 'shepherd-button-close',
+                action: tour.next
+            }
+        ]
+    },
+
+    {
+        title: 'Task',
+        text: 'You will be required to complete the task described in this section.',
+        attachTo: {
+            element: '.task',
+            on: 'top'
+        },        
+        buttons: [{
+                text: 'Exit',
+                action: tour.cancel
+				},{
+                text: 'Back',
+                action: tour.back
+            },
+            {
+                text: 'Next',
+                classes: 'shepherd-button-close',
+                action: tour.next
+            }
+        ]
+    },
+
+    {
+        title: 'Narrative',
+        text: '<b>Provide a short narrative on where you would focus your marketing efforts to increase the sales of the product.</b>',
+        attachTo: {
+            element: '#summary',
+            on: 'top'
+        },
+        buttons: [{
+                text: 'Exit',
+                action: tour.cancel
+				},{
+                text: 'Back',
+                action: tour.back
+            },
+            {
+                text: 'Next',
+                classes: 'shepherd-button-close',
+                action: () => {
+                    if (document.getElementById('summary').value != ''){
+                        return Shepherd.activeTour.next()
+                    }
+                }
+            }
+        ]
+    },
+
+
+    {
+        title: 'All Set!',
+        text: 'You are all set and ready to continue. <br/><b>Click Exit!</b>',
+        attachTo: {
+            on: 'center'
+        },
+        buttons: [{
+                text: 'Exit',
+                action: () => {
+					document.getElementById('summary').value = ''
+					Shepherd.activeTour.cancel()
+					}
+				},{
+                text: 'Back',
+                action: tour.back
+            }
+        ]
+    },
+]
+
+}
+
 
 function s_explore(){
     steps = [{

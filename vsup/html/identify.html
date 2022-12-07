@@ -47,58 +47,54 @@
     </div>
   </header>
   <div class="container-fluid wrapper">
-    <div class="row justify-content-center mt-3" id="narration">
-      <div class="col-md-6">
-
-        <p class="task rounded" style="margin-bottom: 0px;"><span id="txt-a">The map below summarizes counties with
-            interesting
-            vaccination rates based on the national average, as of 10/12/2022. A county can show either high surprise,
-            low
-            surprise or no surprise.</span></span>
-          <br /><br /><b>Task:</b> Select 5 counties that you believe have the highest vaccination performance to date.
-        </p>
-      </div>
-    </div>
-
 
     <div class="row justify-content-center mt-2">
-      <div class="col-md-6 text-end">
+      <div class="col-md-3 text-start">
         <span> If you require assistance, click the icon. <i id="icon" class="fa-solid fa-circle-question fa-xl"
             style="cursor: pointer;" data-bs-toggle="modal" data-bs-placement="bottom" title="Click to Open Help"
             data-bs-target="#helpModal"></i></span>
       </div>
+      <div class="col-md-6 text-end"><b>Name of map:</b> (Double click the map to zoom in / Click on the map
+        to select a county / Click on or hover over the legend)</div> 
     </div>
 
     <div class="row map-container justify-content-center">
       <div class="col-md-6 position-relative w-75">
         <div class="svg-containerx" style="width: 100%; min-height: 100px;" id="visualsx"></div>
-        <button id="zoom_in" class="btn btn-outline-secondary btn-sm btn-zoom-in" data-bs-toggle="tooltip"
-          data-bs-placement="bottom" title="Click to Zoom In">
-          <i class="fa-solid fa-plus"></i>
-        </button>
-        <button id="zoom_out" class="btn btn-outline-secondary btn-sm btn-zoom-out" disabled data-bs-toggle="tooltip"
-          data-bs-placement="bottom" title="Click to Zoom Out">
-          <i class="fa-solid fa-minus"></i>
-        </button>
+          <button id="zoom_in" class="btn btn-outline-secondary btn-sm btn-zoom-in" data-bs-toggle="tooltip"
+            data-bs-placement="bottom" title="Click to Zoom In">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+          <button id="zoom_out" class="btn btn-outline-secondary btn-sm btn-zoom-out" disabled data-bs-toggle="tooltip"
+            data-bs-placement="bottom" title="Click to Zoom Out">
+            <i class="fa-solid fa-minus"></i>
+          </button>
       </div>
     </div>
 
     <div class="row justify-content-center" id="labels">
-      <div class="col-md-6 text-center"><b>Name of map:</b> (Double click the map to zoom in / Click on the map
-        to select a county / Click on or hover over the legend)</div>
-      <div id="ccount" class="mt-4 justify-content-center"><b>Selected Counties [0/5]</b></div>
+        <div id="ccount" class="justify-content-center col-md-6"><b>Selected Counties [0/5]</b></div> 
     </div>
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div id="rowCounties"><span class="text-muted">You haven't selected any counties yet.</span></div>
+   
+    <div class="row justify-content-center mt-3" id="narration">
+      <div class="col-md-4">
+        <p class="task rounded" style="margin-bottom: 0px;"><span id="txt-a">The map above summarizes the distribution of a product
+          by county in the USA.  
+        </span>
+          <br /><br /><b>Task:</b> Select 5 counties that show the highest distribution of the product.
+        </p>
+      </div>
+      <div class="col-md-5">
+          <div id="rowCounties"><span class="text-muted">You haven't selected any counties yet.</span></div>               
       </div>
     </div>
-    <div class="row mt-4"><button type="button" class="btn btn-success" id="btnContinue"
+
+    <div class="row mt-4 mb-4"><button type="button" class="btn btn-success" id="btnContinue"
         onclick="javascript: selectPage()" data-bs-toggle="tooltip" data-bs-placement="bottom"
         style="width: 8%; font-size: 12px; margin: 0 auto;" title="Click to Continue to Next Trial"
         disabled>Continue</button></div>
   </div>
-  <footer class="mt-4"></footer>
+  <footer></footer>
 
   <!-- Help Modal -->
   <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
@@ -109,15 +105,14 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" style="text-align: left;">
-          The map shows vaccination rates of counties in the US. <br /><br>The legend to the right of the maps shows the
+          The map shows sales rates and surprise value of counties in the US. <br /><br>The legend to the right of the maps shows the
           range each county falls within, given the color encoding.
           <b>Clicking the legend color codings will show you a cluster of counties that belong to a particular
             range.</b><br /><br />
           If you hover over the map, a tooltip will pop-up. The tooltip also shows the vaccination rate and surprise
           value for each county. <br /><br />The Surprise value
-          is a measure of how accurate the vaccination rate is given each counties population density. <br /><br />
-          We will ask you to use this map to give feedback on the task, based on how high or low performing counties are
-          in terms of vaccination rates.<br /><br />
+          is a measure of our change in belief given what we what we already know about the data. <br /><br />
+          We will ask you to use this map to give feedback on the task, based on where we can focus our marketing efforts in order to improve sales.<br /><br />
           For a hands-on walk-through click the Start Training button. To go back to the experiment, click the Close
           button.
         </div>
@@ -147,7 +142,7 @@
       });
       //Construct the steps
 
-      c_identify()
+      v_identify()
       tour.addSteps(steps);
       // Initiate the tour
       tour.start();
