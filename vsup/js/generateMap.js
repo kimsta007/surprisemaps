@@ -241,7 +241,7 @@ function drawGraph() {
           svg.append("g").call(legend)
 
     svg.append("text")
-		  .style("fill", "black")
+		  .style("fill", "#AAA")
 		  .style("font-size", "12px")
 		  .attr("dy", ".35em")
 		  .attr("text-anchor", "middle")
@@ -249,7 +249,7 @@ function drawGraph() {
 		  .text("Surprisingly Low");
 		
 	svg.append("text")
-		  .style("fill", "black")
+		  .style("fill", "#AAA")
 		  .style("font-size", "12px")
 		  .attr("dy", ".35em")
 		  .attr("text-anchor", "middle")
@@ -257,7 +257,7 @@ function drawGraph() {
 		  .text("Surprisingly High");
 
 	svg.append("text")
-		  .style("fill", "black")
+		  .style("fill", "#AAA")
 		  .style("font-size", "12px")
 		  .attr("dy", ".35em")
 		  .attr("text-anchor", "middle")
