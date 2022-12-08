@@ -19,12 +19,6 @@
     <script src="../js/simple_statistics.js"></script>
     <script src="https://unpkg.com/textures@1.2.0/dist/textures.js"></script>
     <script src="../js/nobacknav.js"></script>
-    <style>
-        p {
-            background-color: white;
-            padding: 5%;
-        }
-    </style>
 </head>
 
 <body>
@@ -43,38 +37,43 @@
 		getVar();
 		getdata();
     </script>
-    <div class="wrapper">
-	<header>How do you interpret these maps?</header>
-    <h4 style="margin-top: 1em;"><u>Introduction</u></h4>
-
-	<div class="row map-container justify-content-center">
-        <div class="col-md-12 position-relative">
-          <div id="grpviz"></div>
+    <header>How would you interpret this map?</header>
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <h4 style="margin-top: 1em;"><u>Introduction</u></h4>
         </div>
+    </div>
+	
+    <div class="row map-container justify-content-center">
+        <div class="col-md-12 position-relative" id="grpviz"></div>
       </div>
 	
-	<div class="row" style="margin: 0px; clear: both; padding: 0px;" hidden="hidden" id="labels">
-			<div style="width: 50%; float: left; padding: 0px; margin: 0px;"><p style="background-color: white; padding: 0px; margin: 0px; padding-left: 5%;"><b><span id = "lblx"></span></b></p></div>  
-			<div style="width: 50%; float: right; padding: 0px; margin: 0px;"><p style="background-color: white; padding: 0px; margin: 0px; padding-left: 5%;"><b><span id = "lbly"></span></b></p></div>
+	<div class="row" hidden="hidden" id="labels">
+			<div class="col-md-6"><b><span id = "lblx"></span></b></div>  
+			<div class="col-md-6"><b><span id = "lbly"></span></b></div>
 	</div>		
 	
-    <div class="col-12" style="clear: both;" id="narration" hidden="hidden" style="margin-top: 0px;">
-        <div class="col-6" style="margin: 0 auto; text-align: left;">
-		<p>
-		<b>Surprise Maps</b> use an experimental technique called &nbsp;“Surprise”&nbsp; to color counties based on whether their vaccination 
-		rates are far enough from expected values so as to be considered surprising. <br/><br/> For example, a small county with 80 out of 100 people vaccinated might not be considered as "surprising" 
-		as a large county with 80,000 out of 100,000 people vaccinated. Similarly, a small county with 10 out of 100 people vaccinated might not be colored as "surprising" 
-		as a large county with 20,000 out of 100,000 people vaccinated. In other words, we expect smaller counties to vary more in their rates than larger counties, and factor this into the map coloring. <br/><br/>
-		<b>Choropleth maps</b> on the other hand, are colored directly based on the number of people vaccinated divided by the county population.
-		We can visually identify numerous patterns using either map, such as regions with high vaccination rates (shaded in green) as well as regions with low vaccination rates (shaded in red).
-		<br/><br/>We will ask you to use these maps to answer questions about high or low performing counties in terms of vaccination rates.
-		</p></div>
-    
-	  <button type="button" class="btn btn-success" id="btnExperiment" onclick= "javascript: selectPage(0)" style="margin-bottom: 1%; min-width: 10%; font-size: 14px;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Begin Experiment">Begin Experiment</button>
-	</div>
-	</nav>    
+    <div class="row mt-4" id="narration" hidden="hidden">
+        <div class="col-12" style="clear: both;" style="margin-top: 0px;">
+            <div class="col-6" style="margin: 0 auto; text-align: left;">
+            <p>
+            <b>Surprise Maps</b> use an experimental technique called &nbsp;“Surprise”&nbsp; to color counties based on whether their vaccination 
+            rates are far enough from expected values so as to be considered surprising. <br/><br/> For example, a small county with 80 out of 100 people vaccinated might not be considered as "surprising" 
+            as a large county with 80,000 out of 100,000 people vaccinated. Similarly, a small county with 10 out of 100 people vaccinated might not be colored as "surprising" 
+            as a large county with 20,000 out of 100,000 people vaccinated. In other words, we expect smaller counties to vary more in their rates than larger counties, and factor this into the map coloring. <br/><br/>
+            <b>Choropleth maps</b> on the other hand, are colored directly based on the number of people vaccinated divided by the county population.
+            We can visually identify numerous patterns using either map, such as regions with high vaccination rates (shaded in green) as well as regions with low vaccination rates (shaded in red).
+            <br/><br/>We will ask you to use these maps to answer questions about high or low performing counties in terms of vaccination rates.
+            </p></div>
     </div>
-    <footer class="mt-4"></footer>
+    <div class="mb-3">
+        <button type="button" class="btn btn-success" id="btnExperiment" onclick= "javascript: selectPage(0)" style="font-size: 14px;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Begin Experiment">Begin Experiment</button>
+    </div>
+	</div>
+
+    </div>
+    <footer></footer>
     <script>
         function selectPage(src) {	
 			window.location = 'identify.html'

@@ -17,15 +17,23 @@
 	sendData();
 </script>
 <body>
-  <!-- Fixed navbar -->
-	<div class="wrapper">
-		<header>How do you interpret these maps?</header>
-    	<!-- Begin page content -->
-		<h4 class="display-3">Thank You!</h4>
-		<p class="lead" style="text-align: center; font-size: 12px;">Your submission has been received. Completion Time: <b><script>document.write(String(duration).slice(19,24))</script></b><br/><br/> Click the button below to complete the experiment.</p>
-		<button type="button" class="btn btn-success" id="btnExperiment" onclick="redirectParticipant()" style="margin-bottom: 1%; margin-top: 1%; min-width: 10%; font-size: 14px;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Submit">Complete Experiment</button>
-	<footer>&nbsp;</footer>
-	</div>
+  <header>How would you interpret this map?</header>    
+    <div class="container">
+
+      <div class="row justify-content-center">
+        <div class="col">
+		      <h4 class="display-3">Thank You!</h4>
+          <p style="font-size: 14px; text-align: center;">Your submission has been received. Completion Time: <b><script>document.write(String(duration).slice(19,24))</script></b><br/><br/> Click the button below to complete the experiment.</p>
+        </div>
+      </div>
+
+      <div class="row justify-content-center mb-4">
+        <div class="d-grid mx-auto col-2">
+          <button type="button" class="btn btn-success" id="btnExperiment" onclick="redirectParticipant()" style="font-size: 14px;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Submit">Complete Experiment</button>
+         </div>
+       </div> 
+		</div>
+    <footer id="footer"></footer>
   <script>
     function redirectParticipant(){
       window.location = 'https://app.prolific.co/submissions/complete?cc=C1JO24VG'

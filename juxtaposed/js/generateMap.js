@@ -81,12 +81,12 @@ function makeMaps(){
     calcSurprise();
 	
 	if (+sessionStorage.getItem('lrValue') % 2 == 0)  {
-		document.getElementById('grpviz').innerHTML = '<div class="svg-container" style="width: 49.2%; float: left; left: 10px;" id="visuals"></div><div class="svg-containerx" style="width: 49.2%; float: right; right: 10px;" id="visualsx"></div>'
+		document.getElementById('grpviz').innerHTML = '<div class="border border-dark" style="width: 49.7%; float: left; left: 0.5%;" id="visuals"></div><div class="border border-dark" style="width: 49.7%; float: right; right: 0.5%;" id="visualsx"></div>'
 		document.getElementById('lblx').textContent = 'Surprise Map'
 		document.getElementById('lbly').textContent = 'Choropleth Map'
 	}
 	else {
-		document.getElementById('grpviz').innerHTML = '<div class="svg-container" style="width: 49.2%; float: right; right: 10px;" id="visuals"></div><div class="svg-containerx" style="width: 49.2%; float: left; left: 10px;" id="visualsx"></div>'
+		document.getElementById('grpviz').innerHTML = '<div class="border barker-dark" style="width: 49.7%; float: right; right: 0.5%;" id="visuals"></div><div class="border border-dark" style="width: 49.7%; float: left; left: 0.5%;" id="visualsx"></div>'
 		document.getElementById('lbly').textContent = 'Surprise Map'
 		document.getElementById('lblx').textContent = 'Choropleth Map'
 	}
@@ -119,11 +119,17 @@ function removeRow(id){
     row = ""
 	index = counties.indexOf(+id);
 	counties.splice(index, 1)
-	document.getElementById("rowCounties").innerHTML = ""
-	counties.forEach(function(county){
-		row += '<td class="tblText" id= "' + county + '">&emsp;' + getCountyByFips(county).recip_county + '&nbsp;<button class="selected" id="' + county + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px;">Remove</button></td>'
-	})
-	document.getElementById("rowCounties").innerHTML = row;
+
+	if (counties.length) {
+		counties.forEach(function(county){		
+			let ct = getCountyByFips(county)	
+			row += '<div class="row-county" id="' + county +'"><button class="btn btn-primary btn-sm" id="' + county + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 14px; vertical-align:middle;"><i class="fa fa-times"></i> '+ ct.recip_county + ', ' + ct.recip_state + '</button></div>'
+		})
+		document.getElementById("rowCounties").innerHTML = row;
+	} else {
+		document.getElementById("rowCounties").innerHTML = '<span class="text-muted">You haven\'t selected any counties yet.</span>';
+	}
+	
 	count -= 1
 	document.getElementById("ccount").innerText = "Selected Counties [" + counties.length + "/5]"
 	document.getElementById("ccount").style.fontWeight = "bold"
@@ -137,12 +143,7 @@ function removeRow(id){
 
 
 function drawGraph(mapType) {
-	const width = 950; //size of svg
-	const height = 525;
-	let seriesMin = d3.min(data.map((d) => +d.series_complete_pop_pct));
-	let seriesMax = d3.max(data.map((d) => +d.series_complete_pop_pct));
-	let colorScale, section, colorRange, texture
-	let currentMap = mapType
+	let colorScale, section, texture
 	texture = textures.lines()
                             .size(4)
                             .lighter()
@@ -321,6 +322,8 @@ function drawGraph(mapType) {
 			.style("text-align", "left")
 			.style("font-size","9px")
 			.style("border-radius", "1%")
+			.style("left", 0)
+			.style("top", 0)
 
 	let tooltips = d3.select("body")
 		.append("div")
@@ -334,10 +337,9 @@ function drawGraph(mapType) {
 			.style("text-align", "left")
 			.style("font-size","9px")
 			.style("border-radius", "1%")
-			.style("left", "0")
-			.style("top", "0")
+			.style("left", 0)
+			.style("top", 0)
 
-	
 	function handleClick(el) {
 		clearTimeout(timeout);
 		timeout = setTimeout(function() {
@@ -346,11 +348,10 @@ function drawGraph(mapType) {
 				document.getElementById('icon').classList.add('fa-shake');
 			}
 			if (expType == 1 && getCountyByFips(el.id).series_complete_pop_pct != 0){
-				let county = getCountyByFips(el.id)
-				let county_name = county.recip_county
-				mouseClick.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'vacc-rate': county.series_complete_pop_pct.toFixed(2),'surprise': county.surprise, 'idle_duration': mouseIdleTime, 'mapType': mType})
+				let county = getCountyByFips(el.id)				
+				mouseClick.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'vacc-rate': county.series_complete_pop_pct,'surprise': county.surprise, 'idle_duration': mouseIdleTime, 'mapType': mType})
 				if ((count < 5) && (counties.indexOf(el.id) == -1)){
-					row += '<td class="tblText" id="' + el.id +'">&emsp;' + county_name + '&nbsp;<button class="selected" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px;">Remove</button></td>'
+					row += '<div class="row-county" id="' + el.id +'"><button class="btn btn-primary btn-sm" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 14px; vertical-align:middle;"><i class="fa fa-times"></i> '+ county.recip_county + ', ' + county.recip_state + '</button></div>'
 					document.getElementById("rowCounties").innerHTML = row;
 					count += 1
 					counties.push(+el.id)	
@@ -360,7 +361,6 @@ function drawGraph(mapType) {
 						document.getElementById("btnContinue").disabled = false;
 				}
 			}
-			//}
 		}, 300)		
 		
 	}
@@ -370,7 +370,8 @@ function drawGraph(mapType) {
 		if (expType != 0) {
 		mouseStartTime = new Date().getTime()
 		let county = getCountyByFips(el.id);
-		if (mapType == 0){ //Handle interaction between the maps
+	  
+		//Handle interaction between the maps
 		tooltip
 				.transition()
 				.style("opacity", 1)
@@ -391,9 +392,10 @@ function drawGraph(mapType) {
 				.transition()
 				.style("opacity", 1)
 
+		let mtype = (mapType == 0) ? 's' : 'c'
 		tooltips
-				.style("left", document.getElementById('county' + el.id + 's').getBoundingClientRect().x + 10 + 'px')
-				.style("top", document.getElementById('county' + el.id + 's').getBoundingClientRect().y + 10 + 'px')
+				.style("left", document.getElementById('county' + el.id + mtype).getBoundingClientRect().x + 10 + 'px')
+				.style("top", document.getElementById('county' + el.id + mtype).getBoundingClientRect().y + 10 + 'px')
 				.attr("data-vaccinations", `${county.series_complete_pop_pct}`)
 				.html(function(){
 					if ((county.series_complete_pop_pct == 0) || (isNaN(county.series_complete_pop_pct)))
@@ -402,40 +404,8 @@ function drawGraph(mapType) {
 						return `<b><p style="text-align: left; margin: 0px; padding: 0px; background-color: white;">${county.recip_county} (${county.recip_state})</p></b>
 					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Vacc Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${county.series_complete_pop_pct.toFixed(2)}</td><td style="font-size: 12px;">${county.surprise.toFixed(3)}</td><td style="font-size: 12px;">${Math.round(county.population * 328239523)}</td></tr></table>`
 				})
-		} else {
-		tooltip
-				.transition()
-				.style("opacity", 1)
-
-		tooltip
-				.style("left", d3.event.pageX + 10 + "px")
-				.style("top", d3.event.pageY + 10 + "px")
-				.attr("data-vaccinations", `${county.series_complete_pop_pct}`)
-				.html(function(){
-					if (county.series_complete_pop_pct == 0)
-						return `No data available`
-					else
-						return `<b><p style="text-align: left; margin: 0px; padding: 0px; background-color: white;">${county.recip_county} (${county.recip_state})</p></b>
-					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Vacc Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${county.series_complete_pop_pct.toFixed(2)}</td><td style="font-size: 12px;">${county.surprise.toFixed(3)}</td><td style="font-size: 12px;">${Math.round(county.population* 328239523)}</td></tr></table>`
-				})
-	    
-		tooltips
-				.transition()
-				.style("opacity", 1)
-
-		tooltips
-				.style("left", document.getElementById('county' + el.id + 'c').getBoundingClientRect().x + 10 + 'px')
-				.style("top", document.getElementById('county' + el.id + 'c').getBoundingClientRect().y + 10 + 'px')
-				.attr("data-vaccinations", `${county.series_complete_pop_pct}`)
-				.html(function(){
-					if (county.series_complete_pop_pct == 0)
-						return `No data available`
-					else
-						return `<b><p style="text-align: left; margin: 0px; padding: 0px; background-color: white;">${county.recip_county} (${county.recip_state})</p></b>
-					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Vacc Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${county.series_complete_pop_pct.toFixed(2)}</td><td style="font-size: 12px;">${county.surprise.toFixed(3)}</td><td style="font-size: 12px;">${Math.round(county.population * 328239523)}</td></tr></table>`
-				})
-		}
-		if (toggled){
+	
+	if (toggled){
 			d3.select('#county'.concat(el.id + 's')).raise()
 			d3.select('#county'.concat(el.id + 'c')).raise()
 			d3.select('#county'.concat(el.id + 's')).style('stroke', 'black')
@@ -529,9 +499,9 @@ function calcSurprise(){
 		  } else {
 			voteSum += diffs[0] * pMs[0];
 			let surprise = voteSum >= 0 ? +Math.abs(kl) : -1* +Math.abs(kl);
-			checkSurprise.push(+surprise); //To find max and min
-			data[iter]['surprise'] = +surprise
-		    surpriseData.push({fips : +data[iter].fips, surprise: +surprise})		
+			checkSurprise.push(+surprise / 0.015); //To find max and min
+			data[iter]['surprise'] = +surprise / 0.015 //To fix
+		    surpriseData.push({fips : +data[iter].fips, surprise: +surprise / 0.015})		
 	  }}
     }
 }
@@ -570,7 +540,7 @@ function calculateIQRange(array){
 	const legendBarLength = (mapType == 0) ? (legendWidth / 8) : (legendWidth / 7)
 
 	let legendScale = d3.scaleLinear()
-	    .domain((mapType == 0) ? [0.1, 0.9] : [-highTickValue, highTickValue])
+	    .domain((mapType == 0) ? [0.1, 0.9] : [-Math.round(highTickValue), Math.round(highTickValue)])
 		.rangeRound([0, legendWidth])
 
 
@@ -581,7 +551,7 @@ function calculateIQRange(array){
 		  if (mapType == 0)
 		  	legendAxis.tickFormat(d3.format('.0%'))
 		  else  {
-			legendAxis.tickValues([-highTickValue, highTickValue])
+			legendAxis.tickValues([-Math.round(highTickValue), Math.round(highTickValue)])
 		  	legendAxis.tickFormat((d) => `${d.toFixed(3)}`)
 		  }
 
@@ -722,10 +692,17 @@ function calculateIQRange(array){
 		.call(legendAxis)
 		.call(removeLegendDomain)
 
-	svg.append("text")
-		.attr("x", (mapType == 0) ? 570 : 545)
+		svg.append("text")
+		.attr("x", (mapType == 0) ? 580 : 565)
 		.attr("y", 490)
 		.style("text-anchor", "middle")
 		.style("font-size", "12px")
-		.text((mapType == 0) ? "Low Sales Rate" : "Surprisingly Low");
+		.text((mapType == 0) ? "Low Vaccination Rate" : "Surprisingly Low");
+
+		svg.append("text")
+		.attr("x", (mapType == 0) ? 765 : 775)
+		.attr("y", 490)
+		.style("text-anchor", "middle")
+		.style("font-size", "12px")
+		.text((mapType == 0) ? "High Vaccination Rate" : "Surprisingly High");
 }
