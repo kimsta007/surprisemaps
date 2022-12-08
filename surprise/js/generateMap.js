@@ -108,7 +108,6 @@ function makeMaps(){
 			document.getElementById('txt-a').textContent = "The Surprise Map summarizes counties with interesting vaccination rates as of 10/12/2022, based on the national average. A county can show either high surprise, low surprise or no surprise."
 		}
 	} 
-	document.getElementById('labels').hidden = ""
 	document.getElementById('narration').hidden = ""
 }
 
@@ -117,8 +116,9 @@ function removeRow(id){
 	index = counties.indexOf(+id);
 	counties.splice(index, 1)
 	if (counties.length) {
-		counties.forEach(function(county){			
-			row += '<div class="row-county" id="' + county +'"><span class="badge bg-primary">' + getCountyByFips(county).recip_county + '</span><button class="btn-close" id="' + county + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px; vertical-align:middle;"></button></div>'
+		counties.forEach(function(county){		
+			let ct = getCountyByFips(county)	
+			row += '<div class="row-county" id="' + county +'"><button class="btn btn-primary btn-sm" id="' + county + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 14px; vertical-align:middle;"><i class="fa fa-times"></i> '+ ct.recip_county + ', ' + ct.recip_state + '</button></div>'
 		})
 		document.getElementById("rowCounties").innerHTML = row;
 	} else {
@@ -136,12 +136,7 @@ function removeRow(id){
 }
 
 function drawGraph(mapType) {
-	const width = 950; //size of svg
-	const height = 525;
-	let seriesMin = d3.min(data.map((d) => +d.series_complete_pop_pct));
-	let seriesMax = d3.max(data.map((d) => +d.series_complete_pop_pct));
-	let colorScale, section, colorRange, texture
-	let currentMap = mapType
+	let colorScale, section, texture
 	texture = textures.lines()
                             .size(4)
                             .lighter()
@@ -163,7 +158,7 @@ function drawGraph(mapType) {
 
 		const step = (IQRSurprise[1] - IQRSurprise[0]) / 4;
 		const ticks = d3.ticks(0, IQRSurprise[1] + step, 4);
-		highTickValue = ticks[ticks.length - 1]
+		highTickValue = ticks[ticks.length - 1] 
 
 		colorScale = d3.scaleQuantize() 
 							.domain([-highTickValue, highTickValue])
@@ -306,6 +301,8 @@ function drawGraph(mapType) {
 			.style("text-align", "left")
 			.style("font-size","9px")
 			.style("border-radius", "1%")
+			.style('left', 0)
+			.style('top', 0)
 			
 		function handleClick(el) {
 			let countyData = getCountyByFips(el.id)
@@ -317,9 +314,9 @@ function drawGraph(mapType) {
 				}
 				if (expType == 1 && countyData.series_complete_pop_pct != 0){
 					let county = countyData.recip_county
-					mouseClick.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'vacc-rate': county.series_complete_pop_pct,'surprise': county.surprise, 'idle_duration': mouseIdleTime, 'mapType': mType})
+					mouseClick.push({'state':countyData.recip_state,'county': countyData.recip_county, 'fips': el.id, 'vacc-rate': countyData.series_complete_pop_pct,'surprise': countyData.surprise, 'idle_duration': mouseIdleTime, 'mapType': mType})
 					if ((count < 5) && (counties.indexOf(el.id) == -1)){
-						row += '<div class="row-county" id="' + el.id +'"><span class="badge bg-primary">' + county + '</span><button class="btn-close" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 12px; vertical-align:middle;"></button></div>'
+						row += '<div class="row-county" id="' + el.id +'"><button class="btn btn-primary btn-sm" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 14px; vertical-align:middle;"><i class="fa fa-times"></i> '+ county + ', ' + countyData.recip_state + '</button></div>'
 						document.getElementById("rowCounties").innerHTML = row;
 						count += 1
 						counties.push(+el.id)	
@@ -375,7 +372,7 @@ function drawGraph(mapType) {
 		let county = getCountyByFips(el.id);
 		mouseIdleTime = new Date().getTime() - mouseStartTime
 		if (mouseIdleTime >= 120){
-			mouseLog.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'vacc-rate': county.series_complete_pop_pct.toFixed(2),'surprise': county.surprise.toFixed(3), 'idle_duration': mouseIdleTime})
+			mouseLog.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'vacc-rate': county.series_complete_pop_pct,'surprise': county.surprise, 'idle_duration': mouseIdleTime})
 		}
 		tooltip
 				.transition()
@@ -453,9 +450,10 @@ function calcSurprise(){
 		  } else {
 			voteSum += diffs[0] * pMs[0];
 			let surprise = voteSum >= 0 ? +Math.abs(kl) : -1* +Math.abs(kl);
-			checkSurprise.push(+surprise); //To find max and min
-			data[iter]['surprise'] = +surprise
-		    surpriseData.push({fips : +data[iter].fips, surprise: +surprise})
+			(surprise / 0.015 > 1)
+			checkSurprise.push(+surprise / 0.015); //To find max and min
+			data[iter]['surprise'] = +surprise / 0.015
+		    surpriseData.push({fips : +data[iter].fips, surprise: +surprise / 0.015})
 	  }}
     }
 }
@@ -484,10 +482,9 @@ function makeLegend(colorScale, svg, mapType) {
 	const legendBarLength = (mapType == 0) ? (legendWidth / 8) : (legendWidth / 7)
 
 	let legendScale = d3.scaleLinear()
-		.domain((mapType == 0) ? [0.1, 0.9] : [-highTickValue, highTickValue])
+		.domain((mapType == 0) ? [0.1, 0.9] : [-Math.round(highTickValue), Math.round(highTickValue)])
 		.rangeRound([0, legendWidth])
 
-   
 	let legendAxis = d3.axisTop(legendScale)
 		  .tickSize(5)
 		  .tickSizeOuter(0)
@@ -495,7 +492,7 @@ function makeLegend(colorScale, svg, mapType) {
 	if (mapType == 0)
 		  legendAxis.tickFormat(d3.format('.0%'))
 	else  {
-		  legendAxis.tickValues([-highTickValue, highTickValue])
+		  legendAxis.tickValues([-Math.round(highTickValue), Math.round(highTickValue)])
 		  legendAxis.tickFormat((d) => `${d.toFixed(3)}`)
 	}
 	 
@@ -614,11 +611,18 @@ function makeLegend(colorScale, svg, mapType) {
 		.call(removeLegendDomain)
 
 		svg.append("text")
-		.attr("x", (mapType == 0) ? 570 : 545)
+		.attr("x", (mapType == 0) ? 580 : 565)
 		.attr("y", 490)
 		.style("text-anchor", "middle")
 		.style("font-size", "12px")
-		.text((mapType == 0) ? "Vaccination Rate" : "Surprise");
+		.text((mapType == 0) ? "Low Vaccination Rate" : "Surprisingly Low");
+
+		svg.append("text")
+		.attr("x", (mapType == 0) ? 765 : 775)
+		.attr("y", 490)
+		.style("text-anchor", "middle")
+		.style("font-size", "12px")
+		.text((mapType == 0) ? "High Vaccination Rate" : "Surprisingly High");
 }
 
 async function saveCSV () {

@@ -19,12 +19,6 @@
     <script src="../js/simple_statistics.js"></script>
     <script src="https://unpkg.com/textures@1.2.0/dist/textures.js"></script>
     <script src="../js/nobacknav.js"></script>
-    <style>
-        p {
-            background-color: white;
-            padding: 5%;
-        }
-    </style>
 </head>
 
 <body>
@@ -43,24 +37,37 @@
 		getVar();
 		getdata('2022-03-01');
     </script>
-    <div class="wrapper">
+   
 	<header>How would you interpret this map?</header>
-    <h4 style="margin-top: 1em;"><u>Introduction</u></h4>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h4 style="margin-top: 1em;"><u>Introduction</u></h4>
+            </div>
+        </div>
 
-	<div id = "grpviz" style="margin: 0 auto;"><div class="svg-containerx" style="width: 49.2%; margin: 0 auto;" id="visualsx"></div></div>
-	
-	<div class="row" style="margin: auto; clear: both; padding: 0px;" hidden="hidden" id="labels"> 
-			<div style="width: 50%; padding: 0px; margin: auto;"><p style="background-color: white; padding: 0px; margin: 0px; padding-left: 5%;"><b><span id = "lblx"></span></b></p></div>
-	</div>	
-	
-    <div class="col-12" style="clear: both;" id="narration" hidden="hidden" style="margin-top: 0px;">
-    <div class="col-6" style="margin: 0 auto; text-align: left;"><p id="parax"></p></div>
-    
-	<button type="button" class="btn btn-success" id="btnExperiment" onclick= "javascript: selectPage(0)" style="margin-bottom: 1%; min-width: 10%; font-size: 14px;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Begin Experiment">Begin Experiment</button>
-	</div>
-	</nav>
-    <footer>&nbsp;</footer>
+	<div class="row map-container justify-content-center">
+        <div class="col-md-6 position-relative w-75">
+          <div class="svg-containerx" style="width: 100%; min-height: 100px;" id="visualsx"></div> 
+          <div class="col-md-12 text-start"><span id="lblx" style="padding-left: 1%;"></span></div>        
+        </div>
     </div>
+
+    <div class="row  justify-content-center mt-3" id="narration">
+        <div class="col-md-9 scollbox">
+            <p id="parax"></p></div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="d-grid mx-auto col-2">
+	        <button type="button" class="btn btn-success" id="btnExperiment" onclick= "javascript: selectPage(0)" style="font-size: 14px;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Begin Experiment">Begin Experiment</button>
+        </div>
+	</div>
+    </div>
+    <footer id="footer"></footer>
+
+
+
     <script>
         function selectPage(src) {	
 			window.location = 'identify.html'

@@ -334,6 +334,8 @@ function drawGraph(mapType) {
 			.style("text-align", "left")
 			.style("font-size","9px")
 			.style("border-radius", "1%")
+			.style("left", "0")
+			.style("top", "0")
 
 	
 	function handleClick(el) {
@@ -725,5 +727,5 @@ function calculateIQRange(array){
 		.attr("y", 490)
 		.style("text-anchor", "middle")
 		.style("font-size", "12px")
-		.text((mapType == 0) ? "Vaccination Rate" : "Surprise");
+		.text((mapType == 0) ? "Low Sales Rate" : "Surprisingly Low");
 }
