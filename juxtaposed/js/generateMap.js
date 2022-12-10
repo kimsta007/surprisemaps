@@ -86,7 +86,7 @@ function makeMaps(){
 		document.getElementById('lbly').textContent = 'Choropleth Map'
 	}
 	else {
-		document.getElementById('grpviz').innerHTML = '<div class="border barker-dark" style="width: 49.7%; float: right; right: 0.5%;" id="visuals"></div><div class="border border-dark" style="width: 49.7%; float: left; left: 0.5%;" id="visualsx"></div>'
+		document.getElementById('grpviz').innerHTML = '<div class="border border-dark" style="width: 49.7%; float: right; right: 0.5%;" id="visuals"></div><div class="border border-dark" style="width: 49.7%; float: left; left: 0.5%;" id="visualsx"></div>'
 		document.getElementById('lbly').textContent = 'Surprise Map'
 		document.getElementById('lblx').textContent = 'Choropleth Map'
 	}
@@ -156,7 +156,6 @@ function drawGraph(mapType) {
 						.domain(calculateIQRange(validation))
 						.range(colorsChoropleth);
 		section = d3.select("#visualsx")
-		section.classed("svg-container", true) 		
 	} else { //map surprise
 		const tempSurprise = checkSurprise.map(a => a < 0 ? -a : a)
 		const IQRSurprise = calculateIQRange(tempSurprise)
@@ -199,7 +198,6 @@ function drawGraph(mapType) {
     svg.call(zoom)
         .on('wheel.zoom', null)
 		.on('dblclick.zoom', function(d){
-			d3.select("#zoom_inx").dispatch('click')
 			d3.select("#zoom_in").dispatch('click')
 		})
 		.on("touchstart.zoom", null)
@@ -207,20 +205,18 @@ function drawGraph(mapType) {
 		.on("touchend.zoom", null);
 		
 	let zoomCount = 0
-    if (mapType == 0) { //Map Choropleth 
+  
 		d3.select("#zoom_in").on("click", function() {
 			zoomCount += 1
-			zoom.scaleBy(svg.transition().duration(250), 1.6);
+			zoom.scaleBy(d3.selectAll('svg').transition().duration(250), 1.6);
 			document.getElementById("zoom_out").disabled = false
-			d3.select("#zoom_inx").dispatch('click')
 			if (zoomCount == 5)
 				document.getElementById("zoom_in").disabled = true 
 		  });
 		
 		d3.select("#zoom_out").on("click", function() {
 			zoomCount -= 1
-			zoom.scaleBy(svg.transition().duration(250), 0.6);
-			d3.select("#zoom_outx").dispatch('click')
+			zoom.scaleBy(d3.selectAll('svg').transition().duration(250), 0.6);
 			if (zoomCount == 0){
 				document.getElementById("zoom_out").disabled = true
 			}
@@ -228,22 +224,13 @@ function drawGraph(mapType) {
 				document.getElementById("zoom_in").disabled = false
 			}
 		  });
-	} else { // Map Surprise		
-		d3.select("#zoom_inx").on("click", function() {
-			zoom.scaleBy(svg.transition().duration(250), 1.6);
-		  });
-
-		d3.select("#zoom_outx").on("click", function() {
-			zoom.scaleBy(svg.transition().duration(250), 0.6);
-		})		  
-	}
 
 	svg.call(texture) //Change these one should not affect the other	
 	
 	//DRAWING COUNTIES
 	geojson = topojson.feature(geoData, geoData.objects.counties)
 	setSurprise(geojson);
-	let path = d3.geoPath(d3.geoIdentity().translate([100, 0]).scale(0.7)) //Change size of map
+	let path = d3.geoPath(d3.geoIdentity().translate([100, 0]).scale(0.78)) //Change size of map
   
 	g.selectAll("path")
 		.data(geojson.features)
@@ -462,7 +449,6 @@ function calcSurprise(){
   let kl;
   let diffs = [0];
   let s = 0;
-  let pSum = 0;
   let pSMs = [];
 
   //Estimate P(D|M) 
@@ -535,7 +521,7 @@ function calculateIQRange(array){
   }
 
   function makeLegend(colorScale, svg, mapType) {
-	let width = 950
+	let width = 1150
 	const legendWidth = 300;
 	const legendBarLength = (mapType == 0) ? (legendWidth / 8) : (legendWidth / 7)
 
@@ -552,7 +538,7 @@ function calculateIQRange(array){
 		  	legendAxis.tickFormat(d3.format('.0%'))
 		  else  {
 			legendAxis.tickValues([-Math.round(highTickValue), Math.round(highTickValue)])
-		  	legendAxis.tickFormat((d) => `${d.toFixed(3)}`)
+		  	legendAxis.tickFormat((d) => `${d.toFixed(1)}`)
 		  }
 
     let colorPalette = (mapType == 0) ? colorScale.range() : [... new Set(colorScale.range())]
@@ -565,9 +551,9 @@ function calculateIQRange(array){
 			});
 
 	svg.append('rect')
-			.attr('x', 510)
-			.attr('y', 425)
-			.attr('height', '70px')
+			.attr('x', 620)
+			.attr('y', 460)
+			.attr('height', '60px')
 			.attr('width', legendWidth + 25)
 			.style('fill', '#fff')
 			.style('opacity', 0.5)
@@ -582,9 +568,9 @@ function calculateIQRange(array){
 		.enter()
 		.append("rect")
 			.attr("transform", (d) => { if (mapType == 0) 
-											return `translate(${width*0.55},450)`
+											return `translate(${width*0.55},480)`
 										else 
-											return `translate(${width*0.55},450)` })
+											return `translate(${width*0.55},480)` })
 			.attr("height", 20)
 			.attr("width", legendBarLength)
 			.attr("id", (d) => {return (mapType == 0) ? 'legend'.concat(colorScale(d[0]).replace('#', '')).concat('c') : 'legend'.concat(colorScale(d[0]).replace('#', '')).concat('s')})
@@ -686,22 +672,22 @@ function calculateIQRange(array){
 	let legendTicks = legend.append("g")
 			.attr("id", "legendAxis")
 			.attr("transform", (d) => { if (mapType == 0) 
-											return `translate(${width*0.55},450)`
+											return `translate(${width*0.55},480)`
 										else 
-											return `translate(${width*0.55},450)`})
+											return `translate(${width*0.55},480)`})
 		.call(legendAxis)
 		.call(removeLegendDomain)
 
 		svg.append("text")
-		.attr("x", (mapType == 0) ? 580 : 565)
-		.attr("y", 490)
+		.attr("x", (mapType == 0) ? 690 : 675)
+		.attr("y", 515)
 		.style("text-anchor", "middle")
 		.style("font-size", "12px")
 		.text((mapType == 0) ? "Low Vaccination Rate" : "Surprisingly Low");
 
 		svg.append("text")
-		.attr("x", (mapType == 0) ? 765 : 775)
-		.attr("y", 490)
+		.attr("x", (mapType == 0) ? 875 : 885)
+		.attr("y", 515)
 		.style("text-anchor", "middle")
 		.style("font-size", "12px")
 		.text((mapType == 0) ? "High Vaccination Rate" : "Surprisingly High");

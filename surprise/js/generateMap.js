@@ -228,7 +228,7 @@ function drawGraph(mapType) {
 	//DRAWING COUNTIES
 	geojson = topojson.feature(geoData, geoData.objects.counties)
 	setSurprise(geojson);
-	let path = d3.geoPath(d3.geoIdentity().translate([100, 0]).scale(0.7)) //Change size of map
+	let path = d3.geoPath(d3.geoIdentity().translate([100, 0]).scale(0.78)) //Change size of map
   
 	g.selectAll("path")
 		.data(geojson.features)
@@ -477,7 +477,7 @@ function getCountyByFips(fips) {
 }
 
 function makeLegend(colorScale, svg, mapType) {
-	let width = 950
+	let width = 1150
 	const legendWidth = 300;
 	const legendBarLength = (mapType == 0) ? (legendWidth / 8) : (legendWidth / 7)
 
@@ -493,7 +493,7 @@ function makeLegend(colorScale, svg, mapType) {
 		  legendAxis.tickFormat(d3.format('.0%'))
 	else  {
 		  legendAxis.tickValues([-Math.round(highTickValue), Math.round(highTickValue)])
-		  legendAxis.tickFormat((d) => `${d.toFixed(3)}`)
+		  legendAxis.tickFormat((d) => `${d.toFixed(1)}`)
 	}
 	 
     let colorRange = [... new Set(colorScale.range())] //TODO: find a better way to remove duplicate
@@ -506,9 +506,9 @@ function makeLegend(colorScale, svg, mapType) {
 			});
 
 	svg.append('rect')
-			.attr('x', 510)
-			.attr('y', 425)
-			.attr('height', '70px')
+			.attr('x', 620)
+			.attr('y', 460)
+			.attr('height', '60px')
 			.attr('width', legendWidth + 25)
 			.style('fill', '#fff')
 			.style('opacity', 0.5)
@@ -523,9 +523,9 @@ function makeLegend(colorScale, svg, mapType) {
 		.enter()
 		.append("rect")
 			.attr("transform", (d) => { if (mapType == 0) 
-											return `translate(${width*0.55},450)`
+											return `translate(${width*0.55},480)`
 										else 
-											return `translate(${width*0.55},450)` })
+											return `translate(${width*0.55},480)` })
 			.attr("height", 20)
 			.attr("width", legendBarLength)
 			.attr("id", (d) => {return 'legend'.concat(colorScale(d[0]).replace('#', ''))})
@@ -604,22 +604,22 @@ function makeLegend(colorScale, svg, mapType) {
 	let legendTicks = legend.append("g")
 			.attr("id", "legendAxis")
 			.attr("transform", (d) => { if (mapType == 0) 
-											return `translate(${width*0.55},450)`
+											return `translate(${width*0.55},480)`
 										else 
-											return `translate(${width*0.55},450)`})
+											return `translate(${width*0.55},480)`})
 		.call(legendAxis)
 		.call(removeLegendDomain)
 
 		svg.append("text")
-		.attr("x", (mapType == 0) ? 580 : 565)
-		.attr("y", 490)
+		.attr("x", (mapType == 0) ? 690 : 675)
+		.attr("y", 515)
 		.style("text-anchor", "middle")
 		.style("font-size", "12px")
 		.text((mapType == 0) ? "Low Vaccination Rate" : "Surprisingly Low");
 
 		svg.append("text")
-		.attr("x", (mapType == 0) ? 765 : 775)
-		.attr("y", 490)
+		.attr("x", (mapType == 0) ? 875 : 885)
+		.attr("y", 515)
 		.style("text-anchor", "middle")
 		.style("font-size", "12px")
 		.text((mapType == 0) ? "High Vaccination Rate" : "Surprisingly High");

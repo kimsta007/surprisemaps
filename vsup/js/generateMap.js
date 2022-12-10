@@ -176,7 +176,7 @@ function drawGraph() {
 	//DRAWING COUNTIES
 	geojson = topojson.feature(geoData, geoData.objects.counties)
 	setSurprise(geojson);
-	let path = d3.geoPath(d3.geoIdentity().translate([100, 0]).scale(0.8))  
+	let path = d3.geoPath(d3.geoIdentity().translate([100, 0]).scale(0.78))  
   
 	g.selectAll("path")
 		.data(geojson.features)
