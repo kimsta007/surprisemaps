@@ -85,27 +85,27 @@ function makeMaps(){
 		drawGraph(0)
 		document.getElementById('lblx').textContent = 'Choropleth Map'
 		if (expType == 0)
-			document.getElementById('parax').innerHTML = `<b>Choropleth Maps</b> are colored directly based on the number of people vaccinated divided by the county population.
-			<br/><br/>We can visually identify numerous patterns when using Choropleth Maps, such as regions with high vaccination rates (shaded in green) as well as regions with low vaccination rates (shaded in red).<br/><br/>
-			We will ask you to use this map to answer questions about high or low performing counties in terms of vaccination rates.`
+			document.getElementById('parax').innerHTML = `<b>Choropleth Maps</b> are colored directly based on the number of sales divided by the county population.
+			<br/><br/>We can visually identify numerous patterns when using Choropleth Maps, such as regions with high sales rates (shaded in green) as well as regions with low sales rates (shaded in red).<br/><br/>
+			We will ask you to use this map to answer questions about high or low performing counties in terms of sales rates.`
 	}
 	else {
 		drawGraph(1) 
 		document.getElementById('lblx').textContent = 'Surprise Map'
 		if (expType == 0)
-			document.getElementById('parax').innerHTML = `<b>Surprise Maps</b> use an experimental technique called &nbsp;“Surprise”&nbsp; to color counties based on whether their vaccination 
-			rates are far enough from expected values so as to be considered surprising. <br/><br/> For example, a small county with 80 out of 100 people vaccinated might not be considered as "surprising" 
-			as a large county with 80,000 out of 100,000 people vaccinated. Similarly, a small county with 10 out of 100 people vaccinated might not be colored as "surprising" 
-			as a large county with 20,000 out of 100,000 people vaccinated. In other words, we expect smaller counties to vary more in their rates than larger counties, and factor this into the map coloring.
-			<br/><br/>We will ask you to use this map to answer questions about surprising counties in terms of vaccination rates.`
+			document.getElementById('parax').innerHTML = `<b>Surprise Maps</b> use an experimental technique called &nbsp;“Surprise”&nbsp; to color counties based on whether their sales 
+			rates are far enough from expected values so as to be considered surprising. <br/><br/> For example, a small county with 80 sales and a total population of 100 people might not be considered as "surprising" 
+			as a large county with 80,000 sales and a total population of 100,000 people. Similarly, a small county with 10 sales and a total population of 100 people might not be colored as "surprising" 
+			as a large county with 20,000 sales and a total population of 100,000 people. In other words, we expect smaller counties to vary more in their rates than larger counties, and factor this into the map coloring.
+			<br/><br/>We will ask you to use this map to answer questions about surprising counties in terms of sales rates.`
 	}
 
 
 	if (expType != 0) { //Identify task
 		if (rnd_gen % 2 == 0){
-			document.getElementById('txt-a').textContent = "The Choropleth Map shows vaccination data, weighted directly by population as of 10/12/2022."
+			document.getElementById('txt-a').textContent = "The Choropleth Map shows sales data of a product line, weighted directly by population"
 		} else { 
-			document.getElementById('txt-a').textContent = "The Surprise Map summarizes counties with interesting vaccination rates as of 10/12/2022, based on the national average. A county can show either high surprise, low surprise or no surprise."
+			document.getElementById('txt-a').textContent = "The Surprise Map summarizes counties with interesting sales rates, based on the national average. A county can show either high surprise, low surprise or no surprise."
 		}
 	} 
 	document.getElementById('narration').hidden = ""
@@ -611,18 +611,18 @@ function makeLegend(colorScale, svg, mapType) {
 		.call(removeLegendDomain)
 
 		svg.append("text")
-		.attr("x", (mapType == 0) ? 690 : 675)
+		.attr("x", (mapType == 0) ? 680 : 675)
 		.attr("y", 515)
 		.style("text-anchor", "middle")
 		.style("font-size", "12px")
-		.text((mapType == 0) ? "Low Vaccination Rate" : "Surprisingly Low");
+		.text((mapType == 0) ? "Low Sales Rates" : "Surprisingly Low");
 
 		svg.append("text")
-		.attr("x", (mapType == 0) ? 875 : 885)
+		.attr("x", (mapType == 0) ? 885 : 885)
 		.attr("y", 515)
 		.style("text-anchor", "middle")
 		.style("font-size", "12px")
-		.text((mapType == 0) ? "High Vaccination Rate" : "Surprisingly High");
+		.text((mapType == 0) ? "High Sales Rates" : "Surprisingly High");
 }
 
 async function saveCSV () {

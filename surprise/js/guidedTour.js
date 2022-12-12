@@ -19,7 +19,7 @@ function c_identify(){
 
 	{
         title: 'Choropleth Map',
-        text: 'This Choropleth Map shows vaccination rates by county for the USA. <br/> Note: You can pan the map by clicking on it then dragging the map left or right. ',
+        text: 'This Choropleth Map shows sales rates by county for the USA. <br/> Note: You can pan the map by clicking on it then dragging the map left or right. ',
         attachTo: {
             element: '#visualsx',
             on: 'left'
@@ -43,7 +43,7 @@ function c_identify(){
         title: 'Zoom Effect',
         text: 'You can use the +/- buttons to zoom in an out of interesting regions on the map. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the map and drag to pan left or right.',
         attachTo: {
-            element: '#zoomButtons',
+            element: '#zoom_in',
             on: 'bottom'
         },
         buttons: [{
@@ -243,7 +243,7 @@ function s_identify(){
         title: 'Zoom Effect',
         text: 'You can use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the map and drag to pan left or right.',
         attachTo: {
-            element: '#zoomButtons',
+            element: '#zoom_in',
             on: 'bottom'
         },
         buttons: [{
@@ -420,7 +420,7 @@ function c_compare(){
 
     {
         title: 'Choropleth Map',
-        text: 'This Choropleth Map shows vaccination rates by county for the USA. <br/> Note: You can also pan the map by clicking on it then dragging the map left or right. ',
+        text: 'This Choropleth Map shows sales rates by county for the USA. <br/> Note: You can also pan the map by clicking on it then dragging the map left or right. ',
         attachTo: {
             element: '#csvg',
             on: 'left'
@@ -441,7 +441,7 @@ function c_compare(){
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoomButtons',
+            element: '#zoom_in',
             on: 'bottom'
         },
         buttons: [{
@@ -477,7 +477,7 @@ function c_compare(){
 
     {
         title: 'Compare States',
-        text: '<b>Which state shows the highest vaccination perfomance.</b>',
+        text: '<b>Which state shows the highest sales perfomance.</b>',
         attachTo: {
             element: '.hstates',
             on: 'right'
@@ -572,7 +572,7 @@ function s_compare(){
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoomButtons',
+            element: '#zoom_in',
             on: 'bottom'
         },
         buttons: [{
@@ -681,7 +681,7 @@ function c_delineate(){
 
     {
         title: 'Choropleth Map',
-        text: 'This Choropleth Map shows vaccination rate by county for the USA. <br/> Note: You can also pan the map by clicking on it then dragging the map left or right. ',
+        text: 'This Choropleth Map shows sales rate by county for the USA. <br/> Note: You can also pan the map by clicking on it then dragging the map left or right. ',
         attachTo: {
             element: 'svg',
             on: 'left'
@@ -702,7 +702,7 @@ function c_delineate(){
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoomButtons',
+            element: '#zoom_in',
             on: 'bottom'
         },
         buttons: [{
@@ -738,7 +738,7 @@ function c_delineate(){
 
     {
         title: 'Delineate',
-        text: '<b>Identify two states with similar vaccination performance.</b>',
+        text: '<b>Identify two states with similar sales performance.</b>',
         attachTo: {
             element: '.hstates',
             on: 'left'
@@ -833,7 +833,7 @@ function s_delineate(){
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoomButtons',
+            element: '#zoom_in',
             on: 'bottom'
         },
         buttons: [{
@@ -869,7 +869,7 @@ function s_delineate(){
 
     {
         title: 'Delineate',
-        text: '<b>Identify two states that have similar vaccination performance.</b>',
+        text: '<b>Identify two states that have similar sales performance.</b>',
         attachTo: {
             element: '.hstates',
             on: 'left'
@@ -944,7 +944,7 @@ function c_summarize(){
 
     {
         title: 'Choropleth Map',
-        text: 'This Choropleth Map shows vaccination rate by county for the USA. <br/> Note: You can also pan the map by clicking on it then dragging the map left or right.',
+        text: 'This Choropleth Map shows sales rate by county for the USA. <br/> Note: You can also pan the map by clicking on it then dragging the map left or right.',
         attachTo: {
             element: '#csvg',
             on: 'left'
@@ -965,7 +965,7 @@ function c_summarize(){
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoomButtons',
+            element: '#zoom_in',
             on: 'bottom'
         },
         buttons: [{
@@ -1001,7 +1001,7 @@ function c_summarize(){
 
     {
         title: 'Summarize',
-        text: '<b>Which state shows the worst vaccination performance?</b>',
+        text: '<b>Which state shows the worst sales performance?</b>',
         attachTo: {
             element: '.hstates',
             on: 'right'
@@ -1095,7 +1095,7 @@ function s_summarize(){
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoomButtons',
+            element: '#zoom_in',
             on: 'bottom'
         },
         buttons: [{
@@ -1205,7 +1205,7 @@ function c_explore(){
 	
 	{
         title: 'Choropleth Map',
-        text: 'This Choropleth Map shows the vaccination rates by county for the USA. <br/> Note: You can pan the map by clicking on it then dragging the map left or right.',
+        text: 'This Choropleth Map shows the sales rates by county for the USA. <br/> Note: You can pan the map by clicking on it then dragging the map left or right.',
         attachTo: {
             element: '#visualsx',
             on: 'left'
@@ -1230,7 +1230,7 @@ function c_explore(){
         title: 'Zoom Effect',
         text: 'You can use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the map and drag to pan left or right.',
         attachTo: {
-            element: '#zoomButtons',
+            element: '#zoom_in',
             on: 'bottom'
         },
         buttons: [{
@@ -1272,7 +1272,7 @@ function c_explore(){
 
     {
         title: 'Narrative',
-        text: '<b>Provide a short narrative of covid vaccinations across the USA.</b>',
+        text: '<b>Provide a short narrative of covid saless across the USA.</b>',
         attachTo: {
             element: '#summary',
             on: 'top'
@@ -1360,7 +1360,7 @@ function s_explore(){
         title: 'Zoom Effect',
         text: 'You can use the +/- buttons to zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the map and drag to pan left or right.',
         attachTo: {
-            element: '#zoomButtons',
+            element: '#zoom_in',
             on: 'bottom'
         },
         buttons: [{
@@ -1402,7 +1402,7 @@ function s_explore(){
 
     {
         title: 'Narrative',
-        text: '<b>Provide a short narrative of vaccination surprise across the USA.</b>',
+        text: '<b>Provide a short narrative of sales surprise across the USA.</b>',
         attachTo: {
             element: '#summary',
             on: 'top'
@@ -1466,7 +1466,7 @@ function c_rank(){
 
     {
         title: 'Choropleth Map',
-        text: 'This Choropleth Map shows vaccination rate by county for the USA. <br/> Note: You can also pan the map by clicking on it then dragging the map left or right.',
+        text: 'This Choropleth Map shows sales rate by county for the USA. <br/> Note: You can also pan the map by clicking on it then dragging the map left or right.',
         attachTo: {
             element: 'svg',
             on: 'left'
@@ -1487,7 +1487,7 @@ function c_rank(){
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoomButtons',
+            element: '#zoom_in',
             on: 'bottom'
         },
         buttons: [{
@@ -1523,7 +1523,7 @@ function c_rank(){
 
     {
         title: 'Rank States',
-        text: '<b>Rank states by vaccination rate (Highest to Lowest).</b>',
+        text: '<b>Rank states by sales rate (Highest to Lowest).</b>',
         attachTo: {
             element: '.hstates',
             on: 'bottom'
@@ -1618,7 +1618,7 @@ function s_rank() {
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoomButtons',
+            element: '#zoom_in',
             on: 'bottom'
         },
         buttons: [{
