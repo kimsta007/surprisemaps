@@ -1,81 +1,116 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
-	
-	<link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet'>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.3.0/math.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://d3js.org/colorbrewer.v1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="../js/generateMap.js"></script>
-    <script src="../js/simple_statistics.js"></script>
-    <script src="https://unpkg.com/textures@1.2.0/dist/textures.js"></script>
-    <script src="../js/nobacknav.js"></script>
-    <script src="../js/vsup.js"></script>
+    <script src = 'https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js'></script>   
+    <script src="https://kit.fontawesome.com/581d0822b8.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.7.0/d3.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Introduction</title>
 </head>
 
+
 <body>
-    <script>
-        let expType = 0
-		function getVar(){
-		   let options = {
-					method : 'POST',
-					headers : {'Content-Type':'application/json'},
-					body : JSON.stringify({'key': 'value'})
-				};
-		    fetch('/', options)
-			.then(response => { return response.json() })
-			.then(json => { sessionStorage.setItem('lrValue', +json)});
-	    }
-		getVar();
-		getdata('2022-03-01');
-    </script>
-
-	<header>How would you interpret this map?</header>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <h4 style="margin-top: 1em;"><u>Introduction</u></h4>
-            </div>
-        </div>
-
-	<div class="row map-container justify-content-center">
-        <div class="col-md-6 position-relative w-75">
-          <div class="svg-containerx" style="width: 100%; min-height: 100px;" id="visualsx"></div>         
-        </div>
-    </div>
-
-    <div class="row  justify-content-center mt-3" id="narration">
-        <div class="col-md-9 scollbox">
-            <p>
-                In map visualizations, uncertainty can be encoded using Value Suppressing Uncertainty Palettes (VSUPs). VSUPs help reduce the complexity associated with quantifying uncertainty, by associating an observed rate with a probabilistic value.
-                <br/><br/>For this study we compute a surprise value to color counties based on whether their sales are far enough from expected values so as to be considered surprising. 
-                <br/><br/>
-                For example, a small county with 80 sales where there is a total population of 100 people  might not be considered as "surprising" as a large county with 80,000 sales with a total population of 100,000 people. Similarly, a small county with 10 sales with a population of 100 might not be colored as "surprising" as a large county with 20,000 sales from a population of 100,000. In other words, we expect smaller counties to vary more in their rates than larger counties, and factor this into the map coloring.
-                <br/><br/>We will ask you to use this map to answer questions in relation county performance in terms of sales rates.                    
-            </p></div>
-    </div>
+    <header class = "sticky-top">How would you interpret this map?</header>
     
-    <div class="row mb-4">
-        <div class="d-grid mx-auto col-2">
-	        <button type="button" class="btn btn-success" id="btnExperiment" onclick= "javascript: selectPage(0)" style="font-size: 14px;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Begin Experiment">Begin Experiment</button>
-        </div>
-	</div>
-    </div>
-    <footer id="footer"></footer>
+   <div class="container-fluid">
+    <div class="row">        
+        <div class="col-md-5" id="sections">
+            <div class="step h-75" style="margin-top: 15%">
+                <div class="card">
+                    <div class="card-header">
+                      Background
+                    </div>
+                    <div class="card-body">
+                      <p class="card-text" style="background: #fff;">
+                        For the purposes of this study, you are a marketing/sales manager for Company X. <br /><br />
+                        Company X has a new product line, distributed nationally. <br />
+                        The primary sales metric is sales as a percentage of total county population. <br />
+                        The product is performing well in some counties, but poorly in other counties. <br /><br/>                     
+                      </p>
+                      <p class="text-center mb-0" style="background: #fff;"><b>Scroll Down</b> <i class="fa-solid fa-angle-down fa-xl fa-bounce"></i></p>
+                    </div>
+                  </div>
+                </div>
 
-    <script>
-        function selectPage(src) {	
-			window.location = 'identify.html'
-        }
-    </script>
+            <div class="step h-75">
+                <div class="card">
+                    <div class="card-header">Task</div>
+                      <div class="card-body">
+                          <p class="card-text" style="background: #fff; text-align: justify;">
+                            Your goal is to identify:
+                          </p>
+                          <ol style="text-align: justify;">
+                            <li>The top 5 lowest performing counties, where Company X will send additional marketing resources.</li>
+                            <li>The top 5 best performing counties, where Company X will send a team there to learn about local sales strategies.</li>
+                        </ol>
+                        <p class="text-center mb-0" style="background: #fff;">
+                          <b>Scroll Up</b> <i class="fa-solid fa-angle-up fa-xl"></i> or
+                          <b>Scroll Down</b> <i class="fa-solid fa-angle-down fa-xl"></i>
+                        </p>
+                      </div>
+                  </div>
+                </div>
+
+            <div class = 'step h-75'>
+                <div class="card">
+                    <div class="card-header">Map Resource</div>
+                    <div class="card-body">
+                      <p class="card-text" style="background: #fff;">
+                          To aid you in identifying key counties, the Company X Data Science team has produced a map. <br />
+                          This map includes a special metric, “surprise”, which is a statistical measure of how surprising a sales rate is for a given county. <br /><br />
+                          Sales can be surprisingly high, or surprisingly low. <br />
+                          However, sales can also be high or low but not surprising.
+                      </p>
+                    <p class="text-center mb-0" style="background: #fff;">
+                        <b>Scroll Up</b> <i class="fa-solid fa-angle-up fa-xl"></i> or
+                        <b>Scroll Down</b> <i class="fa-solid fa-angle-down fa-xl"></i>
+                    </p>
+                    </div>
+                  </div>
+            </div>
+            <div class="step h-75">
+                <div class="card">
+                    <div class="card-header">Unsurprising Rates</div>
+                    <div class="card-body">
+                      <p class="card-text" style="background: #fff;">
+                          Sales rates that are not surprising usually occur when a county has a smaller population. <br />
+                          For example, if 9 out of 10 people in a small county buy the product, the sales rate is 90%. <br />
+                          This is not as surprising as if we were to find a county where 9,000 out of 10,000 people buy the product. <br />
+                        </p>
+                        <p class="text-center mb-0" style="background: #fff;">
+                          <b>Scroll Up</b> <i class="fa-solid fa-angle-up fa-xl"></i> or
+                          <b>Scroll Down</b> <i class="fa-solid fa-angle-down fa-xl"></i>
+                      </p>
+                    </div>
+                  </div>  
+            </div>
+            <div class="step h-50">                
+                <div class="card">
+                    <div class="card-header">How Surprise Appears on the Map</div>
+                    <div class="card-body">
+                      <p class="card-text" style="background: #fff;">
+                        The Data Science team has produced a color scale that shows both sales rate and surprise. <br />
+                        At the upper left of the wedge are counties with low rates that are considered surprising. <br />
+                        At the upper right of the wedge are counties with high rates that are considered surprising. <br />
+                        At the bottom of the wedge are counties with either low or high rates, but are not considered surprising.                    
+                      </p>
+                      <div class="row">
+                          <div class="col">
+                            <p class="float-start" style="background: #fff;"><b>Scroll Up</b> <i class="fa-solid fa-angle-up fa-xl fa-bounce"></i></p>
+                            <span class="float-end"><a href="identify.html" class="btn btn-success">Begin Experiment</a></span>
+                          </div>
+                      </div>
+                      </div>
+                  </div>
+            </div>    
+        </div>
+        <div class="col-md-6 fixed-top offset-md-5" id="vis" style="left: 4%;"></div>
+    </div>
+    </div>
+    <footer class="fixed-bottom"></footer>
+    <script src = '../js/scroller.js'></script>
+    <script src = '../js/sections.js'></script>
 </body>
 </html>
