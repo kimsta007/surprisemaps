@@ -1,74 +1,35 @@
-// All the initial elements should be create in the drawInitial function
-// As they are required, their attributes can be modified
-// They can be shown or hidden using their 'opacity' attribute
-// Each element should also have an associated class name for easy reference
-drawInitial()
-function drawInitial(){
-   let svg = d3.select('#vis')
-        .append('svg')
-			.attr("viewBox", "0 -70 1400 1350")
-			.attr("preserveAspectRatio", "xMinYMin meet")
-
-    svg.append("svg:image")
-            .attr('id', 'img')
-            .attr('y', 100)
-            .attr("xlink:href", "../assets/img1.gif")
-            .style('opacity', 0)
-
-    svg.append("svg:image")
-            .attr('id', 'img2')
-            .attr('y', 100)
-            .attr("xlink:href", "../assets/img2.gif")
-            .style('opacity', 0)
-    
-    svg.append("svg:image")
-            .attr('id', 'img3')
-            .attr('y', 100)
-            .attr("xlink:href", "../assets/img_x.gif")
-            .style('opacity', 0)
-
-    svg.append("svg:image")
-            .attr('id', 'img4')
-            .attr('y', 100)
-            .attr("xlink:href", "../assets/img4.gif")
-            .style('opacity', 0)
-
-    svg.append("svg:image")
-            .attr('id', 'img5')
-            .attr('y', 100)
-            .attr("xlink:href", "../assets/img_x.gif")
-            .style('opacity', 0)
-
-    d3.select('#img').style("opacity", 1) 
-}
 
 function draw1(){    
-    d3.select('#img2').style('opacity', 0)
-    d3.select('#img').style("opacity", 1)  
+    document.getElementById('cardHeader').innerHTML = 'Background'
+    document.getElementById('cardBody').innerHTML = '<p class="card-text" style="background: #fff;">For the purposes of this study, you are a marketing/sales manager at Company X. <br /><br /> Company X has a new product line that is bring distributed nationally. <br />' +
+    'The primary sales metric is sales as a percentage of total county population. <br />The product is performing well in some counties, but poorly in other counties. <br /><br/></p>' +
+    '<p class="text-center mb-0" id="cardFooter" style="background: #fff;"><b>Scroll Down</b> <i class="fa-solid fa-angle-down fa-xl fa-bounce"></i></p>'
 }
 
 
 function draw2(){
-    d3.select('#img').style('opacity', 0)
-    d3.select('#img3').style('opacity', 0)
-    d3.select('#img2').style("opacity", 1)       
+    document.getElementById('cardHeader').innerHTML = 'Task'
+    document.getElementById('cardBody').innerHTML = '<p class="card-text" style="background: #fff; text-align: justify;">Your goal is to identify:</p><ol style="text-align: justify;" <li>The top 5 lowest performing counties, where Company X will send additional marketing resources.</li><li>The top 5 best performing counties, where Company X will send a team there to learn about local sales strategies.</li></ol>' +
+    '<p class="text-center mb-0" style="background: #fff;"><b>Scroll Up</b> <i class="fa-solid fa-angle-up fa-xl"></i> or <b>Scroll Down</b> <i class="fa-solid fa-angle-down fa-xl"></i></p>'
 }
 
 function draw3(){
-    d3.select('#img2').style('opacity', 0)
-    d3.select('#img4').style('opacity', 0) 
-    d3.select('#img3').style("opacity", 1) 
+    document.getElementById('cardHeader').innerHTML = 'Map Resource'
+    document.getElementById('cardBody').innerHTML = '<p class="card-text" style="background: #fff;">To aid you in identifying key counties, the Company X Data Science team has produced a map. <br />This map includes a special metric, “surprise”, which is a statistical measure of how surprising a sales rate is for a given county. <br /><br />' +
+    'Sales can be surprisingly high, or surprisingly low. <br />However, sales can also be high or low but not surprising.</p><p class="text-center mb-0" style="background: #fff;"><b>Scroll Up</b> <i class="fa-solid fa-angle-up fa-xl"></i> or <b>Scroll Down</b> <i class="fa-solid fa-angle-down fa-xl"></i></p>'
 }
 
 function draw4(){
-    d3.select('#img3').style('opacity', 0)
-    d3.select('#img5').style('opacity', 0)  
-    d3.select('#img4').style("opacity", 1) 
+    document.getElementById('cardHeader').innerHTML = 'Unsurprising Rates'
+    document.getElementById('cardBody').innerHTML = '<p class="card-text" style="background: #fff;">Sales rates that are not surprising usually occur when a county has a smaller population. <br />For example, if 9 out of 10 people in a small county buy the product, the sales rate is 90%. <br />' +
+    'This is not as surprising as if we were to find a county where 9,000 out of 10,000 people buy the product. <br /></p><p class="text-center mb-0" style="background: #fff;"><b>Scroll Up</b> <i class="fa-solid fa-angle-up fa-xl"></i> or <b>Scroll Down</b> <i class="fa-solid fa-angle-down fa-xl"></i></p>'
 }
 
 function draw5(){
-    d3.select('#img4').style('opacity', 0)
-    d3.select('#img5').style("opacity", 1) 
+    document.getElementById('cardHeader').innerHTML = 'How Surprise Appears on the Map'
+    document.getElementById('cardBody').innerHTML = '<p class="card-text" style="background: #fff;">The Data Science team has produced a color scale that shows both sales rate and surprise. <br />At the upper left of the wedge are counties with low rates that are considered surprising. <br />' +
+    'At the upper right of the wedge are counties with high rates that are considered surprising. <br />At the bottom of the wedge are counties with either low or high rates, but are not considered surprising.</p><div class="row"><div class="col"><p class="float-start" style="background: #fff;"><b>Scroll Up</b> <i class="fa-solid fa-angle-up fa-xl fa-bounce"></i></p>' +
+    '<span class="float-end"><a href="identify.html" class="btn btn-success">Begin Experiment</a></span></div></div>'
 }
 
 //Array of all the graph functions

@@ -260,7 +260,7 @@ function drawGraph(mapType) {
 									}
 								 })
 			.attr("data-fips", (d) => d.id)
-			.attr("data-vaccinations", (d) => {(mapType == 0) ? +getCountyByFips(d.id).series_complete_pop_pct : +d.properties.Surprise})
+			.attr("data-sales", (d) => {(mapType == 0) ? +getCountyByFips(d.id).series_complete_pop_pct : +d.properties.Surprise})
 			.on("mouseover", handleMouseOver)
 			.on("mosemove", handleMouseMove)
 			.on("mouseout", handleMouseOut)
@@ -314,7 +314,7 @@ function drawGraph(mapType) {
 				}
 				if (expType == 1 && countyData.series_complete_pop_pct != 0){
 					let county = countyData.recip_county
-					mouseClick.push({'state':countyData.recip_state,'county': countyData.recip_county, 'fips': el.id, 'vacc-rate': countyData.series_complete_pop_pct,'surprise': countyData.surprise, 'idle_duration': mouseIdleTime, 'mapType': mType})
+					mouseClick.push({'state':countyData.recip_state,'county': countyData.recip_county, 'fips': el.id, 'sales-rate': countyData.series_complete_pop_pct,'surprise': countyData.surprise, 'idle_duration': mouseIdleTime, 'mapType': mType})
 					if ((count < 5) && (counties.indexOf(el.id) == -1)){
 						row += '<div class="row-county" id="' + el.id +'"><button class="btn btn-primary btn-sm" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 14px; vertical-align:middle;"><i class="fa fa-times"></i> '+ county + ', ' + countyData.recip_state + '</button></div>'
 						document.getElementById("rowCounties").innerHTML = row;
@@ -342,13 +342,13 @@ function drawGraph(mapType) {
 		tooltip
 				.style("left", d3.event.pageX + 10 + "px")
 				.style("top", d3.event.pageY + 10 + "px")
-				.attr("data-vaccinations", `${county.series_complete_pop_pct}`)
+				.attr("data-sales", `${county.series_complete_pop_pct}`)
 				.html(function(){
 					if (county.series_complete_pop_pct == 0 || (isNaN(county.series_complete_pop_pct)))
 						return `No data available`
 					else
 						return `<b><p style="text-align: left; margin: 0px; padding: 0px; background-color: white;">${county.recip_county} (${county.recip_state})</p></b>
-					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Vacc Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${county.series_complete_pop_pct.toFixed(2)}</td><td style="font-size: 12px;">${county.surprise.toFixed(3)}</td><td style="font-size: 12px;">${county.census2019}</td></tr></table>`
+					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Sales Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${county.series_complete_pop_pct.toFixed(2)}</td><td style="font-size: 12px;">${county.surprise.toFixed(3)}</td><td style="font-size: 12px;">${county.census2019}</td></tr></table>`
 				})
 			
 		   let legendID
@@ -372,7 +372,7 @@ function drawGraph(mapType) {
 		let county = getCountyByFips(el.id);
 		mouseIdleTime = new Date().getTime() - mouseStartTime
 		if (mouseIdleTime >= 120){
-			mouseLog.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'vacc-rate': county.series_complete_pop_pct,'surprise': county.surprise, 'idle_duration': mouseIdleTime})
+			mouseLog.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'sales-rate': county.series_complete_pop_pct,'surprise': county.surprise, 'idle_duration': mouseIdleTime})
 		}
 		tooltip
 				.transition()
