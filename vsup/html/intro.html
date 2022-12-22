@@ -12,13 +12,13 @@
 
 
 <body>
-    <header class = "sticky-top">How would you interpret this map?</header>
+    <header class = "fixed-top">How would you interpret this map?</header>
     
    <div class="container-fluid">
     <div class="row">        
-        <div class="col-md-5" id="sections">
-            <div class="step h-75" style="margin-top: 15%">
-                <div class="card">
+        <div class="col-md-4" id="sections">
+            <div class="step h-75">
+                <div class="card" style="top: 5%;">
                     <div class="card-header">
                       Background
                     </div>
@@ -29,7 +29,7 @@
                         The primary sales metric is sales as a percentage of total county population. <br />
                         The product is performing well in some counties, but poorly in other counties. <br /><br/>                     
                       </p>
-                      <p class="text-center mb-0" style="background: #fff;"><b>Scroll Down</b> <i class="fa-solid fa-angle-down fa-xl fa-bounce"></i></p>
+                      <p class="text-center mb-0" style="background: #fff;"><b>Scroll Down</b> <i class="fa-solid fa-angle-down fa-xl"></i></p>
                     </div>
                   </div>
                 </div>
@@ -98,7 +98,7 @@
                       </p>
                       <div class="row">
                           <div class="col">
-                            <p class="float-start" style="background: #fff;"><b>Scroll Up</b> <i class="fa-solid fa-angle-up fa-xl fa-bounce"></i></p>
+                            <p class="float-start" style="background: #fff;"><b>Scroll Up</b> <i class="fa-solid fa-angle-up fa-xl"></i></p>
                             <span class="float-end"><a href="identify.html" class="btn btn-success">Begin Experiment</a></span>
                           </div>
                       </div>
@@ -106,7 +106,14 @@
                   </div>
             </div>    
         </div>
-        <div class="col-md-6 fixed-top offset-md-5" id="vis" style="left: 4%;"></div>
+
+        <div class="col-md-8 fixed-top mt-5" id="vis">         
+          <div><img src="../assets/img1.gif" class="w-100 gifs position-absolute" /></div>       
+          <div><img src="../assets/img2.gif" style="visibility: hidden;" class="w-100 gifs position-absolute" /></div>
+          <div> <img src="../assets/img3.png" style="visibility: hidden;" class="w-100 gifs position-absolute" /></div>
+          <div><img src="../assets/img4.gif" style="visibility: hidden;" class="w-100 gifs position-absolute" /> </div>
+          <div> <img src="../assets/img5.png" style="visibility: hidden;" class="w-100 gifs position-absolute" /></div>
+        </div>
     </div>
     </div>
     <footer class="fixed-bottom"></footer>
