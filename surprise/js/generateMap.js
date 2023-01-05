@@ -44,7 +44,7 @@ var cdf = function(x) {
 }
 
 function getdata(){
-	queryDate = '2022-10-12T00:00:00.000'
+	queryDate = '2021-10-01'
 	$.ajax({
     url: "https://data.cdc.gov/resource/8xkx-amqh.json?date=" + queryDate,
     type: "GET",
@@ -228,7 +228,7 @@ function drawGraph(mapType) {
 	//DRAWING COUNTIES
 	geojson = topojson.feature(geoData, geoData.objects.counties)
 	setSurprise(geojson);
-	let path = d3.geoPath(d3.geoIdentity().translate([100, 0]).scale(0.78)) //Change size of map
+	let path = d3.geoPath(d3.geoIdentity().translate([50, 0]).scale(0.78)) //Change size of map
   
 	g.selectAll("path")
 		.data(geojson.features)
@@ -326,7 +326,7 @@ function drawGraph(mapType) {
 							document.getElementById("btnContinue").disabled = false;
 					}
 				}
-			}, 300)		
+			}, 400)		
 		}
 
 
@@ -348,7 +348,7 @@ function drawGraph(mapType) {
 						return `No data available`
 					else
 						return `<b><p style="text-align: left; margin: 0px; padding: 0px; background-color: white;">${county.recip_county} (${county.recip_state})</p></b>
-					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Sales Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${county.series_complete_pop_pct.toFixed(2)}</td><td style="font-size: 12px;">${county.surprise.toFixed(3)}</td><td style="font-size: 12px;">${county.census2019}</td></tr></table>`
+					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Sales Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${numeral(county.series_complete_pop_pct.toFixed(2)).format('0%')}</td><td style="font-size: 12px;">${county.surprise.toFixed(3)}</td><td style="font-size: 12px;">${county.census2019}</td></tr></table>`
 				})
 			
 		   let legendID

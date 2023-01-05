@@ -27,7 +27,7 @@ var cdf = function(x) {
 
 
 function getdata(){
-	queryDate = '2022-10-12T00:00:00.000'
+	let queryDate = '2022-10-12T00:00:00.000'
 	$.ajax({
     url: "https://data.cdc.gov/resource/8xkx-amqh.json?date=" + queryDate,
     type: "GET",
@@ -133,7 +133,7 @@ function drawGraph() {
 
 	svg = section
 		.append("svg")
-			.attr("viewBox", "0 0 1100 540")
+			.attr("viewBox", "0 0 950 525")
 			.attr("preserveAspectRatio", "xMinYMin meet")
 			.attr("class","svg-content")
 			.attr("id", "csvg")
@@ -176,7 +176,7 @@ function drawGraph() {
 	//DRAWING COUNTIES
 	geojson = topojson.feature(geoData, geoData.objects.counties)
 	setSurprise(geojson);
-	let path = d3.geoPath(d3.geoIdentity().translate([100, 0]).scale(0.78))  
+	let path = d3.geoPath(d3.geoIdentity().translate([49.9, 0]).scale(0.78))  
   
 	g.selectAll("path")
 		.data(geojson.features)
@@ -211,9 +211,9 @@ function drawGraph() {
     .datum(topojson.mesh(geoData, geoData.objects.states), (a, b) => a !== b)
     	.attr('d', path)
 
-		var arcGenerator = d3.arc();
+		let arcGenerator = d3.arc();
 
-		var pathData = arcGenerator({
+		let pathData = arcGenerator({
 		  startAngle: -0.55,
 		  endAngle: 2.6,
 		  innerRadius: 0,
@@ -225,7 +225,7 @@ function drawGraph() {
 			.attr('d', pathData)
 			.style('fill', '#fff')
 			.style('opacity', 0.8)
-			.attr('transform', 'translate(950,500)');
+			.attr('transform', 'translate(800,500)');
 		  
 	// legend
     legend = vsup.legend.arcmapLegend(null,null,'.0%')
@@ -233,7 +233,7 @@ function drawGraph() {
           legend
             .scale(scale)
             .size(160)
-            .x(width - 80)
+            .x(width - 220)
             .y(height - 200)
             .vtitle("Sales Rate")
             .utitle("Uncertainty / Surprise");
@@ -245,7 +245,7 @@ function drawGraph() {
 		  .style("font-size", "10px")
 		  .attr("dy", ".35em")
 		  .attr("text-anchor", "middle")
-		  .attr("transform", "translate(875, 380) rotate(59)")
+		  .attr("transform", "translate(735, 380) rotate(59)")
 		  .text("Surprisingly Low");
 		
 	svg.append("text")
@@ -253,7 +253,7 @@ function drawGraph() {
 		  .style("font-size", "10px")
 		  .attr("dy", ".35em")
 		  .attr("text-anchor", "middle")
-		  .attr("transform", "translate(1060, 380) rotate(-60)")
+		  .attr("transform", "translate(920, 380) rotate(-60)")
 		  .text("Surprisingly High");
 
 	svg.append("text")
@@ -261,7 +261,7 @@ function drawGraph() {
 		  .style("font-size", "10px")
 		  .attr("dy", ".35em")
 		  .attr("text-anchor", "middle")
-		  .attr("transform", "translate(955,510) rotate(0)")
+		  .attr("transform", "translate(815,510) rotate(0)")
 		  .text("Not Surprising"); 
 
   function zoomed(e) {
@@ -308,7 +308,7 @@ function drawGraph() {
 						document.getElementById("btnContinue").disabled = false;
 				}
 			}
-		}, 300)		
+		}, 500)		
 	}
 
 
@@ -330,7 +330,7 @@ function drawGraph() {
 						return `No data available`
 					else
 						return `<b><p style="text-align: left; margin: 0px; padding: 0px; background-color: white;">${county.recip_county} (${county.recip_state})</p></b>
-					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Sales Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${county.series_complete_pop_pct.toFixed(2)}</td><td style="font-size: 12px;">${county.surprise.toFixed(3)}</td><td style="font-size: 12px;">${county.census2019}</td></tr></table>`
+					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Sales Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${numeral(county.series_complete_pop_pct.toFixed(2)).format('0%')}</td><td style="font-size: 12px;">${county.surprise.toFixed(3)}</td><td style="font-size: 12px;">${county.census2019}</td></tr></table>`
 				})
 
 

@@ -1,29 +1,18 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
-	
-	<link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet'>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.3.0/math.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://d3js.org/colorbrewer.v1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="../js/generateMap.js"></script>
-    <script src="../js/simple_statistics.js"></script>
-    <script src="https://unpkg.com/textures@1.2.0/dist/textures.js"></script>
-    <script src="../js/nobacknav.js"></script>
+    <script src = 'https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js'></script>   
+    <script src="https://kit.fontawesome.com/581d0822b8.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.7.0/d3.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Introduction</title>
 </head>
 
 <body>
     <script>
-        let expType = 0
+        let expType = 0     
 		function getVar(){
 		   let options = {
 					method : 'POST',
@@ -34,44 +23,203 @@
 			.then(response => { return response.json() })
 			.then(json => { sessionStorage.setItem('lrValue', +json)});
 	    }
-		getVar();
-		getdata('2022-03-01');
+        getVar();
     </script>
-   
-	<header>How would you interpret this map?</header>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <h4 style="margin-top: 1em;"><u>Introduction</u></h4>
-            </div>
-        </div>
-
-	<div class="row map-container justify-content-center">
-        <div class="col-md-6 position-relative w-75">
-          <div class="svg-containerx" style="width: 100%; min-height: 100px;" id="visualsx"></div> 
-          <div class="col-md-12 text-start"><span id="lblx" style="padding-left: 1%;"></span></div>        
-        </div>
-    </div>
-
-    <div class="row  justify-content-center mt-3" id="narration">
-        <div class="col-md-9 scollbox">
-            <p id="parax"></p></div>
-    </div>
+  <header class="fixed-top">How would you interpret this map?</header>
     
-    <div class="row mb-4">
-        <div class="d-grid mx-auto col-2">
-	        <button type="button" class="btn btn-success" id="btnExperiment" onclick= "javascript: selectPage(0)" style="font-size: 14px;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Begin Experiment">Begin Experiment</button>
+  <div class="container-fluid">
+    <div class="row">        
+        <div class="col-md-4" id="sections">
+            <div class="step my-2 py-5">
+                <div class="card">
+                    <div class="card-header">
+                      Background
+                    </div>
+                    <div class="card-body">
+                      <div class="card-text">
+                        <p>
+                          For the purposes of this study, you are a marketing/sales manager at Company X.
+                        </p>
+                        <p>
+                          Company X has a new product line that is being distributed nationally.
+                        </p>
+                        <p>
+                          The primary sales metric is sales as a percentage of total county population.
+                          The product is performing well in some counties, but poorly in other counties.
+                        </p>
+                        </div>
+                        <p class="card-scrolldown text-end">Scroll Down <i class="fa-solid fa-arrow-down"></i></p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="step my-5 py-5">
+                  <div class="card">
+                    <div class="card-header">
+                      Task
+                      <p class="card-scrollup text-end">Scroll Up <i class="fa-solid fa-arrow-up"></i></p>
+                    </div>
+                    <div class="card-body">
+                      <div class="card-text">
+                        <p>
+                          Your goal is to identify:
+                        </p>
+                        <ol class="text-start">
+                          <li>The top 5 lowest performing counties, where Company X will send additional marketing resources.</li>
+                          <li>The top 5 best performing counties, where Company X will send a team there to learn about local sales
+                            strategies.
+                          </li>
+                        </ol>
+                      </div>
+                      <p class="card-scrolldown text-end">Scroll Down <i class="fa-solid fa-arrow-down"></i></p>
+                    </div>
+                  </div>
+                </div>
+
+            <div class = 'step my-5 py-5'>
+                <div class="card">
+                    <div class="card-header">
+                      Map Resource
+                      <p class="card-scrollup text-end">Scroll Up <i class="fa-solid fa-arrow-up"></i></p>
+                    </div>
+                    <div class="card-body">
+                      <div class="card-text" id="innerCardx">
+                        <script>
+                        if (+sessionStorage.getItem('lrValue') % 2 == 0) {
+                            document.getElementById('innerCardx').innerHTML = '<p>' +
+                            'To aid you in identifying key counties, the Company X Data Science team has produced a map.' +
+                            'This map includes a special metric, <strong>"surprise"</strong>, which is a statistical measure of how surprising a sales rate is for a given county.' +
+                            '</p>' +
+                            '<p>Sales can be surprisingly high, or surprisingly low. ' +
+                            'However, sales can also be high or low but not surprising.' +
+                            '</p>'
+                        } else {
+                            document.getElementById('innerCardx').innerHTML = '<p>' +
+                            'To aid you in identifying key counties, the Company X Data Science team has produced a special metric referred to as <strong>"surprise"</strong>, ' +
+                            'which is a statistical measure of how surprising a sales rate is for a given county.' +
+                            '</p>' +
+                            '<p>Sales can be surprisingly high, or surprisingly low. ' +
+                            'However, sales can also be high or low but not surprising.' +
+                            '</p>'
+                        }
+                        </script>
+                      </div>
+                      <p class="card-scrolldown text-end">Scroll Down <i class="fa-solid fa-arrow-down"></i></p>
+                    </div>
+                  </div>
+            </div>
+            <div class="step my-5 py-5">
+                <div class="card">
+                    <div class="card-header">Unsurprising Rates
+                      <p class="card-scrollup text-end">Scroll Up <i class="fa-solid fa-arrow-up"></i></p>
+                    </div>
+                    <div class="card-body">
+                      <div class="card-text">
+                        <p>
+                          Sales rates that are not surprising usually occur when a county has a smaller population.
+                        </p>
+                        <p>
+                          For example, if 9 out of 10 people in a small county buy the product, the sales rate is 90%.
+                          This is not as surprising as if we were to find a county with a 90% sales rate, where 9,000 out of 10,000 people buy the product.
+                        </p>
+                      </div>
+                      <p class="card-scrolldown text-end">Scroll Down <i class="fa-solid fa-arrow-down"></i></p>
+                    </div>
+                </div>
+            </div>
+            <div class="step my-5 py-5 min-vh-100">                
+                <div class="card">
+                    <div class="card-header">How Surprise Appears on the Map
+                      <p class="card-scrollup text-end">Scroll Up <i class="fa-solid fa-arrow-up"></i></p>
+
+                    </div>
+                    <div class="card-body">
+                      <div class="card-text" id="innerCardy">
+                        <script>
+                            if (+sessionStorage.getItem('lrValue') % 2 == 0) {
+                                document.getElementById('innerCardy').innerHTML = 
+                                '<p>' +
+                                'The Data Science team has produced a map that only shows the surprise value. The associated sales rate can be viewed by hovering over a county.<br />' +
+                                '<ul class="text-start">' +
+                                    '<li>Left of the color scale are counties with low sales rates that are considered surprising.</li>' +
+                                    '<li>Right of the color scale are counties with high sales rates that are considered surprising.</li>' +
+                                    '<li>At the middle of the color scale are counties with either low or high sales rates, but are not considered surprising.</li>' +
+                                '</ul>' +
+                                '</p>'
+                        } else {
+                            document.getElementById('innerCardy').innerHTML = 
+                                '<p>' +
+                                'The Data Science team has produced a metric referred to as <strong>surprise</strong>. The <strong>surprise</strong> metric can be viewed by hovering over a county.<br />' +
+                                '<ul class="text-start">' +
+                                    '<li>Left of the color scale are counties with low sales rates.</li>' +
+                                    '<li>Right of the color scale are counties with high sales rates</li>' +
+                                '</ul>' +
+                                '</p>'
+                        }
+                        </script>
+                      </div>
+                      <div class="row">
+                          <div class="col">
+                            <!-- <p class="float-start" style="background: #fff;"><b>Scroll Up</b> <i class="fa-solid fa-angle-up fa-xl"></i></p> -->
+                            <span class="float-end"><a href="identify.html" class="btn btn-success">Begin Experiment</a></span>
+                          </div>
+                      </div>
+                      </div>
+                  </div>
+            </div>  
         </div>
-	</div>
+
+        <div class="col-md-8 fixed-top mt-5" id="vis">         
+          <div><img src="../assets/img1.gif" class="w-100 gifs position-absolute"/></div>       
+          <div><img src="../assets/img2.gif" style="visibility: hidden;" class="w-100 gifs position-absolute" /></div>
+          <div id="imgx">
+            <script>
+                if(+sessionStorage.getItem('lrValue') % 2 == 0){
+                    document.getElementById('imgx').innerHTML = '<img src="../assets/img3s.gif" style="visibility: hidden;" class="w-100 gifs position-absolute" />'
+                } else {
+                    document.getElementById('imgx').innerHTML = '<img src="../assets/img3c.gif" style="visibility: hidden;" class="w-100 gifs position-absolute" />'
+                }
+            </script>
+        </div>
+          <div id="imgy">
+            <script>
+                if(+sessionStorage.getItem('lrValue') % 2 == 0){
+                    document.getElementById('imgy').innerHTML = '<img src="../assets/img4s.gif" style="visibility: hidden;" class="w-100 gifs position-absolute" />'
+                } else {
+                    document.getElementById('imgy').innerHTML = '<img src="../assets/img4c.gif" style="visibility: hidden;" class="w-100 gifs position-absolute" />'
+                }
+            </script>
+        </div>
+          <div id="imgz"> 
+            <script>
+                if(+sessionStorage.getItem('lrValue') % 2 == 0){
+                    document.getElementById('imgz').innerHTML = '<img src="../assets/img5s.gif" style="visibility: hidden;" class="w-100 gifs position-absolute" />'
+                } else {
+                    document.getElementById('imgz').innerHTML = '<img src="../assets/img5c.gif" style="visibility: hidden;" class="w-100 gifs position-absolute" />'
+                }
+            </script>
+        </div>
+      </div>
     </div>
-    <footer id="footer"></footer>
-
-
-
+    </div>
+    <!--<footer class="fixed-bottom"></footer>-->
+    <script src = '../js/scroller.js'></script>
+    <script src = '../js/sections.js'></script>
     <script>
-        function selectPage(src) {	
-			window.location = 'identify.html'
-        }
+      (function () {
+        const eDown = Array.from(document.querySelectorAll('.card-scrolldown'));
+        eDown.forEach(el => {
+          el.addEventListener('click', function () {
+            el.closest('.step').nextElementSibling.scrollIntoView();
+          });
+        });
+        const eUp = Array.from(document.querySelectorAll('.card-scrollup'));
+        eUp.forEach(el => {
+          el.addEventListener('click', function () {
+            el.closest('.step').previousElementSibling.scrollIntoView();
+          });
+        });
+      })()
     </script>
 </body>
 </html>

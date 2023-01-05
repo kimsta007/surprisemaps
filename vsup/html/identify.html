@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="../css/shepherd.css">
   <script src="https://unpkg.com/simple-statistics@7.8.0/dist/simple-statistics.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/shepherd.js@latest/dist/js/shepherd.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
   <script src="https://unpkg.com/textures@1.2.0/dist/textures.js"></script>
   <script src="../js/guidedTour.js"></script>
   <script src="https://kit.fontawesome.com/581d0822b8.js" crossorigin="anonymous"></script>
@@ -81,9 +82,8 @@
         </div>
         <div class="col-md-7">
           <div id="ccount" class="justify-content-center"><b>Selected Counties [0/5]</b></div> 
-
             <div id="rowCounties"><span class="text-muted">You haven't selected any counties yet.</span></div>   
-            <button type="button" class="btn btn-success" id="btnContinue"
+            <button type="button" class="btn btn-success pt-2" id="btnContinue"
           onclick="javascript: selectPage()" data-bs-toggle="tooltip" data-bs-placement="bottom"
           style="margin: 0 auto;" title="Click to Continue to Next Trial"
           disabled>Continue</button>
