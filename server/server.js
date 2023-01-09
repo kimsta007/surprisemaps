@@ -41,7 +41,7 @@ app.post('/consent', (request, response) => {
 	}
 })
 
-app.use(express.static('surprisemaps'))
+app.use(express.static('../'))
 
 server = app.listen(3000, () => {console.log("server is listening on port", server.address().port);
 })
