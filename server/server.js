@@ -33,11 +33,11 @@ app.post('/', (request, response) => {
 app.post('/consent', (request, response) => {
 	reqChecker += 1;
 	if (reqChecker % 3 === 0) {
-		response.redirect('http://localhost:3000/surprise/html/intro.html?type=1');
+		response.redirect('http://proanalytics.co.uk:3000/surprise/html/intro.html?type=1');
 	} else if (reqChecker % 3 === 1) {
-		response.redirect('http://localhost:3000/surprise/html/intro.html?type=2');
+		response.redirect('http://proanalytics.co.uk:3000/surprise/html/intro.html?type=2');
 	} else {
-		response.redirect('http://localhost:3000/vsup/html/intro.html');
+		response.redirect('http://proanalytics.co.uk:3000/vsup/html/intro.html');
 	}
 })
 
