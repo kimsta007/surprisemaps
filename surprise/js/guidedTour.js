@@ -43,7 +43,7 @@ function c_identify(){
         title: 'Zoom Effect',
         text: 'You can use the +/- buttons to zoom in an out of interesting regions on the map. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the map and drag to pan left or right.',
         attachTo: {
-            element: '#zoom_in',
+            element: '#visualsx',
             on: 'bottom'
         },
         buttons: [{
@@ -243,7 +243,7 @@ function s_identify(){
         title: 'Zoom Effect',
         text: 'You can use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the map and drag to pan left or right.',
         attachTo: {
-            element: '#zoom_in',
+            element: 'svg',
             on: 'bottom'
         },
         buttons: [{
@@ -702,7 +702,7 @@ function c_delineate(){
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoom_in',
+            element: 'svg',
             on: 'bottom'
         },
         buttons: [{
@@ -833,7 +833,7 @@ function s_delineate(){
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoom_in',
+            element: 'svg',
             on: 'bottom'
         },
         buttons: [{
@@ -965,7 +965,7 @@ function c_summarize(){
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoom_in',
+            element: '#csvg',
             on: 'bottom'
         },
         buttons: [{
@@ -1095,7 +1095,7 @@ function s_summarize(){
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoom_in',
+            element: 'svg',
             on: 'bottom'
         },
         buttons: [{
@@ -1230,7 +1230,7 @@ function c_explore(){
         title: 'Zoom Effect',
         text: 'You can use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the map and drag to pan left or right.',
         attachTo: {
-            element: '#zoom_in',
+            element: '#visualsx',
             on: 'bottom'
         },
         buttons: [{
@@ -1360,7 +1360,7 @@ function s_explore(){
         title: 'Zoom Effect',
         text: 'You can use the +/- buttons to zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the map and drag to pan left or right.',
         attachTo: {
-            element: '#zoom_in',
+            element: 'svg',
             on: 'bottom'
         },
         buttons: [{
@@ -1487,7 +1487,7 @@ function c_rank(){
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoom_in',
+            element: 'svg',
             on: 'bottom'
         },
         buttons: [{
@@ -1618,7 +1618,7 @@ function s_rank() {
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoom_in',
+            element: 'svg',
             on: 'bottom'
         },
         buttons: [{
