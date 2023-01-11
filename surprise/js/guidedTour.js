@@ -117,10 +117,10 @@ function c_identify(){
 
     {
         title: 'Remove County',
-        text: 'A selected county can be removed from the list by clicking the Remove button. However, you will be required to select a new county to proceed to the next task. <br/>' +
-                '<b>Click Remove!</b>',
+        text: 'A county can be removed from the list by clicking on the respective button. However, you will be required to select a total of 5 counties to proceed to the next task. <br/>' +
+                '<b>Click to remove!</b>',
         attachTo: {
-            element: '.selected',
+            element: '#rowCounties',
             on: 'top'
         },
         buttons: [ {text: 'Exit',
@@ -317,10 +317,10 @@ function s_identify(){
 
     {
         title: 'Remove County',
-        text: 'A selected county can be removed from the list by clicking the Remove button. However, you will be required to select a new county to proceed to the next task. <br/>' +
-                '<b>Click Remove!</b>',
+        text: 'A county can be removed from the list by clicking on the respective button. However, you will be required to select a total of 5 counties to proceed to the next task. <br/>' +
+                '<b>Click to remove!</b>',
         attachTo: {
-            element: '.selected',
+            element: '#rowCounties',
             on: 'top'
         },
         buttons: [ {text: 'Exit',
