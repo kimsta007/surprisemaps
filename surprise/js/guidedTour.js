@@ -1272,7 +1272,7 @@ function c_explore(){
 
     {
         title: 'Narrative',
-        text: '<b>Provide a short narrative of covid saless across the USA.</b>',
+        text: 'Provide a short narrative of sales across the USA.',
         attachTo: {
             element: '#summary',
             on: 'top'
@@ -1402,7 +1402,7 @@ function s_explore(){
 
     {
         title: 'Narrative',
-        text: '<b>Provide a short narrative of sales surprise across the USA.</b>',
+        text: 'Provide a short narrative of sales across the USA.',
         attachTo: {
             element: '#summary',
             on: 'top'
