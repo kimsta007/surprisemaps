@@ -117,10 +117,10 @@ function c_identify(){
 
     {
         title: 'Remove County',
-        text: 'A selected county can be removed from the list by clicking the Remove button. However, you will be required to select a new county to proceed to the next task. <br/>' +
-                '<b>Click Remove!</b>',
+        text: 'A county can be removed from the list by clicking on the respective button. However, you will be required to select a total of 5 counties to proceed to the next task.  <br/>' +
+                '<b>Click to Remove!</b>',
         attachTo: {
-            element: '.selected',
+            element: '#rowCounties',
             on: 'top'
         },
         buttons: [ {text: 'Exit',
@@ -247,7 +247,7 @@ function v_identify(){
         title: 'Zoom Effect',
         text: 'You can use the +/- buttons to zoom in an out of interesting regions on the map. The - button is disabled by default and will only be enabled after you zoom into a region on the map.',
         attachTo: {
-            element: '#zoom_in',
+            element: '#visualsx',
             on: 'bottom'
         },
         buttons: [{
@@ -321,7 +321,7 @@ function v_identify(){
 
     {
         title: 'Remove County',
-        text: 'A selected county can be removed from the list by clicking the Remove button. However, you will be required to select a new county to proceed to the next task. <br/>' +
+        text: 'A county can be removed from the list by clicking on the respective button. However, you will be required to select a total of 5 counties to proceed to the next task. <br/>' +
                 '<b>Click to Remove!</b>',
         attachTo: {
             element: '#rowCounties',
@@ -521,10 +521,10 @@ function s_identify(){
 
     {
         title: 'Remove County',
-        text: 'A selected county can be removed from the list by clicking the Remove button. However, you will be required to select a new county to proceed to the next task. <br/>' +
-                '<b>Click Remove!</b>',
+        text: 'A county can be removed from the list by clicking on the respective button. However, you will be required to select a total of 5 counties to proceed to the next task. <br/>' +
+                '<b>Click to Remove!</b>',
         attachTo: {
-            element: '.selected',
+            element: '#rowCounties',
             on: 'top'
         },
         buttons: [ {text: 'Exit',
@@ -1565,7 +1565,7 @@ function v_explore(){
         title: 'Zoom Effect',
         text: 'You can use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map.',
         attachTo: {
-            element: '#zoom_in',
+            element: '#visualsx',
             on: 'bottom'
         },
         buttons: [{

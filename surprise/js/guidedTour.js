@@ -441,7 +441,7 @@ function c_compare(){
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoom_in',
+            element: '#csvg',
             on: 'bottom'
         },
         buttons: [{
@@ -572,7 +572,7 @@ function s_compare(){
         title: 'Zoom Effect',
         text: 'You can also use the +/- buttons to also zoom in an out of the interesting regions on the maps. The - button is disabled by default and will only be enabled after you zoom into a region on the map. Click on the either map and drag to pan left or right.',
         attachTo: {
-            element: '#zoom_in',
+            element: 'svg',
             on: 'bottom'
         },
         buttons: [{
