@@ -10,7 +10,7 @@
 		exploreLog = sessionStorage.getItem('exploreLog')
 		mapType = sessionStorage.getItem('mapType')
 
-		if (+sessionStorage.getItem('lrValue') % 2 == 0) {
+		if (+sessionStorage.getItem('lrValue') === 2) {
 			url = 'choropleth'.concat('-').concat( sessionStorage.getItem('pid')) //Use Prolific ID instead
 		}
 		else {
