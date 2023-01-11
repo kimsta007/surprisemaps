@@ -44,7 +44,7 @@ var cdf = function(x) {
 }
 
 function getdata(){
-	queryDate = '2021-10-01'
+	queryDate = '2022-10-12T00:00:00.000'
 	$.ajax({
     url: "https://data.cdc.gov/resource/8xkx-amqh.json?date=" + queryDate,
     type: "GET",
