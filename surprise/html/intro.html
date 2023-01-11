@@ -70,8 +70,8 @@
                           Your goal is to identify:
                         </p>
                         <ol class="text-start">
-                          <li>The top 5 lowest performing counties, where Company X will send additional marketing resources.</li>
-                          <li>The top 5 best performing counties, where Company X will send a team there to learn about local sales
+                          <li>Five of the lowest performing counties, where Company X will send additional marketing resources.</li>
+                          <li>Five of the best performing counties, where Company X will send a team there to learn about local sales
                             strategies.
                           </li>
                         </ol>
@@ -92,7 +92,7 @@
                         <script>
                         if (+sessionStorage.getItem('lrValue') % 2 == 0) {
                             document.getElementById('innerCardx').innerHTML = '<p>' +
-                            'To aid you in identifying key counties, the Company X Data Science team has produced a map.' +
+                            'To aid you in identifying key counties, the Company X Data Science team has produced a map. ' +
                             'This map includes a special metric, <strong>"surprise"</strong>, which is a statistical measure of how surprising a sales rate is for a given county.' +
                             '</p>' +
                             '<p>Sales can be surprisingly high, or surprisingly low. ' +
@@ -144,10 +144,10 @@
                             if (+sessionStorage.getItem('lrValue') % 2 == 0) {
                                 document.getElementById('innerCardy').innerHTML = 
                                 '<p>' +
-                                'The Data Science team has produced a map that only shows the surprise value. The associated sales rate can be viewed by hovering over a county.<br />' +
+                                'The Data Science team has produced a map that shows the surprise value. The associated sales rate can be viewed by hovering over a county.<br />' +
                                 '<ul class="text-start">' +
-                                    '<li>Left of the color scale are counties with low sales rates that are considered surprising.</li>' +
-                                    '<li>Right of the color scale are counties with high sales rates that are considered surprising.</li>' +
+                                    '<li>Left on the color scale are counties with low sales rates that are considered surprising.</li>' +
+                                    '<li>Right on the color scale are counties with high sales rates that are considered surprising.</li>' +
                                     '<li>At the middle of the color scale are counties with either low or high sales rates, but are not considered surprising.</li>' +
                                 '</ul>' +
                                 '</p>'
@@ -156,8 +156,8 @@
                                 '<p>' +
                                 'The Data Science team has produced a metric referred to as <strong>surprise</strong>. The <strong>surprise</strong> metric can be viewed by hovering over a county.<br />' +
                                 '<ul class="text-start">' +
-                                    '<li>Left of the color scale are counties with low sales rates.</li>' +
-                                    '<li>Right of the color scale are counties with high sales rates</li>' +
+                                    '<li>Left on the color scale are counties with low sales rates.</li>' +
+                                    '<li>Right on the color scale are counties with high sales rates</li>' +
                                 '</ul>' +
                                 '</p>'
                         }

@@ -6,7 +6,7 @@ const cors = require('cors')
 const app = express()
 app.use(cors())
 
-var reqChecker = 1;
+var reqChecker = 0;
 
 app.use( express.urlencoded({ extended:true }) )
 app.use(express.json({limit: '3mb'}))
