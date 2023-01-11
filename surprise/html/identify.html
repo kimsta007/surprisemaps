@@ -156,8 +156,8 @@
         }
       });
       //Construct the steps
-      if (rnd_gen % 2 == 0) c_identify();
-      else s_identify();
+      if (rnd_gen % 3 == 0) s_identify();
+      else c_identify();
       tour.addSteps(steps);
       // Initiate the tour
       tour.start();

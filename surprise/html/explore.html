@@ -131,10 +131,10 @@ let tour;
                     }
                 });
                 //Construct the steps
-				if (rnd_gen % 2 == 0)
-					c_explore()
-				else 
+				if (rnd_gen % 3 == 0)
 					s_explore()
+				else 
+					c_explore()
                 tour.addSteps(steps);
                 // Initiate the tour
                 tour.start();

@@ -81,8 +81,8 @@ function makeMaps(){
     calcSurprise()
     rnd_gen = +sessionStorage.getItem('lrValue')
 
-	if (rnd_gen % 2 == 0)  {
-		drawGraph(0)
+	if (rnd_gen % 3 == 0)  {
+		drawGraph(1)
 		document.getElementById('lblx').textContent = 'Choropleth Map'
 		if (expType == 0)
 			document.getElementById('parax').innerHTML = `<b>Choropleth Maps</b> are colored directly based on the number of sales divided by the county population.
@@ -90,7 +90,7 @@ function makeMaps(){
 			We will ask you to use this map to answer questions about high or low performing counties in terms of sales rates.`
 	}
 	else {
-		drawGraph(1) 
+		drawGraph(0) 
 		document.getElementById('lblx').textContent = 'Surprise Map'
 		if (expType == 0)
 			document.getElementById('parax').innerHTML = `<b>Surprise Maps</b> use an experimental technique called &nbsp;“Surprise”&nbsp; to color counties based on whether their sales 
@@ -102,7 +102,7 @@ function makeMaps(){
 
 
 	if (expType != 0) { //Identify task
-		if (rnd_gen % 2 == 0){
+		if (rnd_gen % 3 != 0){
 			document.getElementById('txt-a').textContent = "The Choropleth Map shows sales data of a product line, weighted directly by population"
 		} else { 
 			document.getElementById('txt-a').textContent = "The Surprise Map summarizes counties with interesting sales rates, based on the national average. A county can show either high surprise, low surprise or no surprise."
