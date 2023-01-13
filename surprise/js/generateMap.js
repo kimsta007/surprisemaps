@@ -24,7 +24,7 @@ let palette = [
 ];
 
 let count = 0, row = "", counties = [], surpriseData = [], validation = [];
-const checkSurprise = []
+const checkSurprise = [], analysisData = []
 let timeout = null, toggled = true, toggleValue = 1, lastSelected, lastLegendSelected = null
 let mouseStartTime, mouseIdleTime, mouseLog = [], mouseClick = []
 let min, max, rnd_gen, sd, avg, highTickValue
@@ -454,6 +454,7 @@ function calcSurprise(){
 			checkSurprise.push(+surprise / 0.015); //To find max and min
 			data[iter]['surprise'] = +surprise / 0.015
 		    surpriseData.push({fips : +data[iter].fips, surprise: +surprise / 0.015})
+			analysisData.push([+data[iter].fips, data[iter].recip_county, data[iter].recip_state, +surprise, +data[iter].series_complete_pop_pct])
 	  }}
     }
 }
@@ -626,9 +627,7 @@ function makeLegend(colorScale, svg, mapType) {
 }
 
 async function saveCSV () {
-	var array = checkSurprise.map(x => [x])
-   
-	var blob = new Blob([CSV.serialize(array)], {type: "text/csv"});
+	var blob = new Blob([CSV.serialize(analysisData)], {type: "text/csv"});
    
 	const fileHandle = await window.showSaveFilePicker({
 	  suggestedName : "surprise.csv",
