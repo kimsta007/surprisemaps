@@ -454,7 +454,7 @@ function calcSurprise(){
 			checkSurprise.push(+surprise / 0.015); //To find max and min
 			data[iter]['surprise'] = +surprise / 0.015
 		    surpriseData.push({fips : +data[iter].fips, surprise: +surprise / 0.015})
-			analysisData.push([+data[iter].fips, data[iter].recip_county, data[iter].recip_state, +surprise, +data[iter].series_complete_pop_pct])
+			analysisData.push([+data[iter].fips, data[iter].recip_county, data[iter].recip_state, +surprise, +data[iter].series_complete_pop_pct, +data[iter].census2019])
 	  }}
     }
 }
