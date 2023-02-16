@@ -99,7 +99,7 @@ function drawGraph() {
 	let uDom = [calculateIQRange(checkSurprise)[1], 0];
 	let interpolateIsoRdBu = d3
 								.scaleLinear()
-								.domain([0, .16, vDom[1]]) 
+								.domain([0.05738000000000021, 0.5, 0.9431599999999998]) 
 								.range([colorLow, colorMid, colorHigh])
 								.interpolate(d3.interpolateLab);
 	let quantization = vsup.quantization().branching(2).layers(4).valueDomain(vDom).uncertaintyDomain(uDom);
