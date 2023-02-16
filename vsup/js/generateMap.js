@@ -93,9 +93,7 @@ function drawGraph() {
                             .shapeRendering("crispEdges");
 	// -----------------------						
 	let vDom = calculateIQRange(validation);
-	console.log(vDom)
-	vDom = [+Math.abs(vDom[0]) , vDom[1]];
-	const vDomDiff = vDom[1] - vDom[0]
+	vDom = [0.7, 0.95];
 	let uDom = [calculateIQRange(checkSurprise)[1], 0];
 	let interpolateIsoRdBu = d3
 								.scaleLinear()
@@ -234,7 +232,7 @@ function drawGraph() {
 		  .style("font-size", "10px")
 		  .attr("dy", ".35em")
 		  .attr("text-anchor", "middle")
-		  .attr("transform", "translate(920, 380) rotate(-60)")
+		  .attr("transform", "translate(925, 380) rotate(-60)")
 		  .text("Surprisingly High");
 
 	svg.append("text")

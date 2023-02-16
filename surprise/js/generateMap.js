@@ -62,7 +62,6 @@ function cleanupData(dte){
 
 function makeMaps(){
     calcSurprise()
-	console.log(d3.extent(checkSurprise))
     rnd_gen = +sessionStorage.getItem('lrValue')
 	if (rnd_gen === 2)  {
 		drawGraph(0)
@@ -129,18 +128,14 @@ function drawGraph(mapType) {
 							
 	if (mapType == 0) {  //map choropleth
 		colorScale = d3.scaleQuantize()
-						// .domain(calculateIQRange(validation))
-						.domain([0, 0.35])
+						//.domain(calculateIQRange(validation))
+						.domain([0.7, 0.95])
 						.range(colorsChoropleth)
 
 		section = d3.select("#visualsx")
 		section.classed("svg-containerx", true) 
 	} else { //map surprise -------------
-		//const tempSurprise = checkSurprise.map(a => a < 0 ? -a : a) 
 		const IQRSurprise = calculateIQRange(checkSurprise)
-		//const step = (IQRSurprise[1] - IQRSurprise[0]) / 4;
-		//const ticks = d3.ticks(0, IQRSurprise[1] + step, 4);
-		//highTickValue = ticks[ticks.length - 1] 
 		highTickValue = IQRSurprise
 		colorScale = d3.scaleQuantize() 
 							.domain(IQRSurprise)
@@ -151,7 +146,6 @@ function drawGraph(mapType) {
 			.range()
 				.map(d => {
 				let inverted = colorScale.invertExtent(d);
-				// console.log(inverted)
 				return inverted
 			})
 	}
@@ -466,20 +460,19 @@ function makeLegend(colorScale, svg, mapType) {
 	const legendBarLength = (mapType == 0) ? (legendWidth / 8) : (legendWidth / 7)
 
 	let legendScale = d3.scaleLinear()
-		.domain((mapType == 0) ? [0, 0.4] : highTickValue) //[-Math.round(highTickValue), Math.round(highTickValue)])
+		.domain((mapType == 0) ? [0.7, 0.95] : highTickValue)  
 		.rangeRound([0, legendWidth])
-
+		
 	let legendAxis = d3.axisTop(legendScale)
-		  .tickSize(5)
-		  .tickSizeOuter(0)
 
-	if (mapType == 0)
+	if (mapType == 0) {
+		  legendAxis.tickValues([0.7, 0.95])  
 		  legendAxis.tickFormat(d3.format('.0%'))
+		}
 	else  {
-		  legendAxis.tickValues(highTickValue) //[-Math.round(highTickValue), Math.round(highTickValue)])
-		  legendAxis.tickFormat((d) => `${d.toFixed(3)}`)
+		  legendAxis.tickValues(highTickValue)  
+		 // legendAxis.tickFormat((d) => `${d.toFixed(3)}`)
 	}
-	 
     let colorRange = [... new Set(colorScale.range())] //TODO: find a better way to remove duplicate
 		.map(d => {
 	    let inverted = colorScale.invertExtent(d);

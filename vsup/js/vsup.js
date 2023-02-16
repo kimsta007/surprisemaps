@@ -5768,7 +5768,8 @@
 		function r() {
 			var t,
 				e = [];
-			f.nice(Math.pow(a, c - 1)), o.nice(c), (e[0] = []), e[0].push({
+			//f.nice(Math.pow(a, c - 1)), o.nice(c), (e[0] = []), e[0].push({
+			f, o.nice(1), (e[0] = []), e[0].push({
 				u: o.invert((c - 1) / c),
 				v: f.invert(0.5)
 			});
