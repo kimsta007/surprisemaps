@@ -44,33 +44,16 @@ var cdf = function(x) {
 }
 
 function getdata(){
-	queryDate = '2022-10-12T00:00:00.000'
-	$.ajax({
-    url: "https://data.cdc.gov/resource/8xkx-amqh.json?date=" + queryDate,
-    type: "GET",
-    data: {
-      "$limit" : 5000,
-      "$$app_token" : "ztg2e75T7AHYY47YuxkzxhAxH"
-    }
-}).done(function(dtx) {
-	data = dtx;
-	Promise.all([d3.json('../data/counties.json')]).then(cleanupData);
-});
+	Promise.all([d3.json('../data/counties.json'), d3.csv('../data/poverty.csv')]).then(cleanupData);
 }
 
 function cleanupData(dte){
-	for (let record in data){
-		if (data[record].fips != "UNK"){		
-			if (data[record].recip_state == "HI"){
-				data[record].series_complete_pop_pct = 0
-			}
-			if (data[record].series_complete_pop_pct != 0 && !isNaN(data[record].series_complete_pop_pct)) {
-				data[record].population = +data[record].census2019 / 328239523;
-				data[record].series_complete_pop_pct = +data[record].series_complete_pop_pct / 100;
-				validation.push(+data[record].series_complete_pop_pct);
-			}
-		}
-	}
+	dte[1].forEach((record) => {
+		record.pop2017 /= 328239523
+		record.poverty /= 100
+		validation.push(record.poverty)
+	})
+	data = dte[1]
     avg = math.mean(validation)
 	sd = math.std(validation)
 	geoData = dte[0];
@@ -79,8 +62,8 @@ function cleanupData(dte){
 
 function makeMaps(){
     calcSurprise()
+	console.log(d3.extent(checkSurprise))
     rnd_gen = +sessionStorage.getItem('lrValue')
-
 	if (rnd_gen === 2)  {
 		drawGraph(0)
 		document.getElementById('lblx').textContent = 'Choropleth Map'
@@ -147,23 +130,22 @@ function drawGraph(mapType) {
 	if (mapType == 0) {  //map choropleth
 		colorScale = d3.scaleQuantize()
 						// .domain(calculateIQRange(validation))
-						.domain([0.1, 0.9])
+						.domain([0, 0.35])
 						.range(colorsChoropleth)
 
 		section = d3.select("#visualsx")
 		section.classed("svg-containerx", true) 
 	} else { //map surprise -------------
-		const tempSurprise = checkSurprise.map(a => a < 0 ? -a : a)
-		const IQRSurprise = calculateIQRange(tempSurprise)
-
-		const step = (IQRSurprise[1] - IQRSurprise[0]) / 4;
-		const ticks = d3.ticks(0, IQRSurprise[1] + step, 4);
-		highTickValue = ticks[ticks.length - 1] 
-
+		//const tempSurprise = checkSurprise.map(a => a < 0 ? -a : a) 
+		const IQRSurprise = calculateIQRange(checkSurprise)
+		//const step = (IQRSurprise[1] - IQRSurprise[0]) / 4;
+		//const ticks = d3.ticks(0, IQRSurprise[1] + step, 4);
+		//highTickValue = ticks[ticks.length - 1] 
+		highTickValue = IQRSurprise
 		colorScale = d3.scaleQuantize() 
-							.domain([-highTickValue, highTickValue])
+							.domain(IQRSurprise)
 							.range(palette);
-
+		console.log(colorScale(0))
 		section = d3.select("#visualsx")
 		colorScale
 			.range()
@@ -238,14 +220,14 @@ function drawGraph(mapType) {
 			.attr("id", (d) => d.id) 
 			.attr("stroke", "#FFF")
 			.attr("stroke-width", .2)
-            .attr("class", (d) => { let cdata = +getCountyByFips(d.id).series_complete_pop_pct
+            .attr("class", (d) => { let cdata = +getCountyByFips(d.id).poverty
 								   if (mapType == 0)
 										return 'county'.concat(colorScale(cdata)).replace('#','')
 								   else if ((cdata != 0) && !isNaN(cdata))
 										return 'county'.concat(colorScale(+d.properties.Surprise)).replace('#', '')
 									})				
 			.attr("fill", (d) => {  if (mapType == 0) {
-										let cdata = getCountyByFips(d.id).series_complete_pop_pct
+										let cdata = getCountyByFips(d.id).poverty
 										if ((cdata != 0) && !isNaN(cdata)){												
 											return colorScale(cdata)
 										}
@@ -253,14 +235,16 @@ function drawGraph(mapType) {
 											return texture.url();
 										}
 									} else {
-										if ((getCountyByFips(d.id).series_complete_pop_pct != 0) && !isNaN(getCountyByFips(d.id).series_complete_pop_pct))
-											return colorScale(+d.properties.Surprise)
+										if ((getCountyByFips(d.id).poverty != 0) && !isNaN(getCountyByFips(d.id).poverty))
+											{	 
+												return colorScale(+d.properties.Surprise)
+											}
 										else 
 											return texture.url();
 									}
 								 })
 			.attr("data-fips", (d) => d.id)
-			.attr("data-sales", (d) => {(mapType == 0) ? +getCountyByFips(d.id).series_complete_pop_pct : +d.properties.Surprise})
+			.attr("data-sales", (d) => {(mapType == 0) ? +getCountyByFips(d.id).poverty : +d.properties.Surprise})
 			.on("mouseover", handleMouseOver)
 			.on("mosemove", handleMouseMove)
 			.on("mouseout", handleMouseOut)
@@ -312,11 +296,11 @@ function drawGraph(mapType) {
 				if (count == 5){
 					document.getElementById('icon').classList.add('fa-shake');
 				}
-				if (expType == 1 && countyData.series_complete_pop_pct != 0){
-					let county = countyData.recip_county
-					mouseClick.push({'state':countyData.recip_state,'county': countyData.recip_county, 'fips': el.id, 'sales-rate': countyData.series_complete_pop_pct,'surprise': countyData.surprise, 'idle_duration': mouseIdleTime, 'mapType': mType})
+				if (expType == 1 && countyData.poverty != 0){
+					let county = countyData.county
+					mouseClick.push({'state':countyData.state,'county': countyData.county, 'fips': el.id, 'sales-rate': countyData.poverty,'surprise': countyData.surprise, 'idle_duration': mouseIdleTime, 'mapType': mType})
 					if ((count < 5) && (counties.indexOf(el.id) == -1)){
-						row += '<div class="row-county" id="' + el.id +'"><button class="btn btn-primary btn-sm" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 14px; vertical-align:middle;"><i class="fa fa-times"></i> '+ county + ', ' + countyData.recip_state + '</button></div>'
+						row += '<div class="row-county" id="' + el.id +'"><button class="btn btn-primary btn-sm" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 14px; vertical-align:middle;"><i class="fa fa-times"></i> '+ county + ', ' + countyData.state + '</button></div>'
 						document.getElementById("rowCounties").innerHTML = row;
 						count += 1
 						counties.push(+el.id)	
@@ -342,18 +326,18 @@ function drawGraph(mapType) {
 		tooltip
 				.style("left", d3.event.pageX + 10 + "px")
 				.style("top", d3.event.pageY + 10 + "px")
-				.attr("data-sales", `${county.series_complete_pop_pct}`)
+				.attr("data-sales", `${county.poverty}`)
 				.html(function(){
-					if (county.series_complete_pop_pct == 0 || (isNaN(county.series_complete_pop_pct)))
+					if (county.poverty == 0 || (isNaN(county.poverty)))
 						return `No data available`
 					else
-						return `<b><p style="text-align: left; margin: 0px; padding: 0px; background-color: white;">${county.recip_county} (${county.recip_state})</p></b>
-					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Sales Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${numeral(county.series_complete_pop_pct.toFixed(2)).format('0%')}</td><td style="font-size: 12px;">${county.surprise.toFixed(3)}</td><td style="font-size: 12px;">${county.census2019}</td></tr></table>`
+						return `<b><p style="text-align: left; margin: 0px; padding: 0px; background-color: white;">${county.county} (${county.state})</p></b>
+					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Sales Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${numeral(county.poverty).format('0%')}</td><td style="font-size: 12px;">${county.surprise}</td><td style="font-size: 12px;">${Math.round(county.pop2017 * 328239523)}</td></tr></table>`
 				})
 			
 		   let legendID
 		   if (mapType == 0){
-				legendID = '#legend'.concat(colorScale(+getCountyByFips(el.id).series_complete_pop_pct).replace('#',''))
+				legendID = '#legend'.concat(colorScale(+getCountyByFips(el.id).poverty).replace('#',''))
 			}
 		   else {
 				legendID = '#legend'.concat(colorScale(+el.properties.Surprise).replace('#', ''))
@@ -372,7 +356,7 @@ function drawGraph(mapType) {
 		let county = getCountyByFips(el.id);
 		mouseIdleTime = new Date().getTime() - mouseStartTime
 		if (mouseIdleTime >= 120){
-			mouseLog.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'sales-rate': county.series_complete_pop_pct,'surprise': county.surprise, 'idle_duration': mouseIdleTime})
+			mouseLog.push({'state':county.state,'county': county.county, 'fips': el.id, 'sales-rate': county.poverty,'surprise': county.surprise, 'idle_duration': mouseIdleTime})
 		}
 		tooltip
 				.transition()
@@ -383,7 +367,7 @@ function drawGraph(mapType) {
 
 		let legendID
 		if (mapType == 0){
-				legendID = '#legend'.concat(colorScale(+getCountyByFips(el.id).series_complete_pop_pct).replace('#',''))
+				legendID = '#legend'.concat(colorScale(+getCountyByFips(el.id).poverty).replace('#',''))
 			}
 		else {
 				legendID = '#legend'.concat(colorScale(+el.properties.Surprise).replace('#', ''))
@@ -419,8 +403,8 @@ function calcSurprise(){
   //Estimate P(D|M) 
   //De Moivres
   for (let iter = 0; iter < data.length; iter++) {
-	  if (+data[iter].series_complete_pop_pct != 0){
-		  s = ((+data[iter].series_complete_pop_pct) - avg) / (sd / Math.sqrt(+data[iter].population)); //Z-Score
+	  if (+data[iter].poverty != 0){
+		  s = ((+data[iter].poverty) - avg) / (sd / Math.sqrt(+data[iter].pop2017)); //Z-Score
 		  //s = ((jsonData[iter].series_complete_pop_pct) - avg) / sd;
 		  pSMs.push(1 - (2 * cdf(Math.abs(s)))); //Liklehood
 	  } else {
@@ -430,11 +414,11 @@ function calcSurprise(){
   
     //Calculate per county surprise
     for (let iter = 0; iter < data.length; iter++) {
-	  if ((+data[iter].series_complete_pop_pct == 0) || (+data[iter].population == undefined)) {
+	  if ((+data[iter].poverty == 0) || (+data[iter].pop2017 == undefined)) {
 			surpriseData.push({fips : +data[iter].fips, surprise: 0})	
 			data[iter]['surprise'] = 'UNK'
 	  } else {
-		  diffs[0] = (+data[iter].series_complete_pop_pct) - avg;
+		  diffs[0] = (+data[iter].poverty) - avg;
 		  //Estimate P(M|D)
 		  //De' moivres
 		  pMDs[0] = pMs[0] * pSMs[iter];
@@ -450,11 +434,10 @@ function calcSurprise(){
 		  } else {
 			voteSum += diffs[0] * pMs[0];
 			let surprise = voteSum >= 0 ? +Math.abs(kl) : -1* +Math.abs(kl);
-			(surprise / 0.015 > 1)
-			checkSurprise.push(+surprise / 0.015); //To find max and min
-			data[iter]['surprise'] = +surprise / 0.015
-		    surpriseData.push({fips : +data[iter].fips, surprise: +surprise / 0.015})
-			analysisData.push([+data[iter].fips, data[iter].recip_county, data[iter].recip_state, +surprise, +data[iter].series_complete_pop_pct, +data[iter].census2019])
+			checkSurprise.push(+surprise); //To find max and min
+			data[iter]['surprise'] = +surprise
+		    surpriseData.push({fips : +data[iter].fips, surprise: +surprise})
+			analysisData.push([+data[iter].fips, data[iter].county, data[iter].state, +surprise, +data[iter].poverty, Math.round(+data[iter].pop2017 * 328239523)])
 	  }}
     }
 }
@@ -483,7 +466,7 @@ function makeLegend(colorScale, svg, mapType) {
 	const legendBarLength = (mapType == 0) ? (legendWidth / 8) : (legendWidth / 7)
 
 	let legendScale = d3.scaleLinear()
-		.domain((mapType == 0) ? [0.1, 0.9] : [-Math.round(highTickValue), Math.round(highTickValue)])
+		.domain((mapType == 0) ? [0, 0.4] : highTickValue) //[-Math.round(highTickValue), Math.round(highTickValue)])
 		.rangeRound([0, legendWidth])
 
 	let legendAxis = d3.axisTop(legendScale)
@@ -493,8 +476,8 @@ function makeLegend(colorScale, svg, mapType) {
 	if (mapType == 0)
 		  legendAxis.tickFormat(d3.format('.0%'))
 	else  {
-		  legendAxis.tickValues([-Math.round(highTickValue), Math.round(highTickValue)])
-		  legendAxis.tickFormat((d) => `${d.toFixed(1)}`)
+		  legendAxis.tickValues(highTickValue) //[-Math.round(highTickValue), Math.round(highTickValue)])
+		  legendAxis.tickFormat((d) => `${d.toFixed(3)}`)
 	}
 	 
     let colorRange = [... new Set(colorScale.range())] //TODO: find a better way to remove duplicate
@@ -502,7 +485,6 @@ function makeLegend(colorScale, svg, mapType) {
 	    let inverted = colorScale.invertExtent(d);
 	    if (inverted[0] === undefined) {inverted[0] = legendScale.domain()[0];}
 	    if (inverted[1] === undefined) {inverted[1] = legendScale.domain()[1];}
-		//console.log(inverted)
 	    return inverted;
 			});
 
@@ -643,11 +625,11 @@ async function saveCSV () {
   }
 
   function calculateIQRange(array){
-	let upper = lower = array.sort(d3.ascending)		
-	let medianLoc = (array.length % 2 == 0) ? upper.indexOf(ss.median(upper)) : (array.length / 2)
-	upper = upper.slice(medianLoc, upper.length)
-	lower = lower.slice(0, medianLoc)
-	let q1 = ss.median(lower), q3 = ss.median(upper)
-	let iqr = q3 - q1
-	return [q1 - (1.5 * iqr), q3 + (1.5 * iqr)]
+	let upper = lower = array.sort(d3.ascending)	
+	let q1 = d3.quantile(array, 0.25);
+	let q3 = d3.quantile(array, 0.75);
+	let iqr = q3 - q1;
+	let upperFence = q3 + (1.5 * iqr)
+	let lowerFence = q1 - (1.5 * iqr)
+	return [lowerFence, upperFence]
   }

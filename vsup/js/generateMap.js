@@ -1,12 +1,12 @@
-let data, geoData, geojson, positiveSurprise, negativeSurprise;
-let count = 0, row = "", counties = [], surpriseData = [], validation = [], checkSurprise = [];
-let timeout = null, nsminmax, psminmax
+let data, geoData, geojson;
+let count = 0, row = "", counties = [], surpriseData = [], validation = [], checkSurprise = [], absSurprise = [];
+let timeout = null, nsminmax;
 let mouseStartTime, mouseIdleTime, mouseLog = [], mouseClick = []
 let toggleValue = 1
 let toggled = true
 let sd, avg, svg, lastSelected, lastHovered = null
 let colorLow = "#c77560";
-let colorMid = "rgb(239, 219, 203)";
+let colorMid = "#efdbcb";
 let colorHigh = "#2f7264";
 
 let legend
@@ -27,42 +27,24 @@ var cdf = function(x) {
 
 
 function getdata(){
-	let queryDate = '2022-10-12T00:00:00.000'
-	$.ajax({
-    url: "https://data.cdc.gov/resource/8xkx-amqh.json?date=" + queryDate,
-    type: "GET",
-    data: {
-      "$limit" : 5000,
-      "$$app_token" : "ztg2e75T7AHYY47YuxkzxhAxH"
-    }
-}).done(function(dtx) {
-	data = dtx;
-	Promise.all([d3.json('../data/counties.json')]).then(cleanupData);
-});
+	Promise.all([d3.json('../data/counties.json'), d3.csv('../data/poverty.csv')]).then(cleanupData);
 }
 
 function cleanupData(dte){
-	for (let record in data){
-		if (data[record].fips != "UNK"){		
-			if (data[record].recip_state == "HI"){
-				data[record].series_complete_pop_pct = 0
-			}
-			if (data[record].series_complete_pop_pct != 0 && !isNaN(data[record].series_complete_pop_pct)) {
-				data[record].population = +data[record].census2019 / 328239523;
-				data[record].series_complete_pop_pct = +data[record].series_complete_pop_pct / 100;
-				validation.push(+data[record].series_complete_pop_pct);
-			}
-		}
-	}
+	dte[1].forEach((record) => {
+		record.pop2017 /= 328239523
+		record.poverty /= 100
+		validation.push(record.poverty)
+	})
+	data = dte[1]
     avg = math.mean(validation)
 	sd = math.std(validation)
 	geoData = dte[0];
     makeMaps();
 }
 
-function makeMaps(geoData){
+function makeMaps(){
     calcSurprise()
-	psminmax = d3.extent(checkSurprise)
 	drawGraph();
 }
 
@@ -81,7 +63,7 @@ function removeRow(id){
 	if (counties.length) {
 		counties.forEach(function(county){	
 			let ct = getCountyByFips(county)
-			row += '<div class="row-county" id="' + county +'"><button class="btn btn-primary btn-sm" id="' + id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 14px; vertical-align:middle;"><i class="fa fa-times"></i> '+ ct.recip_county + ', ' + ct.recip_state + '</button></div>'
+			row += '<div class="row-county" id="' + county +'"><button class="btn btn-primary btn-sm" id="' + id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 14px; vertical-align:middle;"><i class="fa fa-times"></i> '+ ct.county + ', ' + ct.state + '</button></div>'
 		})
 		document.getElementById("rowCounties").innerHTML = row;
 	} else {
@@ -111,17 +93,16 @@ function drawGraph() {
                             .shapeRendering("crispEdges");
 	// -----------------------						
 	let vDom = calculateIQRange(validation);
-	let uDom = [calculateIQRange(checkSurprise)[1], 0];
-
+	console.log(vDom)
+	vDom = [+Math.abs(vDom[0]) , vDom[1]];
 	const vDomDiff = vDom[1] - vDom[0]
+	let uDom = [calculateIQRange(checkSurprise)[1], 0];
 	let interpolateIsoRdBu = d3
-    .scaleLinear()
-    .domain([vDom[0] - .18 * vDomDiff, .5, vDom[1] + .115 * vDomDiff])
-    .range([colorLow, colorMid, colorHigh])
-    .interpolate(d3.interpolateLab);
-
+								.scaleLinear()
+								.domain([0, .16, vDom[1]]) 
+								.range([colorLow, colorMid, colorHigh])
+								.interpolate(d3.interpolateLab);
 	let quantization = vsup.quantization().branching(2).layers(4).valueDomain(vDom).uncertaintyDomain(uDom);
-
 	let scale = vsup.scale().quantize(quantization).range(interpolateIsoRdBu);
 	//-------------------------
 	let section = d3.select("#visualsx")
@@ -193,7 +174,7 @@ function drawGraph() {
 										return getCountyRGB(countyData)
 								 })
 			.attr("data-fips", (d) => d.id)
-			.attr("data-sales", (d) => {getCountyByFips(d.id).series_complete_pop_pct})
+			.attr("data-sales", (d) => {getCountyByFips(d.id).poverty})
 			.on("mouseover", handleMouseOver)
 			.on("mosemove", handleMouseMove)
 			.on("mouseout", handleMouseOut)
@@ -294,11 +275,11 @@ function drawGraph() {
 			if (count == 5){
 				document.getElementById('icon').classList.add('fa-shake');
 			}
-			if (expType == 1 && countyData.series_complete_pop_pct != 0){
-				let county = countyData.recip_county
-				mouseClick.push({'state':countyData.recip_state,'county': countyData.recip_county, 'fips': el.id, 'sales-rate': countyData.series_complete_pop_pct,'surprise': countyData.surprise, 'idle_duration': mouseIdleTime, 'mapType': 'vsup'})
+			if (expType == 1 && countyData.poverty != 0){
+				let county = countyData.county
+				mouseClick.push({'state':countyData.state,'county': countyData.county, 'fips': el.id, 'sales-rate': countyData.poverty,'surprise': countyData.surprise, 'idle_duration': mouseIdleTime, 'mapType': 'vsup'})
 				if ((count < 5) && (counties.indexOf(el.id) == -1)){
-					row += '<div class="row-county" id="' + el.id +'"><button class="btn btn-primary btn-sm" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 14px; vertical-align:middle;"><i class="fa fa-times"></i> '+ county + ', ' + countyData.recip_state + '</button></div>'
+					row += '<div class="row-county" id="' + el.id +'"><button class="btn btn-primary btn-sm" id="' + el.id + '" type="button" onclick="removeRow(this.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click to Remove County" class="form-control btn-danger" style="font-size: 14px; vertical-align:middle;"><i class="fa fa-times"></i> '+ county + ', ' + countyData.state + '</button></div>'
 					document.getElementById("rowCounties").innerHTML = row;
 					count += 1
 					counties.push(+el.id)	
@@ -324,13 +305,13 @@ function drawGraph() {
 		tooltip
 				.style("left", d3.event.pageX + 10 + "px")
 				.style("top", d3.event.pageY + 10 + "px")
-				.attr("data-sales", `${county.series_complete_pop_pct}`)
+				.attr("data-sales", `${county.poverty}`)
 				.html(function(){
-					if (county.series_complete_pop_pct == 0 || (isNaN(county.series_complete_pop_pct)))
+					if (county.poverty == 0 || (isNaN(county.poverty)))
 						return `No data available`
 					else
-						return `<b><p style="text-align: left; margin: 0px; padding: 0px; background-color: white;">${county.recip_county} (${county.recip_state})</p></b>
-					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Sales Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${numeral(county.series_complete_pop_pct.toFixed(2)).format('0%')}</td><td style="font-size: 12px;">${county.surprise.toFixed(3)}</td><td style="font-size: 12px;">${county.census2019}</td></tr></table>`
+						return `<b><p style="text-align: left; margin: 0px; padding: 0px; background-color: white;">${county.county} (${county.state})</p></b>
+					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Sales Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${numeral(county.poverty).format('0%')}</td><td style="font-size: 12px;">${county.surprise}</td><td style="font-size: 12px;">${Math.round(county.pop2017 * 328239523)}</td></tr></table>`
 				})
 
 
@@ -346,10 +327,8 @@ function drawGraph() {
 	}}
 
 	function getCountyRGB(countyData){
-		if ((countyData.series_complete_pop_pct != 0) && !isNaN(countyData.series_complete_pop_pct)){ 
-				// let x = (Math.abs(+countyData.surprise) - psminmax[0])/( psminmax[1] - psminmax[0])
-				// return scale(parseFloat(countyData.series_complete_pop_pct), parseFloat(x))								
-				return scale(parseFloat(countyData.series_complete_pop_pct), countyData.surprise < 0 ? -countyData.surprise: countyData.surprise)								
+		if ((countyData.poverty != 0) && !isNaN(countyData.poverty)){ 						
+				return scale(parseFloat(countyData.poverty), countyData.surprise < 0 ? -countyData.surprise: countyData.surprise)								
 		}	
 		else
 				return texture.url();
@@ -360,7 +339,7 @@ function drawGraph() {
 		let county = getCountyByFips(el.id);
 		mouseIdleTime = new Date().getTime() - mouseStartTime
 		if (mouseIdleTime >= 120){
-			mouseLog.push({'state':county.recip_state,'county': county.recip_county, 'fips': el.id, 'sales-rate': county.series_complete_pop_pct,'surprise': county.surprise, 'idle_duration': mouseIdleTime})
+			mouseLog.push({'state':county.state,'county': county.county, 'fips': el.id, 'sales-rate': county.poverty,'surprise': county.surprise, 'idle_duration': mouseIdleTime})
 		}
 		tooltip
 				.transition()
@@ -401,8 +380,8 @@ function calcSurprise(){
   //Estimate P(D|M) 
   //De Moivres
   for (let iter = 0; iter < data.length; iter++) {
-	  if (+data[iter].series_complete_pop_pct != 0){
-		  s = ((+data[iter].series_complete_pop_pct) - avg) / (sd / Math.sqrt(+data[iter].population)); //Z-Score
+	  if (+data[iter].poverty != 0){
+		  s = ((+data[iter].poverty) - avg) / (sd / Math.sqrt(+data[iter].pop2017)); //Z-Score
 		  //s = ((jsonData[iter].series_complete_pop_pct) - avg) / sd;
 		  pSMs.push(1 - (2 * cdf(Math.abs(s)))); //Liklehood
 	  } else {
@@ -412,11 +391,11 @@ function calcSurprise(){
   
     //Calculate per county surprise
     for (let iter = 0; iter < data.length; iter++) {
-	  if ((+data[iter].series_complete_pop_pct == 0) || (+data[iter].population == undefined)) {
+	  if ((+data[iter].poverty == 0) || (+data[iter].pop2017 == undefined)) {
 			surpriseData.push({fips : +data[iter].fips, surprise: 0})	
 			data[iter]['surprise'] = 0
 	  } else {
-		  diffs[0] = (+data[iter].series_complete_pop_pct) - avg;
+		  diffs[0] = (+data[iter].poverty) - avg;
 		  //Estimate P(M|D)
 		  //De' moivres
 		  pMDs[0] = pMs[0] * pSMs[iter];
@@ -432,9 +411,10 @@ function calcSurprise(){
 		  } else {
 			voteSum += diffs[0] * pMs[0];
 			let surprise = voteSum >= 0 ? +Math.abs(kl) : -1* +Math.abs(kl);
-			data[iter]['surprise'] = +surprise / 0.015  //to fix
-		    surpriseData.push({fips : +data[iter].fips, surprise: +surprise / 0.015}) //to fix
-			checkSurprise.push(+Math.abs(kl) / 0.015) //to fix
+			data[iter]['surprise'] = +surprise  
+		    surpriseData.push({fips : +data[iter].fips, surprise: +surprise})  
+			checkSurprise.push(+surprise)  
+			absSurprise.push(+Math.abs(surprise))
 	  }}
     }
 }
@@ -450,11 +430,11 @@ function setSurprise(geojson){
 }
 
 function calculateIQRange(array){
-	let upper = lower = array.sort(d3.ascending)		
-	let medianLoc = (array.length % 2 == 0) ? upper.indexOf(ss.median(upper)) : (array.length / 2)
-	upper = upper.slice(medianLoc, upper.length)
-	lower = lower.slice(0, medianLoc)
-	let q1 = ss.median(lower), q3 = ss.median(upper)
-	let iqr = q3 - q1
-	return [q1 - (1.5 * iqr), q3 + (1.5 * iqr)]
-  }
+	let upper = lower = array.sort(d3.ascending)	
+	let q1 = d3.quantile(array, 0.25);
+	let q3 = d3.quantile(array, 0.75);
+	let iqr = q3 - q1;
+	let upperFence = q3 + (1.5 * iqr)
+	let lowerFence = q1 - (1.5 * iqr)
+	return [lowerFence, upperFence]
+}
