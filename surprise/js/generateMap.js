@@ -63,6 +63,7 @@ function cleanupData(dte){
 function makeMaps(){
     calcSurprise()
     rnd_gen = +sessionStorage.getItem('lrValue')
+	rnd_gen = 2
 	if (rnd_gen === 2)  {
 		drawGraph(0)
 		document.getElementById('lblx').textContent = 'Choropleth Map'
@@ -127,9 +128,9 @@ function drawGraph(mapType) {
                             .shapeRendering("crispEdges");
 							
 	if (mapType == 0) {  //map choropleth
+	    console.log(calculateIQRange(validation))
 		colorScale = d3.scaleQuantize()
-						//.domain(calculateIQRange(validation))
-						.domain([0.7, 0.95])
+						.domain(calculateIQRange(validation))
 						.range(colorsChoropleth)
 
 		section = d3.select("#visualsx")
@@ -460,18 +461,18 @@ function makeLegend(colorScale, svg, mapType) {
 	const legendBarLength = (mapType == 0) ? (legendWidth / 8) : (legendWidth / 7)
 
 	let legendScale = d3.scaleLinear()
-		.domain((mapType == 0) ? [0.7, 0.95] : highTickValue)  
+		.domain((mapType == 0) ? calculateIQRange(validation) : highTickValue)  
 		.rangeRound([0, legendWidth])
-		
+
 	let legendAxis = d3.axisTop(legendScale)
 
 	if (mapType == 0) {
-		  legendAxis.tickValues([0.7, 0.95])  
+		  legendAxis.tickValues(calculateIQRange(validation))  
 		  legendAxis.tickFormat(d3.format('.0%'))
 		}
 	else  {
 		  legendAxis.tickValues(highTickValue)  
-		 // legendAxis.tickFormat((d) => `${d.toFixed(3)}`)
+		  legendAxis.tickFormat((d) => `${d.toFixed(3)}`)
 	}
     let colorRange = [... new Set(colorScale.range())] //TODO: find a better way to remove duplicate
 		.map(d => {
@@ -618,11 +619,22 @@ async function saveCSV () {
   }
 
   function calculateIQRange(array){
-	let upper = lower = array.sort(d3.ascending)	
+	array.sort(d3.ascending)	
 	let q1 = d3.quantile(array, 0.25);
 	let q3 = d3.quantile(array, 0.75);
-	let iqr = q3 - q1;
-	let upperFence = q3 + (1.5 * iqr)
-	let lowerFence = q1 - (1.5 * iqr)
-	return [lowerFence, upperFence]
+	let skew = skewness(array)
+	let mad = math.mad(array)
+	let iqr = q3 - q1
+	let upperFence = q3 + (1.5 * ((skew < -1 || skew > 1) ? mad : iqr))
+	let lowerFence = q1 - (1.5 * ((skew < -1 || skew > 1) ? mad : iqr))
+	return [+Math.floor(lowerFence * 100) / 100, +Math.round(upperFence * 100) / 100]
+}
+
+  function skewness(arr) {
+	const n = arr.length;
+	const mean = arr.reduce((sum, value) => sum + value, 0) / n;
+	const variance = arr.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) / (n - 1);
+	const stdDev = Math.sqrt(variance);
+	const skew = arr.reduce((sum, value) => sum + Math.pow((value - mean) / stdDev, 3), 0) / n;
+	return skew;
   }
