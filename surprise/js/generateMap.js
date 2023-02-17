@@ -135,12 +135,10 @@ function drawGraph(mapType) {
 		section.classed("svg-containerx", true) 
 	} else { //map surprise -------------
 		const IQRSurprise = calculateIQRange(checkSurprise)
-		console.log(IQRSurprise)
 		highTickValue = IQRSurprise
 		colorScale = d3.scaleQuantize() 
 							.domain(IQRSurprise)
 							.range(palette);
-		console.log(colorScale(0))
 		section = d3.select("#visualsx")
 		colorScale
 			.range()

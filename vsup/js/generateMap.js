@@ -433,9 +433,10 @@ function calculateIQRange(array){
 	let skew = skewness(array)
 	let mad = math.mad(array)
 	let iqr = q3 - q1
-	let upperFence = q3 + (1.5 * ((skew < -1 || skew > 1) ? mad : iqr))
-	let lowerFence = q1 - (1.5 * ((skew < -1 || skew > 1) ? mad : iqr))
-	return [+Math.floor(lowerFence * 100) / 100, +Math.round(upperFence * 100) / 100]
+	let flag = (skew < -1 || skew > 1)
+	let upperFence = q3 + (1.5 * (flag ? mad : iqr))
+	let lowerFence = q1 - (1.5 * (flag ? mad : iqr))
+	return [flag ? +Math.floor(lowerFence * 100) / 100 : lowerFence, flag ? +Math.round(upperFence * 100) / 100 : upperFence]
 }
 
   function skewness(arr) {
