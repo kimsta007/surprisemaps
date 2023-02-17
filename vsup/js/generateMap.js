@@ -450,11 +450,23 @@ function setSurprise(geojson){
 }
 
 function calculateIQRange(array){
-	let upper = lower = array.sort(d3.ascending)		
-	let medianLoc = (array.length % 2 == 0) ? upper.indexOf(ss.median(upper)) : (array.length / 2)
-	upper = upper.slice(medianLoc, upper.length)
-	lower = lower.slice(0, medianLoc)
-	let q1 = ss.median(lower), q3 = ss.median(upper)
+	array.sort(d3.ascending)	
+	let q1 = d3.quantile(array, 0.25);
+	let q3 = d3.quantile(array, 0.75);
+	let skew = skewness(array)
+	let mad = math.mad(array)
 	let iqr = q3 - q1
-	return [q1 - (1.5 * iqr), q3 + (1.5 * iqr)]
+	let flag = (skew < -1 || skew > 1)
+	let upperFence = q3 + (1.5 * (flag ? mad : iqr))
+	let lowerFence = q1 - (1.5 * (flag ? mad : iqr))
+	return [flag ? +Math.floor(lowerFence * 100) / 100 : lowerFence, flag ? +Math.round(upperFence * 100) / 100 : upperFence]
+}
+
+  function skewness(arr) {
+	const n = arr.length;
+	const mean = arr.reduce((sum, value) => sum + value, 0) / n;
+	const variance = arr.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) / (n - 1);
+	const stdDev = Math.sqrt(variance);
+	const skew = arr.reduce((sum, value) => sum + Math.pow((value - mean) / stdDev, 3), 0) / n;
+	return skew;
   }
