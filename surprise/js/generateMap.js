@@ -127,7 +127,6 @@ function drawGraph(mapType) {
                             .shapeRendering("crispEdges");
 							
 	if (mapType == 0) {  //map choropleth
-	    console.log(calculateIQRange(validation))
 		colorScale = d3.scaleQuantize()
 						.domain(calculateIQRange(validation))
 						.range(colorsChoropleth)
@@ -136,6 +135,7 @@ function drawGraph(mapType) {
 		section.classed("svg-containerx", true) 
 	} else { //map surprise -------------
 		const IQRSurprise = calculateIQRange(checkSurprise)
+		console.log(IQRSurprise)
 		highTickValue = IQRSurprise
 		colorScale = d3.scaleQuantize() 
 							.domain(IQRSurprise)
@@ -624,9 +624,10 @@ async function saveCSV () {
 	let skew = skewness(array)
 	let mad = math.mad(array)
 	let iqr = q3 - q1
-	let upperFence = q3 + (1.5 * ((skew < -1 || skew > 1) ? mad : iqr))
-	let lowerFence = q1 - (1.5 * ((skew < -1 || skew > 1) ? mad : iqr))
-	return [+Math.floor(lowerFence * 100) / 100, +Math.round(upperFence * 100) / 100]
+	let flag = (skew < -1 || skew > 1)
+	let upperFence = q3 + (1.5 * (flag ? mad : iqr))
+	let lowerFence = q1 - (1.5 * (flag ? mad : iqr))
+	return [flag ? +Math.floor(lowerFence * 100) / 100 : lowerFence, flag ? +Math.round(upperFence * 100) / 100 : upperFence]
 }
 
   function skewness(arr) {
