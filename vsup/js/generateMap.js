@@ -93,7 +93,6 @@ function drawGraph() {
                             .shapeRendering("crispEdges");
 	// -----------------------						
 	let vDom = calculateIQRange(validation);
-	console.log(vDom)
 	let uDom = [calculateIQRange(checkSurprise)[1], 0];
 	let interpolateIsoRdBu = d3
 								.scaleLinear()
