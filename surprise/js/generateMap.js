@@ -324,7 +324,7 @@ function drawGraph(mapType) {
 						return `No data available`
 					else
 						return `<b><p style="text-align: left; margin: 0px; padding: 0px; background-color: white;">${county.county} (${county.state})</p></b>
-					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Sales Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${numeral(county.poverty).format('0%')}</td><td style="font-size: 12px;">${county.surprise}</td><td style="font-size: 12px;">${Math.round(county.pop2017 * 328239523)}</td></tr></table>`
+					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Sales Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${numeral(county.poverty).format('0%')}</td><td style="font-size: 12px;">${Number.parseFloat(county.surprise).toFixed(4)}</td><td style="font-size: 12px;">${Math.round(county.pop2017 * 328239523)}</td></tr></table>`
 				})
 			
 		   let legendID
