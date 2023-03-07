@@ -280,3 +280,9 @@ overflow-y: scroll !important;
   display: inline-block;
   margin-left: 5px;
 }
+
+#bubble {
+  fill-opacity: .1;
+  stroke: #ffff00;
+  stroke-width: 2px;
+}
