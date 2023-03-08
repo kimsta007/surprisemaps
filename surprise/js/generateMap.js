@@ -1,6 +1,6 @@
 let data, geoData, popn, geojson, rankingValues, hoverData;
 let population = {}, expData = [];
-let participantList = []
+let participantList = [], fipsList = [], transData  = []
 let colorsChoropleth = [
   "#C87661",
   "#D5937E",
@@ -22,7 +22,9 @@ let palette = [
   "#7BA094",
   "#327365",
 ];
-
+let radius = d3.scaleSqrt()
+    .domain([0, 4])
+    .range([0, 1]);
 let count = 0, row = "", counties = [], surpriseData = [], validation = [];
 const checkSurprise = [], analysisData = []
 let timeout = null, toggled = true, toggleValue = 1, lastSelected, lastLegendSelected = null
@@ -57,8 +59,16 @@ function cleanupData(dte){
 
 	dte[2].forEach((record) => {
 		participantList.push(record.participant)
+		fipsList.push(record.fips)
 	})
+
 	participantList = [...new Set(participantList)];
+	fipsList = [...new Set(fipsList)];
+
+    fipsList.forEach((record) => {
+		let slist = dte[2].filter((data) => {return record == data.fips})
+		transData.push({'fips': record, 'count': slist.length})
+	})
 
 	let plist = document.getElementById("plist");
 	plist.addEventListener("change", updateMap);
@@ -83,14 +93,18 @@ function cleanupData(dte){
     makeMaps();
 }
 
-function updateMap(evt) {
+function updateMap(evt) {	
 	if (document.getElementById("plist").value === 'All') {
+		transData.forEach((record) => {
+			d3.select('.m' + record.fips).attr('r', radius(record.count) * 10)
+		})
 		d3.selectAll('#bubble').style('opacity', '1')
 	} else {
 		d3.selectAll('#bubble').style('opacity', '0')
 		hoverData.forEach((record) => {
 			if (record.participant == document.getElementById("plist").value){
 				d3.selectAll('.m' + record.fips).style('opacity', '1')
+				d3.select('.m' + record.fips).attr('r', '3')
 			}
 		})
 	}
@@ -424,7 +438,7 @@ function drawGraph(mapType) {
                 .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
                 .attr("r", function(d) {		
 									if (d.properties.Participant != undefined){
-										return "3";
+										return (document.getElementById('plist').value == "All") ? radius(d.properties.Count) * 10 : "3";
 									}
 									})
 	makeLegend(colorScale, svg, mapType)
@@ -489,6 +503,15 @@ function setSurprise(geojson){
 		for (var y = 0; y < hoverData.length; y++){
 			if (hoverData[y].fips == geojson.features[x].id){
 				geojson.features[x].properties["Participant"] = hoverData[y].participant				
+				break;
+			}
+		}		
+	}
+
+	for (var x = 0; x < 3142; x++){
+		for (var y = 0; y < transData.length; y++){
+			if (transData[y].fips == geojson.features[x].id){
+				geojson.features[x].properties["Count"] = transData[y].count				
 				break;
 			}
 		}		

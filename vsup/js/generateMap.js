@@ -4,13 +4,16 @@ let timeout = null, nsminmax;
 let mouseStartTime, mouseIdleTime, mouseLog = [], mouseClick = []
 let toggleValue = 1
 let toggled = true
-let participantList = []
+let participantList = [], fipsList = [], transData = []
 let sd, avg, svg, lastSelected, lastHovered = null
 let colorLow = "#c77560";
 let colorMid = "#efdbcb";
 let colorHigh = "#2f7264";
 
 let legend
+let radius = d3.scaleSqrt()
+    .domain([0, 4])
+    .range([0, 1]);
 
 var erfc = function(x) {
     var z = Math.abs(x);
@@ -40,8 +43,15 @@ function cleanupData(dte){
 
 	dte[2].forEach((record) => {
 		participantList.push(record.participant)
+		fipsList.push(record.fips)
 	})
 	participantList = [...new Set(participantList)];
+	fipsList = [...new Set(fipsList)];
+
+ 	fipsList.forEach((record) => {
+		let slist = dte[2].filter((data) => {return record == data.fips})
+		transData.push({'fips': record, 'count': slist.length})
+	})
 
 	let plist = document.getElementById("plist");
 	plist.addEventListener("change", updateMap);
@@ -67,14 +77,18 @@ function cleanupData(dte){
     makeMaps();
 }
 
-function updateMap(evt) {
+function updateMap(evt) {	
 	if (document.getElementById("plist").value === 'All') {
+		transData.forEach((record) => {
+			d3.select('.m' + record.fips).attr('r', radius(record.count) * 10)
+		})
 		d3.selectAll('#bubble').style('opacity', '1')
 	} else {
 		d3.selectAll('#bubble').style('opacity', '0')
 		hoverData.forEach((record) => {
 			if (record.participant == document.getElementById("plist").value){
 				d3.selectAll('.m' + record.fips).style('opacity', '1')
+				d3.select('.m' + record.fips).attr('r', '3')
 			}
 		})
 	}
@@ -399,18 +413,18 @@ function drawGraph() {
 				.style("top", d3.event.pageY + 10 + "px")
 	}
 
-		g
-		.selectAll("circle")
-			.data(geojson.features)
-		.enter().append("circle")
-			.attr("id", "bubble")
-			.attr("class", function(d) {return 'm' + d.id})
-			.attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
-			.attr("r", function(d) {		
-								if (d.properties.Participant != undefined){
-									return "3";
-								}
-								})
+ 	g
+            .selectAll("circle")
+                .data(geojson.features)
+            .enter().append("circle")
+				.attr("id", "bubble")
+				.attr("class", function(d) {return 'm' + d.id})
+                .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+                .attr("r", function(d) {		
+									if (d.properties.Participant != undefined){
+										return (document.getElementById('plist').value == "All") ? radius(d.properties.Count) * 10 : "3";
+									}
+									})
 }
 
 function calcSurprise(){
@@ -470,6 +484,15 @@ function setSurprise(geojson){
 		for (var y = 0; y < hoverData.length; y++){
 			if (hoverData[y].fips == geojson.features[x].id){
 				geojson.features[x].properties["Participant"] = hoverData[y].participant				
+				break;
+			}
+		}		
+	}
+
+	for (var x = 0; x < 3142; x++){
+		for (var y = 0; y < transData.length; y++){
+			if (transData[y].fips == geojson.features[x].id){
+				geojson.features[x].properties["Count"] = transData[y].count				
 				break;
 			}
 		}		
