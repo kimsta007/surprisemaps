@@ -2,13 +2,14 @@
 	  let diagnisticData = {'identify': sessionStorage.getItem('identifyDiagnostic'), 'explore': sessionStorage.getItem('exploreDiagnostic'), 'duration': String(duration).slice(19,24)}
 
 	  function sendData(){
-		let idata, edata, identifyLog, exploreLog, mapType, url;
+		let idata, edata, identifyLog, exploreLog, mapType, url, feedback;
 		idata = sessionStorage.getItem('identify')
 		edata = sessionStorage.getItem('explore')
 		identifyLog = sessionStorage.getItem('identifyLog')
 		identifyClickLog = sessionStorage.getItem('identifyClickLog')
 		exploreLog = sessionStorage.getItem('exploreLog')
 		mapType = sessionStorage.getItem('mapType')
+		feedback = sessionStorage.getItem('experimentFeedback')
 
 		if (+sessionStorage.getItem('lrValue') === 2) {
 			url = 'choropleth'.concat('-').concat( sessionStorage.getItem('pid')) //Use Prolific ID instead
@@ -17,7 +18,7 @@
 			url = 'surprise'.concat('-').concat( sessionStorage.getItem('pid'))
 		}
 		if (sessionStorage.getItem('submitted').substring(1,6) == 'false'){
-				let data = {'url': url, 'identify': idata, 'explore': edata, 'iLog': identifyLog, 'cLog': identifyClickLog, 'eLog': exploreLog, 'dData': diagnisticData};
+				let data = {'url': url, 'identify': idata, 'explore': edata, 'iLog': identifyLog, 'cLog': identifyClickLog, 'eLog': exploreLog, 'dData': diagnisticData, 'feedback' : feedback};
 				let options = {
 					method : 'POST',
 					headers : {'Content-Type':'application/json'},

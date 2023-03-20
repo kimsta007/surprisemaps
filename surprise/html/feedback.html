@@ -1,0 +1,77 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experiment</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script>
+  <script src="../js/firebase.js"></script>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/nobacknav.js"></script>
+</head>
+
+<body>
+  <header>Experiment Feedback</header>    
+    <div class="container">
+
+      <div class="row mt-3 text-start">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+		      <form class="needs-validation" id="feedbackForm">
+            <div class="form-group">
+              <label for="surpriseFeedback1">In your opinion, what are the benefits or limitations of the Surprise Metric?</label>
+              <textarea class="form-control" id="surpriseFeedback1" name="surpriseFeedback1" rows="3" required></textarea>            
+            </div>
+            <div class="form-group mt-4">
+              <label for="surpriseFeedback2">Do you think your knowledge about the USA helped you in understanding the Surprise Metric?</label>
+              <select class="form-control form-select fs-6 w-25" id="surpriseFeedback2" name="surpriseFeedback2" required>
+                <option value="" disabled selected>Select option...</option>
+                <option>Yes</option>
+                <option>No</option>    
+              </select>             
+            </div>
+            <div class="form-group mt-4">
+              <label for="surpriseFeedback3">Do you think your knowledge about the USA helped you answer the experiment questions?</label>
+              <select class="form-control form-select fs-6 w-25" id="surpriseFeedback3" name="surpriseFeedback3" required>
+                <option value="" disabled selected>Select option...</option>
+                <option>Yes</option>
+                <option>No</option>    
+              </select>             
+            </div>
+            <div class="form-group mt-4">
+              <label for="surpriseFeedback4">If you have any additional feedback, please fill it in below.</label>
+              <textarea class="form-control" id="surpriseFeedback4" name="surpriseFeedback4" rows="3"></textarea>
+            </div>
+            <div class="form-group mt-4 text-center">
+              <div class="col-12">
+                <button class="btn btn-success text-sm" type="submit">Submit Feedback</button>
+              </div>
+            </div>
+          </form>         
+        </div>
+      </div>
+
+		</div>
+    <footer id="footer"></footer>
+	</div>
+  <script>
+    document.getElementById("feedbackForm").addEventListener("submit", function(event) {
+        event.preventDefault();  
+        let jsonObject = {};
+        let formData = new FormData(event.target); 
+        formData.forEach(function(value, key) {
+          jsonObject[key] = value; 
+        });
+        sessionStorage.setItem('experimentFeedback', JSON.stringify(jsonObject))
+        submitForm(); 
+});
+    function submitForm(){
+      window.location = 'thankyou.html'
+    }
+  </script>
+</body>
+</html>

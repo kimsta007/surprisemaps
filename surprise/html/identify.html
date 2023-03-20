@@ -59,18 +59,18 @@
       
       <div class="col-md-3 text-start">
 
-        <div>
+        <!--<div>
           <select id="ptask">
             <option value="Selected">Selected</option>
             <option value="Explored">Explored</option>
           </select>
           <select id="plist"></select>
-        </div>
+        </div> -->
 
-        <!--<span>
+        <span>
           If you require assistance, click the icon.
           <i id="icon" class="fa-solid fa-circle-question fa-xl" style="cursor: pointer" data-bs-toggle="modal"
-            data-bs-placement="bottom" title="Click to Open Help" data-bs-target="#helpModal"></i></span> -->
+            data-bs-placement="bottom" title="Click to Open Help" data-bs-target="#helpModal"></i></span> 
       </div>
       <div class="col-md-6 text-end">
         <b><span id="lblx"></span></b>: (Double click the map to zoom in /
@@ -177,10 +177,7 @@
       sessionStorage.setItem("identify", counties);
       sessionStorage.setItem("identifyLog", JSON.stringify(mouseLog));
       sessionStorage.setItem("identifyClickLog", JSON.stringify(mouseClick));
-      sessionStorage.setItem(
-        "identifyDiagnostic",
-        String(new Date(new Date().getTime() - startTime)).slice(19, 24)
-      );
+      sessionStorage.setItem("identifyDiagnostic", String(new Date(new Date().getTime() - startTime)).slice(19, 24));
       window.location = "explore.html";
     }
   </script>

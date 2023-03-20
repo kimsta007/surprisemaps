@@ -120,6 +120,11 @@
     white-space: nowrap;
   }
 
+  label {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
   #labelx {
     min-width: 9em; 
     font-size: 14px;

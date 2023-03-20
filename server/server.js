@@ -22,7 +22,7 @@ admin.initializeApp({
 let db = admin.database();
 
 app.post('/dbdata', (request, response) => {
-	sendData(request.body.url, request.body.identify, request.body.explore, request.body.iLog, request.body.eLog, request.body.cLog, request.body.dData)
+	sendData(request.body.url, request.body.identify, request.body.explore, request.body.iLog, request.body.eLog, request.body.cLog, request.body.dData, request.body.feedback)
 })
 
 app.post('/', (request, response) => {
@@ -46,7 +46,7 @@ app.use(express.static('../'))
 server = app.listen(3000, () => {console.log("server is listening on port", server.address().port);
 })
 
-function sendData(url, identify, explore, iLog, eLog, cLog, dData){
+function sendData(url, identify, explore, iLog, eLog, cLog, dData, feedback){
 	db.ref(url).set({
 		'identify': identify,
 		'explore': explore,
@@ -54,5 +54,6 @@ function sendData(url, identify, explore, iLog, eLog, cLog, dData){
 		'exploreLog': eLog,
 		'clickLog': cLog,
 		'diagnosticData': dData,
+		'feedback': feedback,
 	})
 }

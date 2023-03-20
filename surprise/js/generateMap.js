@@ -1,6 +1,6 @@
-let data, geoData, popn, geojson, rankingValues, hoverData, eDset;
+let data, geoData, popn, geojson, rankingValues //, hoverData, eDset;
 let population = {}, expData = [];
-let participantList = [], fipsList = [], transData  = [], exploreFips = [], exploreData = []
+//let participantList = [], fipsList = [], transData  = [], exploreFips = [], exploreData = []
 let colorsChoropleth = [
   "#C87661",
   "#D5937E",
@@ -30,7 +30,7 @@ const checkSurprise = [], analysisData = []
 let timeout = null, toggled = true, toggleValue = 1, lastSelected, lastLegendSelected = null
 let mouseStartTime, mouseIdleTime, mouseLog = [], mouseClick = []
 let min, max, rnd_gen, sd, avg, highTickValue, cPath, group, type = 'i'
-let previouslySelected = "Selected"
+//let previouslySelected = "Selected"
 
 var erfc = function(x) {
     var z = Math.abs(x);
@@ -49,7 +49,7 @@ var cdf = function(x) {
 function getdata(){
 	let analysisDset = (+sessionStorage.getItem('lrValue') == 2) ? '../data/selections_choropleth_best.csv' : '../data/selections_surprise_best.csv';
 	let exploreDset = (+sessionStorage.getItem('lrValue') == 2) ? '../data/pilot_explore_choropleth.csv' : '../data/pilot_explore_surprise.csv';
-	Promise.all([d3.json('../data/counties.json'), d3.csv('../data/poverty.csv'), d3.csv(analysisDset), d3.csv(exploreDset)]).then(cleanupData);
+	Promise.all([d3.json('../data/counties.json'), d3.csv('../data/poverty.csv') /*, d3.csv(analysisDset), d3.csv(exploreDset)*/]).then(cleanupData);
 }
 
 function cleanupData(dte){
@@ -58,7 +58,7 @@ function cleanupData(dte){
 		record.poverty /= 100
 		validation.push(record.poverty)
 	})
-
+	/*
 	dte[2].forEach((record) => {
 		participantList.push(record.participant)
 		fipsList.push(record.fips)
@@ -99,13 +99,13 @@ function cleanupData(dte){
         option.value = record;
 		plist.appendChild(option)
 	})
-
-	data = dte[1]
 	eDset = dte[3]
+	hoverData = dte[2]
+    */
+	data = dte[1]
     avg = math.mean(validation)
 	sd = math.std(validation)
 	geoData = dte[0];
-	hoverData = dte[2]
     makeMaps();
 }
 
@@ -463,9 +463,9 @@ function drawGraph(mapType) {
 				.style("top", d3.event.pageY + 10 + "px")
 	}
 	// END TOOLTIP
-    cPath = path
+    /*cPath = path
 	group = g
-	createBubbles(g, 'i', path)
+	createBubbles(g, 'i', path)*/
 	makeLegend(colorScale, svg, mapType)
 }
 
@@ -538,7 +538,7 @@ function calcSurprise(){
 }
 
 function setSurprise(geojson){
-	for (var x = 0; x < 3142; x++){
+	/*for (var x = 0; x < 3142; x++){
 		for (var y = 0; y < eDset.length; y++){
 			if (eDset[y].fips == geojson.features[x].id){
 				geojson.features[x].properties["Participant"] = eDset[y].participant				
@@ -572,7 +572,7 @@ function setSurprise(geojson){
 				break;
 			}
 		}		
-	}
+	}*/
 
 	for (var x = 0; x < surpriseData.length; x++){
 		for (var y = 0; y < 3142; y++){
