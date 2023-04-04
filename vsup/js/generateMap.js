@@ -4,12 +4,18 @@ let timeout = null, nsminmax, psminmax
 let mouseStartTime, mouseIdleTime, mouseLog = [], mouseClick = []
 let toggleValue = 1
 let toggled = true
+//let participantList = [], fipsList = [], transData = [], exploreFips = [], exploreData = []
 let sd, avg, svg, lastSelected, lastHovered = null
 let colorLow = "#c77560";
 let colorMid = "rgb(239, 219, 203)";
 let colorHigh = "#2f7264";
 
 let legend
+/*let radius = d3.scaleSqrt()
+    .domain([0, 4])
+    .range([0, 1]);
+let cPath, group, type = 'i', previouslySelected = "Selected"
+*/
 
 var erfc = function(x) {
     var z = Math.abs(x);
@@ -37,7 +43,7 @@ function getdata(){
     }
 }).done(function(dtx) {
 	data = dtx;
-	Promise.all([d3.json('../data/counties.json')]).then(cleanupData);
+	Promise.all([d3.json('../data/counties.json')/*, d3.csv('../data/selections_vsup_best.csv'), d3.csv('../data/pilot_explore_vsup.csv')*/]).then(cleanupData);
 });
 }
 
@@ -54,6 +60,52 @@ function cleanupData(dte){
 			}
 		}
 	}
+
+	/*dte[2].forEach((record) => {
+		participantList.push(record.participant)
+		fipsList.push(record.fips)
+	})
+
+	dte[3].forEach((record) => {
+		exploreFips.push(record.fips)
+	})
+
+	participantList = [...new Set(participantList)];
+	fipsList = [...new Set(fipsList)];
+	exploreFips = [...new Set(exploreFips)];
+
+ 	fipsList.forEach((record) => {
+		let slist = dte[1].filter((data) => {return record == data.fips})
+		transData.push({'fips': record, 'count': slist.length})
+	})
+
+	exploreFips.forEach((record) => {
+		let slist = dte[2].filter((data) => {return record == data.fips})
+		exploreData.push({'fips': record, 'count': slist.length})
+	})
+
+	let plist = document.getElementById("plist");
+	plist.addEventListener("change", updateSelectedMap);
+
+	let ptask = document.getElementById("ptask");
+	ptask.addEventListener("change", updateExploreMap);
+
+	let option = document.createElement("option");
+		option.text = 'All';
+        option.value = 'All';
+		plist.appendChild(option)
+
+	participantList.forEach((record) => {
+		let option = document.createElement("option");
+		option.text = record;
+        option.value = record;
+		plist.appendChild(option)
+	})
+	
+	hoverData = dte[1]
+	eDset = dte[2]
+    */
+
     avg = math.mean(validation)
 	sd = math.std(validation)
 	geoData = dte[0];
@@ -386,6 +438,26 @@ function drawGraph() {
 				.style("top", d3.event.pageY + 10 + "px")
 	}
 
+    /*cPath = path
+	group = g
+	createBubbles(g, 'i', path)*/
+
+}
+
+function createBubbles(g, type, path){
+	g
+	.selectAll("circle")
+		.data(geojson.features)
+	.enter().append("circle")
+		.attr("id", "bubble")
+		.attr("class", function(d) {return type + d.id})
+		.attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+		.attr("r", function(d) {		
+			let count = (type == 'i') ? d.properties.selectedCount : d.properties.exploreCount
+			if (d.properties.Participant != undefined && !isNaN(count)){
+				return (document.getElementById('plist').value == 'All') ? radius(count) * 10 : '3';
+			}
+					})
 }
 
 function calcSurprise(){
@@ -440,6 +512,42 @@ function calcSurprise(){
 }
 
 function setSurprise(geojson){
+		/*for (var x = 0; x < 3142; x++){
+		for (var y = 0; y < eDset.length; y++){
+			if (eDset[y].fips == geojson.features[x].id){
+				geojson.features[x].properties["Participant"] = eDset[y].participant				
+				break;
+			}
+		}		
+	}
+
+	for (var x = 0; x < 3142; x++){
+		for (var y = 0; y < hoverData.length; y++){
+			if (hoverData[y].fips == geojson.features[x].id){
+				geojson.features[x].properties["Participant"] = hoverData[y].participant				
+				break;
+			}
+		}		
+	}
+
+	for (var x = 0; x < 3142; x++){
+		for (var y = 0; y < transData.length; y++){
+			if (transData[y].fips == geojson.features[x].id){
+				geojson.features[x].properties["selectedCount"] = transData[y].count				
+				break;
+			}
+		}		
+	}
+
+	for (var x = 0; x < 3142; x++){
+		for (var y = 0; y < exploreData.length; y++){
+			if (exploreData[y].fips == geojson.features[x].id){
+				geojson.features[x].properties["exploreCount"] = exploreData[y].count				
+				break;
+			}
+		}		
+	}*/
+	
 	for (var x = 0; x < surpriseData.length; x++){
 		for (var y = 0; y < 3142; y++){
 			if (surpriseData[x].fips == geojson.features[y].id){
