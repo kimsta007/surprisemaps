@@ -55,6 +55,8 @@ function getdata(){
     }
 }).done(function(dtx) {
 	data = dtx;
+	let analysisDset = (+sessionStorage.getItem('lrValue') == 2) ? '../data/selections_choropleth_best.csv' : '../data/selections_surprise_best.csv';
+	let exploreDset = (+sessionStorage.getItem('lrValue') == 2) ? '../data/pilot_explore_choropleth.csv' : '../data/pilot_explore_surprise.csv';
 	Promise.all([d3.json('../data/counties.json')/*, d3.csv(analysisDset), d3.csv(exploreDset)*/]).then(cleanupData);
 });
 }
