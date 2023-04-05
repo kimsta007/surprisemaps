@@ -124,6 +124,43 @@ function cleanupData(dte){
     makeMaps();
 }
 
+function updateExploreMap() {
+	if ((document.getElementById('ptask').value != previouslySelected) && (document.getElementById('ptask').value == "Explored")) {
+		d3.selectAll('#bubble').remove() 
+		createBubbles(group, 'e', cPath)
+		previouslySelected = document.getElementById('ptask').value
+		type = 'e'
+		document.getElementById("plist").dispatchEvent(new Event("change"));
+	}
+	else if ((document.getElementById('ptask').value != previouslySelected) && (document.getElementById('ptask').value == "Selected")){
+		d3.selectAll('#bubble').remove()
+		createBubbles(group, 'i', cPath)
+		type = 'i'
+		previouslySelected = document.getElementById('ptask').value
+		document.getElementById("plist").dispatchEvent(new Event("change"));
+	}
+}
+
+function updateSelectedMap() {	
+	if (document.getElementById("plist").value === 'All') {
+		let currentData = (type == 'i') ? transData : exploreData;
+		currentData.forEach((record) => {
+			d3.select('.' + type + record.fips).attr('r', radius(record.count) * 10)
+		})
+		d3.selectAll('#bubble').style('opacity', '1')
+	} else {
+		d3.selectAll('#bubble').style('opacity', '0')
+		let currentData = (type == 'i') ? hoverData : eDset;
+		currentData.forEach((record) => {
+			if (record.participant == document.getElementById("plist").value){
+				d3.selectAll('.' + type + record.fips).style('opacity', '1')
+				d3.select('.' + type + record.fips).attr('r', '3')
+			}
+		})
+	}
+}
+
+
 function makeMaps(){
     calcSurprise()
     rnd_gen = +sessionStorage.getItem('lrValue')
