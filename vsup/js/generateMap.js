@@ -14,7 +14,7 @@ let legend
 let radius = d3.scaleSqrt()
     .domain([0, 4])
     .range([0, 1]);
-let cPath, group, type = 'i', previouslySelected = "Selected"
+let cPath, group, type = 'i', previouslySelected = "Selected", hoverData, eDset
 
 var erfc = function(x) {
     var z = Math.abs(x);

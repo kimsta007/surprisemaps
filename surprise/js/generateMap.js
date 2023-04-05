@@ -31,7 +31,7 @@ const checkSurprise = [], analysisData = []
 let timeout = null, toggled = true, toggleValue = 1, lastSelected, lastLegendSelected = null
 let mouseStartTime, mouseIdleTime, mouseLog = [], mouseClick = []
 let min, max, rnd_gen, sd, avg, highTickValue
-let cPath, group, type = 'i', previouslySelected = "Selected"
+let cPath, group, type = 'i', previouslySelected = "Selected", hoverData, eDset
 
 var erfc = function(x) {
     var z = Math.abs(x);
