@@ -23,12 +23,15 @@ let palette = [
   "#327365",
 ];
 
+let radius = d3.scaleSqrt()
+    .domain([0, 4])
+    .range([0, 1]);
 let count = 0, row = "", counties = [], surpriseData = [], validation = [];
 const checkSurprise = [], analysisData = []
 let timeout = null, toggled = true, toggleValue = 1, lastSelected, lastLegendSelected = null
 let mouseStartTime, mouseIdleTime, mouseLog = [], mouseClick = []
 let min, max, rnd_gen, sd, avg, highTickValue
-let previouslySelected = "Selected"
+let cPath, group, type = 'i', previouslySelected = "Selected"
 
 var erfc = function(x) {
     var z = Math.abs(x);
@@ -55,9 +58,7 @@ function getdata(){
     }
 }).done(function(dtx) {
 	data = dtx;
-	let analysisDset = (+sessionStorage.getItem('lrValue') == 2) ? '../data/pbc_vacc.csv' : '../data/pbs_vacc.csv';
-	let exploreDset = (+sessionStorage.getItem('lrValue') == 2) ? '../data/pbce_vacc.csv' : '../data/pbse_vacc.csv';
-	Promise.all([d3.json('../data/counties.json'), d3.csv(analysisDset), d3.csv(exploreDset)]).then(cleanupData);
+	Promise.all([d3.json('../data/counties.json'), d3.csv('../data/pbc_vacc.csv'), d3.csv('../data/pbce_vacc.csv')]).then(cleanupData);
 });
 }
 
@@ -164,7 +165,7 @@ function updateSelectedMap() {
 function makeMaps(){
     calcSurprise()
     rnd_gen = +sessionStorage.getItem('lrValue')
-  
+    rnd_gen = 2
 	if (rnd_gen === 2)  {
 		drawGraph(0)
 		document.getElementById('lblx').textContent = 'Choropleth Map'

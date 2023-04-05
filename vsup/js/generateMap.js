@@ -4,18 +4,17 @@ let timeout = null, nsminmax, psminmax
 let mouseStartTime, mouseIdleTime, mouseLog = [], mouseClick = []
 let toggleValue = 1
 let toggled = true
-//let participantList = [], fipsList = [], transData = [], exploreFips = [], exploreData = []
+let participantList = [], fipsList = [], transData = [], exploreFips = [], exploreData = []
 let sd, avg, svg, lastSelected, lastHovered = null
 let colorLow = "#c77560";
 let colorMid = "rgb(239, 219, 203)";
 let colorHigh = "#2f7264";
 
 let legend
-/*let radius = d3.scaleSqrt()
+let radius = d3.scaleSqrt()
     .domain([0, 4])
     .range([0, 1]);
 let cPath, group, type = 'i', previouslySelected = "Selected"
-*/
 
 var erfc = function(x) {
     var z = Math.abs(x);
@@ -43,9 +42,7 @@ function getdata(){
     }
 }).done(function(dtx) {
 	data = dtx;
-	let analysisDset = (+sessionStorage.getItem('lrValue') == 2) ? '../data/selections_choropleth_best.csv' : '../data/selections_surprise_best.csv';
-	let exploreDset = (+sessionStorage.getItem('lrValue') == 2) ? '../data/pilot_explore_choropleth.csv' : '../data/pilot_explore_surprise.csv';
-	Promise.all([d3.json('../data/counties.json')/*, d3.csv('../data/selections_vsup_best.csv'), d3.csv('../data/pilot_explore_vsup.csv')*/]).then(cleanupData);
+	Promise.all([d3.json('../data/counties.json'), d3.csv('../data/pwv_vacc.csv'), d3.csv('../data/pwve_vacc.csv')]).then(cleanupData);
 });
 }
 
@@ -63,12 +60,12 @@ function cleanupData(dte){
 		}
 	}
 
-	/*dte[2].forEach((record) => {
+	dte[1].forEach((record) => {
 		participantList.push(record.participant)
 		fipsList.push(record.fips)
 	})
 
-	dte[3].forEach((record) => {
+	dte[2].forEach((record) => {
 		exploreFips.push(record.fips)
 	})
 
@@ -106,7 +103,6 @@ function cleanupData(dte){
 	
 	hoverData = dte[1]
 	eDset = dte[2]
-    */
 
     avg = math.mean(validation)
 	sd = math.std(validation)
@@ -440,9 +436,9 @@ function drawGraph() {
 				.style("top", d3.event.pageY + 10 + "px")
 	}
 
-    /*cPath = path
+    cPath = path
 	group = g
-	createBubbles(g, 'i', path)*/
+	createBubbles(g, 'i', path)
 
 }
 
@@ -551,7 +547,7 @@ function calcSurprise(){
 }
 
 function setSurprise(geojson){
-		/*for (var x = 0; x < 3142; x++){
+		for (var x = 0; x < 3142; x++){
 		for (var y = 0; y < eDset.length; y++){
 			if (eDset[y].fips == geojson.features[x].id){
 				geojson.features[x].properties["Participant"] = eDset[y].participant				
@@ -585,7 +581,7 @@ function setSurprise(geojson){
 				break;
 			}
 		}		
-	}*/
+	}
 	
 	for (var x = 0; x < surpriseData.length; x++){
 		for (var y = 0; y < 3142; y++){
