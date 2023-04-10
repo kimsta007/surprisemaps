@@ -58,7 +58,7 @@ function getdata(){
     }
 }).done(function(dtx) {
 	data = dtx;
-	Promise.all([d3.json('../data/counties.json'), d3.csv('../data/pbc_vacc.csv'), d3.csv('../data/pbce_vacc.csv')]).then(cleanupData);
+	Promise.all([d3.json('../data/counties.json'), d3.csv('../data/pws_vacc.csv'), d3.csv('../data/pwse_vacc.csv')]).then(cleanupData);
 });
 }
 
@@ -165,7 +165,6 @@ function updateSelectedMap() {
 function makeMaps(){
     calcSurprise()
     rnd_gen = +sessionStorage.getItem('lrValue')
-    rnd_gen = 2
 	if (rnd_gen === 2)  {
 		drawGraph(0)
 		document.getElementById('lblx').textContent = 'Choropleth Map'
