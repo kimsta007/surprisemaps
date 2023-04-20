@@ -80,7 +80,6 @@ function cleanupData(dte){
 function makeMaps(){
     calcSurprise()
     rnd_gen = +sessionStorage.getItem('lrValue')
-	rnd_gen = 2
 	if (rnd_gen === 2)  {
 		drawGraph(0)
 		document.getElementById('lblx').textContent = 'Choropleth Map'
