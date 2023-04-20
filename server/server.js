@@ -22,7 +22,7 @@ admin.initializeApp({
 let db = admin.database();
 
 app.post('/dbdata', (request, response) => {
-	sendData(request.body.url, request.body.identify, request.body.explore, request.body.iLog, request.body.eLog, request.body.cLog, request.body.dData)
+	sendData(request.body.url, request.body.identify, request.body.explore, request.body.iLog, request.body.eLog, request.body.cLog, request.body.dData, request.body.feedback)
 })
 
 app.post('/', (request, response) => {
