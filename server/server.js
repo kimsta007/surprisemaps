@@ -31,10 +31,10 @@ app.post('/', (request, response) => {
 })
 
 app.post('/consent', (request, response) => {
-	reqChecker = 0;
-	if (reqChecker % 3 === 0) {
+	reqChecker = 1;   
+	if (reqChecker === 2) { //Surprise
 		response.redirect('http://proanalytics.co.uk/surprise/html/intro.html?type=1');
-	} else if (reqChecker % 3 === 1) {
+	} else if (reqChecker === 1) { //Choropleth
 		response.redirect('http://proanalytics.co.uk/surprise/html/intro.html?type=2');
 	} else {
 		response.redirect('http://proanalytics.co.uk/vsup/html/intro.html');

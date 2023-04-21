@@ -12,10 +12,10 @@
 		feedback = sessionStorage.getItem('experimentFeedback')
 
 		if (+sessionStorage.getItem('lrValue') === 2) {
-			url = 'choropleth'.concat('-').concat( sessionStorage.getItem('pid')) //Use Prolific ID instead
+			url = 'choropleth-best-vaccine'.concat('-').concat( sessionStorage.getItem('pid')) //Use Prolific ID instead
 		}
 		else {
-			url = 'surprise'.concat('-').concat( sessionStorage.getItem('pid'))
+			url = 'surprise-best-vaccine'.concat('-').concat( sessionStorage.getItem('pid'))
 		}
 		if (sessionStorage.getItem('submitted').substring(1,6) == 'false'){
 				let data = {'url': url, 'identify': idata, 'explore': edata, 'iLog': identifyLog, 'cLog': identifyClickLog, 'eLog': exploreLog, 'dData': diagnisticData, 'feedback' : feedback};
