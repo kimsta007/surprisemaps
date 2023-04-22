@@ -31,14 +31,14 @@ app.post('/', (request, response) => {
 })
 
 app.post('/consent', (request, response) => {
-	reqChecker += 1;
-	if (reqChecker % 3 === 0) {
-		response.redirect('http://proanalytics.co.uk/surprise/html/intro.html?type=1');
-	} else if (reqChecker % 3 === 1) {
-		response.redirect('http://proanalytics.co.uk/surprise/html/intro.html?type=2');
-	} else {
-		response.redirect('http://proanalytics.co.uk/vsup/html/intro.html');
-	}
+	//reqChecker += 1;
+	//if (reqChecker % 3 === 0) {
+	//	response.redirect('http://proanalytics.co.uk/surprise/html/intro.html?type=1'); //Surprise
+	//} else if (reqChecker % 3 === 1) {
+		response.redirect('http://proanalytics.co.uk/surprise/html/intro.html?type=2'); //Choropleth
+	//} else {
+	//	response.redirect('http://proanalytics.co.uk/vsup/html/intro.html'); //Vsup
+	//}
 })
 
 app.use(express.static('../'))
