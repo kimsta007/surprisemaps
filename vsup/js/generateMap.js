@@ -30,6 +30,11 @@ function getdata(){
 }
 
 function cleanupData(dte){
+	dte[1].forEach((record) => {
+		record.pop2017 /= 328239523
+		record.poverty /= 100
+		validation.push(record.poverty)
+	})
 	data = dte[1]
     avg = math.mean(validation)
 	sd = math.std(validation)
