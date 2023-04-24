@@ -11,7 +11,7 @@
 		mapType = sessionStorage.getItem('mapType')
 		feedback = sessionStorage.getItem('experimentFeedback')
 
-		url = 'vsup-worst-poverty'.concat('-').concat( sessionStorage.getItem('pid'))
+		url = 'vsup-best-poverty'.concat('-').concat( sessionStorage.getItem('pid'))
 		if (sessionStorage.getItem('submitted').substring(1,6) == 'false'){
 				let data = {'url': url, 'identify': idata, 'explore': edata, 'iLog': identifyLog, 'cLog': identifyClickLog,'eLog': exploreLog, 'dData': diagnisticData, 'feedback': feedback};
 				let options = {
