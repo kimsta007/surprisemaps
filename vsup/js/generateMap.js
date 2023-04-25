@@ -42,7 +42,7 @@ function getdata(){
     }
 }).done(function(dtx) {
 	data = dtx;
-	Promise.all([d3.json('../data/counties.json'), d3.csv('../data/main/vvw.csv') /*, d3.csv('../data/pwve_vacc.csv')*/]).then(cleanupData);
+	Promise.all([d3.json('../data/counties.json'), d3.csv('../data/main/vvb.csv') /*, d3.csv('../data/pwve_vacc.csv')*/]).then(cleanupData);
 });
 }
 
