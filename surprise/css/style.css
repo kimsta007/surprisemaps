@@ -282,7 +282,8 @@ overflow-y: scroll !important;
 }
 
 #bubble {
-  fill-opacity: .3;
-  stroke: #ffff00;
+  fill-opacity: .4;
+  stroke: #000;
   stroke-width: 1px;
+  fill: #0000ff;
 }

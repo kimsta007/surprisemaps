@@ -58,7 +58,7 @@ function getdata(){
     }
 }).done(function(dtx) {
 	data = dtx;
-	Promise.all([d3.json('../data/counties.json'), d3.csv('../data/pws_vacc.csv'), d3.csv('../data/pwse_vacc.csv')]).then(cleanupData);
+	Promise.all([d3.json('../data/counties.json'), d3.csv('../data/main/svw.csv') /*, d3.csv('../data/pwse_vacc.csv')*/]).then(cleanupData);
 });
 }
 
@@ -81,23 +81,23 @@ function cleanupData(dte){
 		fipsList.push(record.fips)
 	})
 
-	dte[2].forEach((record) => {
+	/*dte[2].forEach((record) => {
 		exploreFips.push(record.fips)
-	})
+	})*/
 
 	participantList = [...new Set(participantList)];
 	fipsList = [...new Set(fipsList)];
-	exploreFips = [...new Set(exploreFips)];
+	//exploreFips = [...new Set(exploreFips)];
 
     fipsList.forEach((record) => {
 		let slist = dte[1].filter((data) => {return record == data.fips})
 		transData.push({'fips': record, 'count': slist.length})
 	})
 
-	exploreFips.forEach((record) => {
+	/*exploreFips.forEach((record) => {
 		let slist = dte[2].filter((data) => {return record == data.fips})
 		exploreData.push({'fips': record, 'count': slist.length})
-	})
+	})*/
 
 	let plist = document.getElementById("plist");
 	plist.addEventListener("change", updateSelectedMap);
@@ -116,7 +116,7 @@ function cleanupData(dte){
         option.value = record;
 		plist.appendChild(option)
 	})
-	eDset = dte[2]
+	//eDset = dte[2]
 	hoverData = dte[1]
     
     avg = math.mean(validation)
@@ -163,8 +163,9 @@ function updateSelectedMap() {
 
 
 function makeMaps(){
-    calcSurprise()
-    rnd_gen = +sessionStorage.getItem('lrValue')
+    calcSurprise()	
+    //rnd_gen = +sessionStorage.getItem('lrValue')
+	rnd_gen = 1;
 	if (rnd_gen === 2)  {
 		drawGraph(0)
 		document.getElementById('lblx').textContent = 'Choropleth Map'
@@ -562,14 +563,14 @@ function calcSurprise(){
 }
 
 function setSurprise(geojson){
-	for (var x = 0; x < 3142; x++){
+	/*for (var x = 0; x < 3142; x++){
 		for (var y = 0; y < eDset.length; y++){
 			if (eDset[y].fips == geojson.features[x].id){
 				geojson.features[x].properties["Participant"] = eDset[y].participant				
 				break;
 			}
 		}		
-	}
+	}*/
 
 	for (var x = 0; x < 3142; x++){
 		for (var y = 0; y < hoverData.length; y++){
@@ -589,14 +590,14 @@ function setSurprise(geojson){
 		}		
 	}
 
-	for (var x = 0; x < 3142; x++){
+	/*for (var x = 0; x < 3142; x++){
 		for (var y = 0; y < exploreData.length; y++){
 			if (exploreData[y].fips == geojson.features[x].id){
 				geojson.features[x].properties["exploreCount"] = exploreData[y].count				
 				break;
 			}
 		}		
-	}
+	}*/
 	
 	for (var x = 0; x < surpriseData.length; x++){
 		for (var y = 0; y < 3142; y++){
