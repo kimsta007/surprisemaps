@@ -31,7 +31,7 @@ app.post('/', (request, response) => {
 })
 
 app.post('/consent', (request, response) => {
-	reqChecker = 1;   
+	reqChecker = 2;   
 	if (reqChecker === 2) { //Surprise
 		response.redirect('http://proanalytics.co.uk/surprise/html/intro.html?type=1');
 	} else if (reqChecker === 1) { //Choropleth
